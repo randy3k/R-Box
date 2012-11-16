@@ -13,5 +13,10 @@
     [
       { "key": "selector", "operator": "equal", "operand": "source.r" }
     ]
+  },
+  { "keys": ["super+alt+enter"], "command": "send_select_terminal", "context":
+    [
+      { "key": "selector", "operator": "equal", "operand": "source.r" }
+    ]
   }
 ]
