@@ -11,7 +11,7 @@ import string
 def clean(str):
     str = string.replace(str, '\\', '\\\\')
     str = string.replace(str, '"', '\\"')
-    str = string.replace(str, '\'', '\\\\\'')
+    str = string.replace(str, "'", "'\\''")
     return str
 
 ##################################
