@@ -4,7 +4,7 @@
         {
             "name": "R-sublime",
             "description": "R plugin for Sublime Text 2",
-            "author": "raymondkww",
+            "author": "raymondkww, randy3k",
             "homepage": "https://github.com/raymondkww/R-sublime.git",
             "last_modified": "2012-11-15 18:00:00",
             "platforms": {
