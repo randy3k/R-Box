@@ -71,5 +71,4 @@ class SendSelectTerminalCommand(sublime_plugin.TextCommand):
         str = clean(str)
         args = ['osascript']
         args.extend(['-e', 'tell app "Terminal" to do script "' + str + '" in front window\n'])
-        print args
         subprocess.Popen(args)
