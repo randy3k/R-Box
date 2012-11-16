@@ -37,3 +37,9 @@ Useful Commands
 
 * Tell R to source the working script
 
+Settings
+---------
+Edit `Rsublime.sublime-settings` to change settings
+
+### Rapp ####
+* Set the version of R the above commands are effective on: `"R64"`, `"R32"` or `"R"`

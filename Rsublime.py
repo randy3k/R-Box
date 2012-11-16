@@ -14,16 +14,16 @@ def clean(str):
     str = string.replace(str, '\'', '\\\\\'')
     return str
 
-
 ##################################
 #### change working directory ####
 ##################################
 
 class ChangeDirCommand(sublime_plugin.TextCommand):
     def run(self, edit):
+        Rapp = sublime.load_settings('Rsublime.sublime-settings').get('Rapp')
         path = clean(os.path.dirname(self.view.file_name()))
         args = ['osascript']
-        args.extend(['-e', 'tell app "R64" to cmd "setwd(\'' + path + '\')"\n'])
+        args.extend(['-e', 'tell app "' + Rapp + '" to cmd "setwd(\'' + path + '\')"\n'])
         subprocess.Popen(args)
 
 #########################
@@ -39,8 +39,9 @@ class SendSelectCommand(sublime_plugin.TextCommand):
             else:
                 str += self.view.substr(sel) +'\n'
         str = clean(str)
+        Rapp = sublime.load_settings('Rsublime.sublime-settings').get('Rapp')
         args = ['osascript']
-        args.extend(['-e','tell app "R64" to cmd "' + str +'"\n'])
+        args.extend(['-e','tell app "' + Rapp + '" to cmd "' + str +'"\n'])
         subprocess.Popen(args)
 
 ######################
@@ -50,6 +51,7 @@ class SendSelectCommand(sublime_plugin.TextCommand):
 class SourceCodeCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         path = clean(self.view.file_name())
+        Rapp = sublime.load_settings('Rsublime.sublime-settings').get('Rapp')
         args = ['osascript']
-        args.extend(['-e', 'tell app "R64" to cmd "source(\'' + path + '\')"\n'])
+        args.extend(['-e', 'tell app "' + Rapp + '" to cmd "source(\'' + path + '\')"\n'])
         subprocess.Popen(args)
