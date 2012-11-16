@@ -22,10 +22,17 @@ The correct indentation rule now indents like
 Useful Commands
 ---------------
 ### Sending Code to R ###
-**Keybinding:** `Cmd-enter`
+**Keybinding:** `Cmd-Enter`
 
 * Send the selection to R
 * If no syntax is selected, it sends the whole line where the cursor stays at.
+
+### Sending Code to Terminal ###
+**Keybinding:** `Cmd-Alt-Enter`
+
+* Send the selection to R
+* If no syntax is selected, it sends the whole line where the cursor stays at.
+* Useful for people working on server
 
 ### Changing Working Directory ###
 **Keybinding:** `Cmd-\`
