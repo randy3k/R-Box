@@ -1,23 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
-<dict>
-	<key>scope</key>
-	<string>source.r</string>
-	<key>settings</key>
 	<dict>
-		<key>decreaseIndentPattern</key>
-		<string>^(.*\*/)?\s*\}[;\s]*$</string>
-		<key>increaseIndentPattern</key>
-		<string>^.*(\{[^}"']*)$</string>
-
-		<key>bracketIndentNextLinePattern</key>
-		<string>^\s*\b(if|for|while)\b\s*\(.*\)\s*$|^.*\b(else)\b(\s\b(if)\b\s*\(.*\))?\s*$|^\s*\b(repeat)\b\s*$</string>
-
-		<key>disableIndentNextLinePattern</key>
-		<string>^\s*\{[\]})]*\s*$</string>
-		<key>indentParens</key>
-		<true/>
+		<key>scope</key>
+		<string>source.r</string>
+		<key>settings</key>
+		<dict>
+			<key>bracketIndentNextLinePattern</key>
+			<string>^\s*\b(repeat\b|else\b|(((else\s+)?if|for|while)\s*\(.+\)))</string>
+		</dict>
 	</dict>
-</dict>
 </plist>
