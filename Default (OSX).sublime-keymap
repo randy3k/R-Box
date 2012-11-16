@@ -1,0 +1,17 @@
+[
+  { "keys": ["super+enter"], "command": "send_select", "context":
+    [
+      { "key": "selector", "operator": "equal", "operand": "source.r" }
+    ]
+  },
+  { "keys": ["super+\\"], "command": "change_dir", "context":
+    [
+      { "key": "selector", "operator": "equal", "operand": "source.r" }
+    ]
+  },
+  { "keys": ["super+."], "command": "source_code", "context":
+    [
+      { "key": "selector", "operator": "equal", "operand": "source.r" }
+    ]
+  }
+]
