@@ -55,3 +55,21 @@ class SourceCodeCommand(sublime_plugin.TextCommand):
         args = ['osascript']
         args.extend(['-e', 'tell app "' + Rapp + '" to cmd "source(\'' + path + '\')"\n'])
         subprocess.Popen(args)
+
+################################
+#### Send Codes to Terminal ####
+################################
+
+class SendSelectTerminalCommand(sublime_plugin.TextCommand):
+       def run(self, edit):
+        str = ''
+        for sel in self.view.sel():
+            if sel.empty():
+                str += self.view.substr(self.view.line(sel)) +'\n'
+            else:
+                str += self.view.substr(sel) +'\n'
+        str = clean(str)
+        args = ['osascript']
+        args.extend(['-e', 'tell app "Terminal" to do script "' + str + '" in front window\n'])
+        print args
+        subprocess.Popen(args)
