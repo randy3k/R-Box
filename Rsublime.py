@@ -19,11 +19,17 @@ def clean(str):
 ##################################
 
 class ChangeDirCommand(sublime_plugin.TextCommand):
+    # read settings only when the instance is created
+    # it is more efficient then reading settings everytime when "run" is execucated
+    def __init__(self, _):    
+        self.settings = sublime.load_settings('Rsublime.sublime-settings')
+        self.Rapp = self.settings.get('Rapp')
+        sublime_plugin.TextCommand.__init__(self, _) 
+
     def run(self, edit):
-        Rapp = sublime.load_settings('Rsublime.sublime-settings').get('Rapp')
         path = clean(os.path.dirname(self.view.file_name()))
         args = ['osascript']
-        args.extend(['-e', 'tell app "' + Rapp + '" to cmd "setwd(\'' + path + '\')"\n'])
+        args.extend(['-e', 'tell app "' + self.Rapp + '" to cmd "setwd(\'' + path + '\')"\n'])
         subprocess.Popen(args)
 
 #########################
@@ -31,6 +37,11 @@ class ChangeDirCommand(sublime_plugin.TextCommand):
 #########################
 
 class SendSelectCommand(sublime_plugin.TextCommand):
+    def __init__(self, _):    
+        self.settings = sublime.load_settings('Rsublime.sublime-settings')
+        self.Rapp = self.settings.get('Rapp')
+        sublime_plugin.TextCommand.__init__(self, _)   
+
     def run(self, edit):
         str = ''
         for sel in self.view.sel():
@@ -39,9 +50,8 @@ class SendSelectCommand(sublime_plugin.TextCommand):
             else:
                 str += self.view.substr(sel) +'\n'
         str = clean(str)
-        Rapp = sublime.load_settings('Rsublime.sublime-settings').get('Rapp')
         args = ['osascript']
-        args.extend(['-e','tell app "' + Rapp + '" to cmd "' + str +'"\n'])
+        args.extend(['-e','tell app "' + self.Rapp + '" to cmd "' + str +'"\n'])
         subprocess.Popen(args)
 
 ######################
@@ -49,11 +59,15 @@ class SendSelectCommand(sublime_plugin.TextCommand):
 ######################
 
 class SourceCodeCommand(sublime_plugin.TextCommand):
+    def __init__(self, _):    
+        self.settings = sublime.load_settings('Rsublime.sublime-settings')
+        self.Rapp = self.settings.get('Rapp')
+        sublime_plugin.TextCommand.__init__(self, _)  
+
     def run(self, edit):
         path = clean(self.view.file_name())
-        Rapp = sublime.load_settings('Rsublime.sublime-settings').get('Rapp')
         args = ['osascript']
-        args.extend(['-e', 'tell app "' + Rapp + '" to cmd "source(\'' + path + '\')"\n'])
+        args.extend(['-e', 'tell app "' + self.Rapp + '" to cmd "source(\'' + path + '\')"\n'])
         subprocess.Popen(args)
 
 ################################
