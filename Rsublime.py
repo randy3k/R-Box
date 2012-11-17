@@ -20,7 +20,7 @@ def clean(str):
 
 class ChangeDirCommand(sublime_plugin.TextCommand):
     # read settings only when the instance is created
-    # it is more efficient then reading settings everytime when "run" is execucated
+    # it is more efficient then reading settings everytime when "run" is executed
     def __init__(self, _):    
         self.settings = sublime.load_settings('Rsublime.sublime-settings')
         self.Rapp = self.settings.get('Rapp')
