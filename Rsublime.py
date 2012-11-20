@@ -15,13 +15,13 @@ class RCommon:
     def clean(self, str):
         str = string.replace(str, '\\', '\\\\')
         str = string.replace(str, '"', '\\"')
-        str = string.replace(str, "'", "'\\''")
         return str
 
     def rcmd(self, cmd):
         cmd = self.clean(cmd)
-        cmd = "osascript -e 'tell application \"" + self.Rapp + "\" to cmd \"" + cmd + "\"'"
-        subprocess.call(cmd, shell=True)
+        args = ['osascript']
+        args.extend(['-e', 'tell app \"' + self.Rapp + '\" to cmd \"' + cmd + '\"'])
+        subprocess.Popen(args)        
 
 ##################################
 #### change working directory ####
