@@ -1,3 +1,0 @@
-{
-  "cmd": ["osascript", "-e", "tell app \"R64\" to cmd \"source('$file')\"\n"]
-}
