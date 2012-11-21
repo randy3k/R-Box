@@ -14,9 +14,10 @@
       { "key": "selector", "operator": "equal", "operand": "source.r" }
     ]
   },
-  { "keys": ["super+alt+enter"], "command": "send_select_terminal", "context":
+  { "keys": ["super+alt+enter"], "command": "send_select", "context":
     [
       { "key": "selector", "operator": "equal", "operand": "source.r" }
-    ]
+    ],
+    "args": {"Rapp": "Terminal"}
   }
 ]

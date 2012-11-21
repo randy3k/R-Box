@@ -3,6 +3,7 @@ import sublime_plugin
 import os
 import subprocess
 import string
+import re
 
 ########################
 #### R Common CLass ####
@@ -18,11 +19,17 @@ class RCommon:
         str = string.replace(str, '"', '\\"')
         return str
 
-    def rcmd(self, cmd):
+    def rcmd(self, cmd, Rapp=None):
         cmd = self.clean(cmd)
-        args = ['osascript']
-        args.extend(['-e', 'tell app "' + self.Rapp + '" to cmd "' + cmd + '"'])
-        subprocess.Popen(args)
+        if not Rapp: Rapp = self.Rapp
+        if re.match('R', Rapp):
+            args = ['osascript']
+            args.extend(['-e', 'tell app "' + Rapp + '" to cmd "' + cmd + '"'])
+            subprocess.Popen(args)
+        elif Rapp == 'Terminal':
+            args = ['osascript']
+            args.extend(['-e', 'tell app "Terminal" to do script "' + cmd + '" in front window\n'])
+            subprocess.Popen(args)
 
 ##################################
 #### change working directory ####
@@ -41,14 +48,17 @@ class ChangeDirCommand(sublime_plugin.TextCommand, RCommon):
 #########################
 
 class SendSelectCommand(sublime_plugin.TextCommand, RCommon):
-    def run(self, edit):
-        str = ''
+    def run(self, edit, **kwargs):
+        cmd = ''
         for sel in self.view.sel():
             if sel.empty():
-                str += self.view.substr(self.view.line(sel)) +'\n'
+                cmd += self.view.substr(self.view.line(sel)) +'\n'
             else:
-                str += self.view.substr(sel) +'\n'
-        self.rcmd(str)
+                cmd += self.view.substr(sel) +'\n'
+        if kwargs.has_key('Rapp'):
+            self.rcmd(cmd, kwargs['Rapp'])
+        else:
+            self.rcmd(cmd)
 
 ######################
 #### Source codes ####
@@ -59,20 +69,3 @@ class SourceCodeCommand(sublime_plugin.TextCommand, RCommon):
         path = self.view.file_name()
         cmd = "source(\"" + string.replace(path, '"', '\\"') + "\")"
         self.rcmd(cmd)
-
-################################
-#### Send Codes to Terminal ####
-################################
-
-class SendSelectTerminalCommand(sublime_plugin.TextCommand, RCommon):
-       def run(self, edit):
-        str = ''
-        for sel in self.view.sel():
-            if sel.empty():
-                str += self.view.substr(self.view.line(sel)) +'\n'
-            else:
-                str += self.view.substr(sel) +'\n'
-        str = self.clean(str)
-        args = ['osascript']
-        args.extend(['-e', 'tell app "Terminal" to do script "' + str + '" in front window\n'])
-        subprocess.Popen(args)
