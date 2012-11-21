@@ -13,6 +13,7 @@ class RCommon:
     Rapp = settings.get('Rapp')
 
     def clean(self, str):
+        str = string.rstrip(str)
         str = string.replace(str, '\\', '\\\\')
         str = string.replace(str, '"', '\\"')
         return str
@@ -20,8 +21,8 @@ class RCommon:
     def rcmd(self, cmd):
         cmd = self.clean(cmd)
         args = ['osascript']
-        args.extend(['-e', 'tell app \"' + self.Rapp + '\" to cmd \"' + cmd + '\"'])
-        subprocess.Popen(args)        
+        args.extend(['-e', 'tell app "' + self.Rapp + '" to cmd "' + cmd + '"'])
+        subprocess.Popen(args)
 
 ##################################
 #### change working directory ####
@@ -32,7 +33,7 @@ class ChangeDirCommand(sublime_plugin.TextCommand, RCommon):
     # it is more efficient then reading settings everytime when "run" is executed
     def run(self, edit):
         path = os.path.dirname(self.view.file_name())
-        cmd = "setwd(\"" + string.replace(path, '"', '\\"') + "\")"        
+        cmd = "setwd(\"" + string.replace(path, '"', '\\"') + "\")"
         self.rcmd(cmd)
 
 #########################
@@ -58,6 +59,7 @@ class SourceCodeCommand(sublime_plugin.TextCommand, RCommon):
         path = self.view.file_name()
         cmd = "source(\"" + string.replace(path, '"', '\\"') + "\")"
         self.rcmd(cmd)
+
 ################################
 #### Send Codes to Terminal ####
 ################################
