@@ -26,11 +26,13 @@ Useful Commands
 
 * Send the selection to R
 * If no syntax is selected, it sends the whole line where the cursor stays at.
+* See settings to choose default R application to send to.
 
 ### Sending Code to Terminal ###
 **Keybinding:** `Cmd-Alt-Enter`
 
-* Send the selection to R
+* Send the selection to R session in terminal
+* An R session needs to be running on terminal.
 * If no syntax is selected, it sends the whole line where the cursor stays at.
 * Useful for people working on server
 
@@ -44,10 +46,13 @@ Useful Commands
 
 * Tell R to source the working script
 
+Kepmaps are changable by editing `Default (OSX).sublime-keymap`.
+
 Settings
 ---------
-Edit `Rsublime.sublime-settings` to change settings
+### Rapp ###
+**Default application:** `R64`
 
-### Rapp ####
-**Options:** `"R64"`, `"R32"` or `"R"`
-* Set the version of R the above commands are effective on
+* Type ``Rapp Switcher`` in Command Palette to switcher between `R`, `R64` and `Terminal`.<br>
+It maps `Cmd-Enter` to the corresponding application.
+* Or edit Rsublime.sublime-settings to change settings

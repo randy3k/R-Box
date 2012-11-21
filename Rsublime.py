@@ -31,6 +31,11 @@ class RCommon:
             args.extend(['-e', 'tell app "Terminal" to do script "' + cmd + '" in front window\n'])
             subprocess.Popen(args)
 
+    def set_Rapp(self, Rapp):
+        RCommon.Rapp = Rapp
+        RCommon.settings.set("Rapp", RCommon.Rapp)
+        sublime.save_settings('Rsublime.sublime-settings')
+
 ##################################
 #### change working directory ####
 ##################################
@@ -69,3 +74,13 @@ class SourceCodeCommand(sublime_plugin.TextCommand, RCommon):
         path = self.view.file_name()
         cmd = "source(\"" + string.replace(path, '"', '\\"') + "\")"
         self.rcmd(cmd)
+
+# Rapp switcher
+class RappSwitcher(sublime_plugin.WindowCommand, RCommon):
+    app_list = ["R64", "R", "Terminal"]
+    def run(self):
+        self.window.show_quick_panel(self.app_list, self.on_done)
+
+    def on_done(self, action):
+        if action>=0:
+            self.set_Rapp(self.app_list[action])
