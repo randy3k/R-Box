@@ -11,17 +11,24 @@ import re
 
 class RCommon:
     settings = sublime.load_settings('Rsublime.sublime-settings')
-    Rapp = settings.get('Rapp')
+    if settings.has('Rapp'):
+        Rapplist = settings.get('Rapp')
+        if isinstance(Rapplist, unicode):
+            Rapplist = [Rapplist, "Terminal"]
+    if not Rapplist:
+        Rapplist = ["R64", "Terminal"]
+    if Rapplist != settings.get('Rapp'):
+        sublime.save_settings('Rsublime.sublime-settings')
 
-    def clean(self, str):
-        str = string.rstrip(str)
-        str = string.replace(str, '\\', '\\\\')
-        str = string.replace(str, '"', '\\"')
-        return str
+    def clean(self, cmd):
+        cmd = string.strip(cmd)
+        cmd = string.replace(cmd, '\\', '\\\\')
+        cmd = string.replace(cmd, '"', '\\"')
+        return cmd
 
-    def rcmd(self, cmd, Rapp=None):
+    def rcmd(self, cmd, which=0):
         cmd = self.clean(cmd)
-        if not Rapp: Rapp = self.Rapp
+        Rapp = self.Rapplist[which]
         if re.match('R', Rapp):
             args = ['osascript']
             args.extend(['-e', 'tell app "' + Rapp + '" to cmd "' + cmd + '"'])
@@ -31,9 +38,11 @@ class RCommon:
             args.extend(['-e', 'tell app "Terminal" to do script "' + cmd + '" in front window\n'])
             subprocess.Popen(args)
 
-    def set_Rapp(self, Rapp):
-        RCommon.Rapp = Rapp
-        RCommon.settings.set("Rapp", RCommon.Rapp)
+    def set_Rapp(self, which, Rapp):
+        RCommon.Rapplist[which] = Rapp
+
+    def save_settings(self):
+        self.settings.set("Rapp", RCommon.Rapplist)
         sublime.save_settings('Rsublime.sublime-settings')
 
 ##################################
@@ -53,17 +62,14 @@ class ChangeDirCommand(sublime_plugin.TextCommand, RCommon):
 #########################
 
 class SendSelectCommand(sublime_plugin.TextCommand, RCommon):
-    def run(self, edit, **kwargs):
+    def run(self, edit, which):
         cmd = ''
         for sel in self.view.sel():
             if sel.empty():
                 cmd += self.view.substr(self.view.line(sel)) +'\n'
             else:
                 cmd += self.view.substr(sel) +'\n'
-        if kwargs.has_key('Rapp'):
-            self.rcmd(cmd, kwargs['Rapp'])
-        else:
-            self.rcmd(cmd)
+        self.rcmd(cmd, which)
 
 ######################
 #### Source codes ####
@@ -76,11 +82,18 @@ class SourceCodeCommand(sublime_plugin.TextCommand, RCommon):
         self.rcmd(cmd)
 
 # Rapp switcher
+
 class RappSwitcher(sublime_plugin.WindowCommand, RCommon):
     app_list = ["R64", "R", "Terminal"]
     def run(self):
-        self.window.show_quick_panel(self.app_list, self.on_done)
+        self.window.show_quick_panel(["Choose your primary Rapp"]+ self.app_list, self.on_done)
 
     def on_done(self, action):
-        if action>=0:
-            self.set_Rapp(self.app_list[action])
+        if action>=1:
+            self.set_Rapp(0, self.app_list[action-1])
+            self.window.show_quick_panel(["Choose your secondary Rapp"]+ self.app_list, self.on_done2)
+
+    def on_done2(self, action):
+        if action>=1:
+            self.set_Rapp(1, self.app_list[action-1])
+        self.save_settings()

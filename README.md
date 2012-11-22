@@ -21,14 +21,14 @@ The correct indentation rule now indents like
 
 Useful Commands
 ---------------
-### Sending Code to R ###
+### Sending Code to primary application (default: R)###
 **Keybinding:** `Cmd-Enter`
 
 * Send the selection to R
 * If no syntax is selected, it sends the whole line where the cursor stays at.
 * See settings to choose default R application to send to.
 
-### Sending Code to Terminal ###
+### Sending Code to secondary application (default: Terminal)###
 **Keybinding:** `Cmd-Alt-Enter`
 
 * Send the selection to R session in terminal
@@ -36,12 +36,12 @@ Useful Commands
 * If no syntax is selected, it sends the whole line where the cursor stays at.
 * Useful for people working on server
 
-### Changing Working Directory ###
+### Changing Working Directory (Primary)###
 **Keybinding:** `Cmd-\`
 
 * Change working directory to where the current working script stays
 
-### Sourcing file ###
+### Sourcing file (Primary)###
 **Keybinding:** `Cmd-.`
 
 * Tell R to source the working script
@@ -51,8 +51,9 @@ Kepmaps are changable by editing `Default (OSX).sublime-keymap`.
 Settings
 ---------
 ### Rapp ###
-**Default application:** `R64`
+**Default primary application:** `R64`
 
-* Type ``Rapp Switcher`` in Command Palette to switcher between `R`, `R64` and `Terminal`.<br>
-It maps `Cmd-Enter` to the corresponding application.
+**Default secondary application:** `Terminal`
+
+* Type ``Rapp Switcher`` in Command Palette to switch between `R`, `R64` and `Terminal`.<br>
 * Or edit Rsublime.sublime-settings to change settings

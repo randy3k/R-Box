@@ -2,7 +2,14 @@
   { "keys": ["super+enter"], "command": "send_select", "context":
     [
       { "key": "selector", "operator": "equal", "operand": "source.r" }
-    ]
+    ],
+    "args": {"which": 0}
+  },
+  { "keys": ["super+alt+enter"], "command": "send_select", "context":
+    [
+      { "key": "selector", "operator": "equal", "operand": "source.r" }
+    ],
+    "args": {"which": 1}
   },
   { "keys": ["super+\\"], "command": "change_dir", "context":
     [
@@ -13,11 +20,5 @@
     [
       { "key": "selector", "operator": "equal", "operand": "source.r" }
     ]
-  },
-  { "keys": ["super+alt+enter"], "command": "send_select", "context":
-    [
-      { "key": "selector", "operator": "equal", "operand": "source.r" }
-    ],
-    "args": {"Rapp": "Terminal"}
   }
 ]
