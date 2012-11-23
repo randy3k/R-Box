@@ -42,12 +42,6 @@
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>\b(function|if|break|next|repeat|else|for|return|switch|while|in|invisible)\b</string>
-			<key>name</key>
-			<string>keyword.control.r</string>
-		</dict>
-		<dict>
-			<key>match</key>
 			<string>\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?\b</string>
 			<key>name</key>
 			<string>constant.numeric.r</string>
@@ -162,7 +156,41 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>([a-zA-Z._][a-zA-Z0-9._]*)\s*(&lt;-|=)\s*(function)\s*\(</string>
+			<string>(if|for|return|switch|while|invisible)\s*(\()</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.r</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.parameters.r</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>(\))</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.parameters.r</string>
+				</dict>
+			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>$self</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>([a-zA-Z._][a-zA-Z0-9._]*)\s*(&lt;-|=)\s*(function)\s*(\()</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -180,26 +208,26 @@
 					<key>name</key>
 					<string>keyword.control.r</string>
 				</dict>
+				<key>4</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.parameters.r</string>
+				</dict>
 			</dict>
 			<key>end</key>
-			<string>\)</string>
+			<string>(\))</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.parameters.r</string>
+				</dict>
+			</dict>
 			<key>name</key>
 			<string>meta.function.r</string>
 			<key>patterns</key>
 			<array>
-				<dict>
-					<key>begin</key>
-					<string>\(</string>
-					<key>end</key>
-					<string>\)</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>$self</string>
-						</dict>
-					</array>
-				</dict>
 				<dict>
 					<key>include</key>
 					<string>$self</string>
@@ -215,14 +243,106 @@
 			</array>
 		</dict>
 		<dict>
-			<key>match</key>
-			<string>([a-zA-Z._][a-zA-Z0-9._]*)(?=\s*\()</string>
+			<key>begin</key>
+			<string>(function)\s*(\()</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.control.r</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.parameters.r</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>(\))</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.parameters.r</string>
+				</dict>
+			</dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>$self</string>
+				</dict>
+				<dict>
+					<key>captures</key>
+					<dict/>
+					<key>match</key>
+					<string>[a-zA-Z._][a-zA-Z0-9._]*</string>
+					<key>name</key>
+					<string>variable.parameter.r</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>begin</key>
+			<string>([a-zA-Z._][a-zA-Z0-9._]*)\s*(\()</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.parameters.r</string>
+				</dict>
+			</dict>
+			<key>contentName</key>
+			<string>meta.function-call.arguments.r</string>
+			<key>end</key>
+			<string>(\))</string>
+			<key>endCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.parameters.r</string>
+				</dict>
+			</dict>
 			<key>name</key>
-			<string>meta.function-call</string>
+			<string>meta.function-call.r</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>$self</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>#keywords</string>
 		</dict>
 	</array>
 	<key>repository</key>
-	<dict/>
+	<dict>
+		<key>keywords</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\b(break|next|repeat|else|in)\b</string>
+					<key>name</key>
+					<string>keyword.control.r</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\b(function|if|for|return|switch|while|invisible)\b</string>
+					<key>name</key>
+					<string>keyword.control.r</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 	<key>scopeName</key>
 	<string>source.r</string>
 	<key>uuid</key>
