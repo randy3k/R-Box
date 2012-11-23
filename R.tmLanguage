@@ -35,128 +35,50 @@
 			<string>comment.line.number-sign.r</string>
 		</dict>
 		<dict>
-			<key>match</key>
-			<string>\b(logical|numeric|character|complex|matrix|array|data\.frame|list|factor)(?=\s*\()</string>
-			<key>name</key>
-			<string>storage.type.r</string>
+			<key>include</key>
+			<string>#constant</string>
 		</dict>
 		<dict>
-			<key>match</key>
-			<string>\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?\b</string>
-			<key>name</key>
-			<string>constant.numeric.r</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>\b(TRUE|FALSE|NULL|NA|Inf|NaN)\b</string>
-			<key>name</key>
-			<string>constant.language.r</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>\b(pi|letters|LETTERS|month\.abb|month\.name)\b</string>
-			<key>name</key>
-			<string>support.constant.misc.r</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>(\-|\+|\*|\/|%\/%|%%|%\*%|%in%|%o%|%x%|\^)</string>
-			<key>name</key>
-			<string>keyword.operator.arithmetic.r</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>(=|&lt;-|&lt;&lt;-|-&gt;|-&gt;&gt;)</string>
-			<key>name</key>
-			<string>keyword.operator.assignment.r</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>(==|!=|&lt;&gt;|&lt;|&gt;|&lt;=|&gt;=)</string>
-			<key>name</key>
-			<string>keyword.operator.comparison.r</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>(!|&amp;{1,2}|[|]{1,2})</string>
-			<key>name</key>
-			<string>keyword.operator.logical.r</string>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>(\.\.\.|\$|:|\~)</string>
-			<key>name</key>
-			<string>keyword.other.r</string>
+			<key>include</key>
+			<string>#string</string>
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>"</string>
+			<string>\b(logical|integer|numeric|character|complex|matrix|array|data\.frame|list|factor)\s*(\()</string>
 			<key>beginCaptures</key>
 			<dict>
-				<key>0</key>
+				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>punctuation.definition.string.begin.r</string>
+					<string>storage.type.r</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>punctuation.definition.parameters.r</string>
 				</dict>
 			</dict>
 			<key>end</key>
-			<string>"</string>
+			<string>(\))</string>
 			<key>endCaptures</key>
 			<dict>
-				<key>0</key>
+				<key>1</key>
 				<dict>
 					<key>name</key>
-					<string>punctuation.definition.string.end.r</string>
+					<string>punctuation.definition.parameters.r</string>
 				</dict>
 			</dict>
-			<key>name</key>
-			<string>string.quoted.double.r</string>
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>match</key>
-					<string>\\.</string>
-					<key>name</key>
-					<string>constant.character.escape.r</string>
+					<key>include</key>
+					<string>$self</string>
 				</dict>
 			</array>
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>'</string>
-			<key>beginCaptures</key>
-			<dict>
-				<key>0</key>
-				<dict>
-					<key>name</key>
-					<string>punctuation.definition.string.begin.r</string>
-				</dict>
-			</dict>
-			<key>end</key>
-			<string>'</string>
-			<key>endCaptures</key>
-			<dict>
-				<key>0</key>
-				<dict>
-					<key>name</key>
-					<string>punctuation.definition.string.end.r</string>
-				</dict>
-			</dict>
-			<key>name</key>
-			<string>string.quoted.single.r</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>match</key>
-					<string>\\.</string>
-					<key>name</key>
-					<string>constant.character.escape.r</string>
-				</dict>
-			</array>
-		</dict>
-		<dict>
-			<key>begin</key>
-			<string>(if|for|return|switch|while|invisible)\s*(\()</string>
+			<string>\b(if|for|return|switch|while|invisible)\s*(\()</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -190,7 +112,7 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>([a-zA-Z._][a-zA-Z0-9._]*)\s*(&lt;-|=)\s*(function)\s*(\()</string>
+			<string>\b([a-zA-Z._][a-zA-Z0-9._]*)\s*(&lt;-|=)\s*(function)\s*(\()</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -229,22 +151,26 @@
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>include</key>
-					<string>$self</string>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>variable.parameter.r</string>
+						</dict>
+					</dict>
+					<key>match</key>
+					<string>(?&lt;=\(|,|^)\s*([a-zA-Z._][a-zA-Z0-9._]*)\s*(?=(?:&lt;-|=[^=]|,|\n))</string>
 				</dict>
 				<dict>
-					<key>captures</key>
-					<dict/>
-					<key>match</key>
-					<string>[a-zA-Z._][a-zA-Z0-9._]*</string>
-					<key>name</key>
-					<string>variable.parameter.r</string>
+					<key>include</key>
+					<string>$self</string>
 				</dict>
 			</array>
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>(function)\s*(\()</string>
+			<string>\b(function)\s*(\()</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -275,8 +201,6 @@
 					<string>$self</string>
 				</dict>
 				<dict>
-					<key>captures</key>
-					<dict/>
 					<key>match</key>
 					<string>[a-zA-Z._][a-zA-Z0-9._]*</string>
 					<key>name</key>
@@ -285,8 +209,12 @@
 			</array>
 		</dict>
 		<dict>
+			<key>include</key>
+			<string>#support_function</string>
+		</dict>
+		<dict>
 			<key>begin</key>
-			<string>([a-zA-Z._][a-zA-Z0-9._]*)\s*(\()</string>
+			<string>\b([a-zA-Z._][a-zA-Z0-9._]*)\s*(\()</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -319,12 +247,36 @@
 		</dict>
 		<dict>
 			<key>include</key>
-			<string>#keywords</string>
+			<string>#keyword</string>
 		</dict>
 	</array>
 	<key>repository</key>
 	<dict>
-		<key>keywords</key>
+		<key>constant</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\b(pi|letters|LETTERS|month\.abb|month\.name)\b</string>
+					<key>name</key>
+					<string>support.constant.misc.r</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\b(TRUE|FALSE|NULL|NA|Inf|NaN)\b</string>
+					<key>name</key>
+					<string>constant.language.r</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>\b((0(x|X)[0-9a-fA-F]*)|(([0-9]+\.?[0-9]*)|(\.[0-9]+))((e|E)(\+|-)?[0-9]+)?)(L|l|UL|ul|u|U|F|f|ll|LL|ull|ULL)?\b</string>
+					<key>name</key>
+					<string>constant.numeric.r</string>
+				</dict>
+			</array>
+		</dict>
+		<key>keyword</key>
 		<dict>
 			<key>patterns</key>
 			<array>
@@ -339,6 +291,190 @@
 					<string>\b(function|if|for|return|switch|while|invisible)\b</string>
 					<key>name</key>
 					<string>keyword.control.r</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(\-|\+|\*|\/|%\/%|%%|%\*%|%in%|%o%|%x%|\^)</string>
+					<key>name</key>
+					<string>keyword.operator.arithmetic.r</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(=|&lt;-|&lt;&lt;-|-&gt;|-&gt;&gt;)</string>
+					<key>name</key>
+					<string>keyword.operator.assignment.r</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(==|!=|&lt;&gt;|&lt;|&gt;|&lt;=|&gt;=)</string>
+					<key>name</key>
+					<string>keyword.operator.comparison.r</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(!|&amp;{1,2}|[|]{1,2})</string>
+					<key>name</key>
+					<string>keyword.operator.logical.r</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(\.\.\.|\$|:|\~)</string>
+					<key>name</key>
+					<string>keyword.other.r</string>
+				</dict>
+			</array>
+		</dict>
+		<key>string</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>'</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.definition.string.begin.r</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>'</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.definition.string.end.r</string>
+						</dict>
+					</dict>
+					<key>name</key>
+					<string>string.quoted.single.r</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>match</key>
+							<string>\\.</string>
+							<key>name</key>
+							<string>constant.character.escape.r</string>
+						</dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>"</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.definition.string.begin.r</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>"</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.definition.string.end.r</string>
+						</dict>
+					</dict>
+					<key>name</key>
+					<string>string.quoted.double.r</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>match</key>
+							<string>\\.</string>
+							<key>name</key>
+							<string>constant.character.escape.r</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<key>support_function</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>begin</key>
+					<string>\b(abbreviate|abs|acos|acosh|addNA|addTaskCallback|agrep|alist|all|all\.equal|all\.equal\.POSIXct|all\.names|all\.vars|any|anyDuplicated|aperm|append|apply|Arg|args|Arithmetic|array|arrayInd|as\.array|as\.call|as\.character|as\.character\.condition|as\.character\.Date|as\.character\.hexmode|as\.character\.numeric_version|as\.character\.octmode|as\.character\.POSIXt|as\.character\.srcref|as\.complex|as\.data\.frame|as\.data\.frame\.AsIs|as\.data\.frame\.Date|as\.data\.frame\.numeric_version|as\.data\.frame\.POSIXct|as\.data\.frame\.table|as\.Date|as\.difftime|as\.double|as\.double\.difftime|as\.double\.POSIXlt|as\.environment|as\.expression|as\.factor|as\.function|as\.hexmode|as\.integer|as\.list|as\.list\.Date|as\.list\.numeric_version|as\.list\.POSIXct|as\.logical|as\.matrix|as\.matrix\.noquote|as\.matrix\.POSIXlt|as\.name|as\.null|as\.numeric|as\.numeric_version|as\.octmode|as\.ordered|as\.package_version|as\.pairlist|as\.POSIXct|as\.POSIXlt|as\.qr|as\.raw|as\.real|as\.single|as\.symbol|as\.table|as\.vector|asin|asinh|AsIs|asS3|asS4|assign|assignOps|atan|atan2|atanh|atomic|attach|attachNamespace|attr|attr\.all\.equal|attributes|autoload|autoloader|Autoloads|backquote|backsolve|backtick|base|baseenv|basename|Bessel|bessel|besselI|besselJ|besselK|besselY|beta|bindenv|bindingIsActive|bindingIsLocked|bindtextdomain|body|bquote|break|browser|browserCondition|browserSetDebug|browserText|builtins|by|bzfile|c|c\.Date|c\.noquote|c\.numeric_version|c\.POSIXct|call|callCC|capabilities|casefold|cat|cbind|cbind\.data\.frame|ceiling|char\.expand|character|charmatch|charToRaw|chartr|check_tzones|chol|chol2inv|choose|class|clipboard|close|close\.srcfile|close\.srcfilealias|closeAllConnections|closure|col|collation|colMeans|colnames|colon|colSums|commandArgs|comment|Comparison|Complex|complex|computeRestarts|condition|conditionCall|conditionCall\.condition|conditionMessage|conditionMessage\.condition|conditions|conflicts|Conj|connection|connections|Constants|contributors|Control|copyright|copyrights|cos|cosh|crossprod|Cstack_info|cummax|cummin|cumprod|cumsum|cut|cut\.POSIXt|data\.class|data\.frame|data\.matrix|Date|date|date-time|Dates|DateTimeClasses|debug|debugonce|default\.stringsAsFactors|Defunct|defunct|delayedAssign|deparse|Deprecated|deprecated|det|detach|determinant|dget|diag|diff|difftime|digamma|dim|dimnames|dir|dir\.create|dirname|DISPLAY|DLLInfo|DLLInfoList|do\.call|double|dput|dQuote|drop|droplevels|dump|duplicated|duplicated\.numeric_version|duplicated\.POSIXlt|dyn\.load|dyn\.unload|eapply|EDITOR|eigen|else|emptyenv|enc2native|enc2utf8|enclosure|encodeString|Encoding|enquote|env\.profile|environment|environment|environmentIsLocked|environmentName|eval|eval\.parent|evalq|exists|exp|expand\.grid|expm1|expression|Extract|F|factor|factorial|fifo|file|file\.access|file\.append|file\.choose|file\.copy|file\.create|file\.exists|file\.info|file\.link|file\.path|file\.remove|file\.rename|file\.show|file\.symlink|files|Filter|Find|find\.package|findInterval|findRestart|finite|floor|flush|for|force|Foreign|formals|format|format\.Date|format\.difftime|format\.hexmode|format\.info|format\.libraryIQR|format\.numeric_version|format\.octmode|format\.packageInfo|format\.POSIXct|format\.pval|format\.summaryDefault|formatC|formatDL|forwardsolve|function|fuzzy|gamma|gc|gc\.time|gcinfo|gctorture|gctorture2|get|getAllConnections|getCConverterDescriptions|getCConverterStatus|getConnection|getDLLRegisteredRoutines|getElement|geterrmessage|getHook|getLoadedDLLs|getNativeSymbolInfo|getNumCConverters|getOption|getRversion|getSrcLines|getTaskCallbackNames|gettext|gettextf|getwd|gl|globalenv|gregexpr|grep|grepl|grepRaw|group|groupGeneric|gsub|gzcon|gzfile|hexmode|HOME|I|iconv|iconvlist|icuSetCollate|identical|identity|if|ifelse|Im|in|Inf|inherits|integer|interaction|interactive|internal|InternalGenerics|InternalMethods|intersect|intersection|intToBits|intToUtf8|inverse\.rle|invisible|invokeRestart|invokeRestartInteractively|is\.array|is\.atomic|is\.call|is\.character|is\.complex|is\.data\.frame|is\.double|is\.element|is\.environment|is\.expression|is\.factor|is\.finite|is\.function|is\.infinite|is\.integer|is\.language|is\.list|is\.loaded|is\.logical|is\.matrix|is\.na|is\.na\.numeric_version|is\.na\.POSIXlt|is\.name|is\.nan|is\.null|is\.numeric|is\.numeric\.difftime|is\.numeric_version|is\.object|is\.ordered|is\.package_version|is\.pairlist|is\.primitive|is\.qr|is\.R|is\.raw|is\.real|is\.recursive|is\.single|is\.symbol|is\.table|is\.unsorted|is\.vector|isatty|isdebugged|isIncomplete|ISOdate|ISOdatetime|isOpen|isRestart|isS4|isSeekable|isSymmetric|isTRUE|jitter|julian|kappa|kronecker|l10n_info|La\.svd|labels|LANGUAGE|lapply|last\.warning|lbeta|lchoose|LC_ALL|LC_COLLATE|LC_CTYPE|LC_MEASUREMENT|LC_MESSAGES|LC_MONETARY|LC_NUMERIC|LC_PAPER|LC_TIME|length|length\.POSIXlt|LETTERS|letters|levels|lfactorial|lgamma|library|library\.dynam|library\.dynam\.unload|licence|license|list|list\.dirs|list\.files|list2env|load|loadedNamespaces|loadNamespace|local|localeconv|locales|lockBinding|lockEnvironment|log|log10|log1p|log2|logb|Logic|logical|lower\.tri|ls|make\.names|make\.unique|makeActiveBinding|MAKEINDEX|Map|mapply|margin\.table|mat\.or\.vec|match|match\.arg|match\.call|match\.fun|Math|Math\.Date|Math\.difftime|Math\.factor|Math\.POSIXlt|Math\.POSIXt|matmult|matrix|max|max\.col|mean|mean\.Date|mean\.difftime|mean\.POSIXct|memCompress|memDecompress|Memory|Memory-limits|memory\.profile|merge|message|mget|min|missing|Mod|mode|month\.abb|months|NA|name|names|names\.POSIXlt|NaN|nargs|NativeSymbol|NativeSymbolInfo|NA_character_|NA_complex_|NA_integer_|NA_real_|nchar|NCOL|ncol|Negate|new\.env|next|NextMethod|ngettext|nlevels|noquote|norm|normalizePath|NotYetImplemented|NotYetUsed|NROW|nrow|NULL|numeric|NumericConstants|numeric_version|nzchar|objects|octmode|oldClass|on\.exit|open|open\.srcfile|open\.srcfilealias|Ops|Ops\.Date|Ops\.difftime|Ops\.factor|Ops\.numeric_version|Ops\.ordered|Ops\.POSIXt|option|options|order|ordered|outer|packageEvent|packageStartupMessage|package_version|packBits|PAGER|pairlist|Paren|parent\.env|parent\.frame|parse|paste|paste0|path\.expand|path\.package|pi|pipe|pmatch|pmax|pmax\.int|pmin|pmin\.int|polyroot|pos\.to\.env|Position|POSIXct|POSIXlt|POSIXt|pretty|prettyNum|primitive|print|print\.AsIs|print\.by|print\.condition|print\.connection|print\.data\.frame|print\.Date|print\.default|print\.difftime|print\.DLLInfo|print\.hexmode|print\.libraryIQR|print\.NativeRoutineList|print\.noquote|print\.numeric_version|print\.octmode|print\.packageInfo|print\.POSIXct|print\.proc_time|print\.rle|print\.simple\.list|print\.srcfile|print\.srcref|print\.summary\.table|print\.summaryDefault|print\.table|print\.warnings|prmatrix|proc\.time|prod|promise|promises|prop\.table|psigamma|pushBack|pushBackLength|q|qr|qr\.coef|qr\.default|qr\.fitted|qr\.Q|qr\.qty|qr\.qy|qr\.R|qr\.resid|qr\.solve|qr\.X|quarters|quit|quote|Quotes|R\.home|R\.Version|R\.version\.string|Random|Random\.user|range|rank|rapply|raw|rawConnection|rawConnectionValue|rawShift|rawToBits|rawToChar|rbind|rbind\.data\.frame|rcond|Rd2pdf|Rdconv|Re|read\.dcf|readBin|readChar|readline|readLines|readRDS|readRenviron|real|Recall|Reduce|reg\.finalizer|regex|regexec|regexp|regexpr|RegisteredNativeSymbol|regmatches|regular|remove|removeCConverter|removeTaskCallback|Renviron|rep|rep\.numeric_version|repeat|replace|replicate|require|requireNamespace|Reserved|reserved|restartDescription|restartFormals|retracemem|return|rev|rle|rm|RNG|RNGkind|RNGversion|round|round\.Date|round\.POSIXt|row|row\.names|rowMeans|rownames|rowsum|rowSums|Rprofile|Rprofile\.site|R_BATCH|R_BROWSER|R_COMPLETION|R_DEFAULT_PACKAGES|R_DOC_DIR|R_ENVIRON|R_ENVIRON_USER|R_GSCMD|R_HISTFILE|R_HISTSIZE|R_HOME|R_INCLUDE_DIR|R_LIBS|R_LIBS_SITE|R_LIBS_USER|R_PAPERSIZE|R_PDFVIEWER|R_PLATFORM|R_PRINTCMD|R_PROFILE|R_PROFILE_USER|R_RD4PDF|R_SHARE_DIR|R_system_version|R_TEXI2DVICMD|R_UNZIPCMD|R_ZIPCMD|S3groupGeneric|S3Methods|S4|sample|sapply|save|saveRDS|scale|scan|search|searchpaths|seek|seq|seq\.Date|seq\.POSIXt|sequence|seq_along|seq_len|serialize|set\.seed|setCConverterStatus|setdiff|setequal|setHook|setSessionTimeLimit|setTimeLimit|setwd|showConnections|shQuote|sign|signalCondition|Signals|signif|simpleCondition|simpleError|simpleMessage|simpleWarning|simplify2array|sin|single|sinh|sink|slice\.index|socketConnection|socketSelect|solve|solve\.qr|sort|sort\.list|source|Special|split|split\.Date|split\.POSIXct|sprintf|sqrt|sQuote|srcfile|srcfile-class|srcfilealias|srcfilealias-class|srcfilecopy|srcfilecopy-class|srcref|srcref-class|Startup|stderr|stdin|stdout|stop|stopifnot|storage\.mode|str\.POSIXt|strftime|strptime|strsplit|strtoi|strtrim|structure|strwrap|sub|Subscript|subset|substitute|substr|substring|sum|Summary|summary|summary\.connection|Summary\.Date|summary\.Date|Summary\.difftime|Summary\.factor|Summary\.numeric_version|Summary\.ordered|Summary\.POSIXct|summary\.POSIXct|Summary\.POSIXlt|summary\.srcfile|summary\.srcref|summary\.table|suppressMessages|suppressPackageStartupMessages|suppressWarnings|svd|sweep|switch|Syntax|Sys\.chmod|Sys\.Date|Sys\.getenv|Sys\.getlocale|Sys\.getpid|Sys\.glob|Sys\.info|Sys\.localeconv|sys\.on\.exit|sys\.parent|Sys\.readlink|Sys\.setenv|Sys\.setFileTime|Sys\.setlocale|Sys\.sleep|sys\.source|sys\.status|Sys\.time|Sys\.timezone|Sys\.umask|Sys\.unsetenv|Sys\.which|system|system\.file|system\.time|system2|T|t|table|tabulate|tan|tanh|tapply|taskCallbackManager|tcrossprod|tempdir|tempfile|textConnection|textConnectionValue|tilde|tilde|time|time|time|timezone|TMPDIR|tolower|topenv|toString|toupper|trace|traceback|tracemem|tracingState|transform|Trig|trigamma|trunc|trunc\.Date|trunc\.POSIXt|truncate|try|tryCatch|type|typeof|TZ|umask|unclass|undebug|union|unique|unique\.numeric_version|unique\.POSIXlt|units|units\.difftime|unix\.time|unlink|unlist|unloadNamespace|unlockBinding|unname|unserialize|unsplit|untrace|untracemem|unz|upper\.tri|url|UseMethod|utf8ToInt|vapply|vector|Vectorize|version|warning|warnings|weekdays|which|which\.max|which\.min|while|with|withCallingHandlers|within|withRestarts|withVisible|write|write\.dcf|writeBin|writeChar|writeLines|xor|xor\.hexmode|xor\.octmode|xtfrm|xtfrm\.numeric_version|xzfile|zapsmall|\.amatch_bounds|\.amatch_costs|\.Autoloaded|\.AutoloadEnv|\.BaseNamespaceEnv|\.bincode|\.C|\.Call|\.Class|\.colMeans|\.colSums|\.conflicts\.OK|\.decode_numeric_version|\.Defunct|\.deparseOpts|\.Deprecated|\.Device|\.Devices|\.doTrace|\.dynLibs|\.encode_numeric_version|\.expand_R_libs_env_var|\.External|\.find\.package|\.First|\.First\.sys|\.Fortran|\.Generic|\.GlobalEnv|\.Group|\.handleSimpleError|\.Internal|\.isOpen|\.kappa_tri|\.kronecker|\.Last|\.Last\.lib|\.Last\.sys|\.Last\.value|\.leap\.seconds|\.libPaths|\.Library|\.Library\.site|\.Machine|\.makeMessage|\.make_numeric_version|\.Method|\.noGenerics|\.NotYetImplemented|\.NotYetUsed|\.onAttach|\.onLoad|\.onUnload|\.Options|\.OptRequireMethods|\.packages|\.packageStartupMessage|\.path\.package|\.Platform|\.Primitive|\.Random\.seed|\.Renviron|\.rowMeans|\.rowSums|\.Rprofile|\.S3PrimitiveGenerics|\.signalSimpleWarning|\.standard_regexps|\.Traceback|\.userHooksEnv)\s*(\()</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>support.function.r</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.definition.parameters.r</string>
+						</dict>
+					</dict>
+					<key>contentName</key>
+					<string>meta.function-call.arguments.r</string>
+					<key>end</key>
+					<string>(\))</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.definition.parameters.r</string>
+						</dict>
+					</dict>
+					<key>name</key>
+					<string>meta.function-call.r</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>$self</string>
+						</dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>\b(acf|acf2AR|add\.scope|add1|addmargins|aggregate|AIC|alias|anova|anova\.glm|anova\.lm|anova\.mlm|ansari\.test|aov|approx|approxfun|ar|ar\.burg|ar\.burg\.default|ar\.mle|ar\.ols|ar\.yw|ar\.yw\.default|arima|arima\.sim|arima0|ARMAacf|ARMAtoMA|as\.dendrogram|as\.dist|as\.formula|as\.hclust|as\.hclust\.dendrogram|as\.matrix\.dist|as\.stepfun|as\.ts|asOneSidedFormula|ave|bandwidth\.kernel|bartlett\.test|Beta|BIC|binom\.test|Binomial|binomial|biplot|biplot\.princomp|Box\.test|bw\.bcv|bw\.nrd|bw\.nrd0|bw\.SJ|bw\.ucv|C|cancor|case\.names|case\.names\.lm|Cauchy|cbind\.ts|ccf|chisq\.test|Chisquare|cmdscale|coef|coefficients|complete\.cases|confint|constrOptim|contr\.helmert|contr\.poly|contr\.SAS|contr\.sum|contr\.treatment|contrasts|convolve|cooks\.distance|cooks\.distance\.lm|cophenetic|cor|cor\.test|cov|cov\.wt|cov2cor|covratio|cpgram|cut\.dendrogram|cutree|cycle|D|dbeta|dbinom|dcauchy|dchisq|decompose|delete\.response|deltat|dendrapply|dendrogram|density|deriv|deriv3|deviance|dexp|df|df\.kernel|df\.residual|dfbeta|dfbetas|dffits|dgamma|dgeom|dhyper|diff\.ts|diffinv|dist|distribution|Distributions|distributions|dlnorm|dlogis|dmultinom|dnbinom|dnorm|dpois|drop\.scope|drop\.terms|drop1|dsignrank|dt|dummy\.coef|dummy\.coef\.lm|dunif|dweibull|dwilcox|ecdf|eff\.aovlist|effects|embed|end|Error|estVar|expand\.model\.frame|Exponential|extractAIC|factanal|factor\.scope|family|family\.glm|family\.lm|FDist|fft|filter|fisher\.test|fitted\.kmeans|fitted\.values|fivenum|fligner\.test|format\.dist|format\.ftable|formula|formula\.lm|formula\.nls|frequency|friedman\.test|ftable|ftable\.formula|Gamma|GammaDist|gaussian|Geometric|getCall|getInitial|get_all_vars|glm|glm\.control|hasTsp|hat|hatvalues|hclust|heatmap|HoltWinters|Hypergeometric|identify\.hclust|influence|influence\.measures|integrate|interaction\.plot|inverse\.gaussian|IQR|is\.empty\.model|is\.leaf|is\.mts|is\.stepfun|is\.ts|is\.tskernel|isoreg|KalmanForecast|KalmanLike|KalmanRun|KalmanSmooth|kernapply|kernel|kmeans|knots|kruskal\.test|ks\.test|ksmooth|labels\.dendrogram|labels\.dist|labels\.lm|labels\.terms|lag|lag\.plot|line|lines\.isoreg|lines\.stepfun|lines\.ts|lm|lm\.fit|lm\.influence|lm\.wfit|loadings|loess|loess\.control|loess\.smooth|Logistic|logLik|logLik\.lm|loglin|Lognormal|lowess|ls\.diag|ls\.print|lsfit|mad|mahalanobis|make\.link|makeARIMA|makepredictcall|makepredictcall\.poly|manova|mantelhaen\.test|mauchly\.test|mcnemar\.test|median|medpolish|merge\.dendrogram|model\.extract|model\.frame|model\.matrix|model\.offset|model\.response|model\.tables|model\.weights|monthplot|mood\.test|Multinomial|mvfft|na\.action|na\.contiguous|na\.exclude|na\.fail|na\.omit|na\.omit\.ts|na\.pass|napredict|naprint|naresid|NegBinomial|nextn|nlm|nlminb|nls|nls\.control|NLSstAsymptotic|NLSstClosestX|NLSstLfAsymptote|NLSstRtAsymptote|nobs|Normal|numericDeriv|offset|oneway\.test|Ops\.ts|optim|optimHess|optimise|optimize|order\.dendrogram|p\.adjust|p\.adjust\.methods|pacf|pairwise\.prop\.test|pairwise\.t\.test|pairwise\.table|pairwise\.wilcox\.test|pbeta|pbinom|pbirthday|pcauchy|pchisq|pexp|pf|pgamma|pgeom|phyper|plclust|plnorm|plogis|plot\.acf|plot\.decomposed\.ts|plot\.dendrogram|plot\.density|plot\.ecdf|plot\.hclust|plot\.HoltWinters|plot\.isoreg|plot\.lm|plot\.ppr|plot\.prcomp|plot\.princomp|plot\.profile\.nls|plot\.spec|plot\.spec\.coherency|plot\.stepfun|plot\.stl|plot\.ts|plot\.tskernel|plot\.TukeyHSD|pnbinom|pnorm|Poisson|poisson|poisson\.test|poly|polym|power|power\.anova\.test|power\.prop\.test|power\.t\.test|PP\.test|ppoints|ppois|ppr|prcomp|predict|predict\.ar|predict\.Arima|predict\.arima0|predict\.glm|predict\.HoltWinters|predict\.lm|predict\.loess|predict\.nls|predict\.poly|predict\.prcomp|predict\.princomp|predict\.smooth\.spline|predict\.StructTS|preplot|princomp|print\.anova|print\.aov|print\.ar|print\.arima0|print\.dendrogram|print\.density|print\.dist|print\.ecdf|print\.family|print\.formula|print\.ftable|print\.glm|print\.hclust|print\.HoltWinters|print\.infl|print\.integrate|print\.kmeans|print\.lm|print\.loadings|print\.logLik|print\.power\.htest|print\.prcomp|print\.princomp|print\.stepfun|print\.StructTS|print\.summary\.aov|print\.summary\.glm|print\.summary\.lm|print\.summary\.manova|print\.summary\.nls|print\.summary\.prcomp|print\.summary\.princomp|print\.terms|print\.ts|print\.TukeyHSD|print\.xtabs|printCoefmat|profile|profile\.nls|proj|promax|prop\.test|prop\.trend\.test|psignrank|pt|ptukey|punif|pweibull|pwilcox|qbeta|qbinom|qbirthday|qcauchy|qchisq|qexp|qf|qgamma|qgeom|qhyper|qlnorm|qlogis|qnbinom|qnorm|qpois|qqline|qqnorm|qqplot|qsignrank|qt|qtukey|quade\.test|quantile|quantile\.ecdf|quasi|quasibinomial|quasipoisson|qunif|qweibull|qwilcox|r2dtable|rbeta|rbinom|rcauchy|rchisq|read\.ftable|rect\.hclust|reformulate|relevel|reorder|reorder\.dendrogram|replications|reshape|resid|residuals|residuals\.default|residuals\.glm|residuals\.HoltWinters|residuals\.lm|residuals\.tukeyline|rev\.dendrogram|rexp|rf|rgamma|rgeom|rhyper|rlnorm|rlogis|rmultinom|rnbinom|rnorm|rpois|rsignrank|rstandard|rstudent|rt|runif|runmed|rweibull|rwilcox|rWishart|SafePrediction|scatter\.smooth|screeplot|sd|se\.contrast|se\.contrast\.aov|selfStart|setNames|shapiro\.test|SignRank|simulate|smooth|smooth\.spline|smoothEnds|sortedXyData|spec|spec\.ar|spec\.pgram|spec\.taper|spectrum|spline|splinefun|splinefunH|SSasymp|SSasympOff|SSasympOrig|SSbiexp|SSD|SSfol|SSfpl|SSgompertz|SSlogis|SSmicmen|SSweibull|start|stat\.anova|stats|stats-deprecated|step|stepfun|stl|str\.dendrogram|str\.logLik|StructTS|summary\.aov|summary\.ecdf|summary\.glm|summary\.infl|summary\.lm|summary\.manova|summary\.nls|summary\.prcomp|summary\.princomp|summary\.stepfun|supsmu|symnum|t\.test|t\.ts|TDist|termplot|terms|terms\.formula|terms\.object|time|time\.default|toeplitz|ts|ts\.intersect|ts\.plot|ts\.union|tsdiag|tsp|tsSmooth|Tukey|TukeyHSD|Uniform|uniroot|update|update\.formula|var|var\.test|variable\.names|variable\.names\.lm|varimax|vcov|vcov\.lme|vcov\.summary\.lm|Weibull|weighted\.mean|weighted\.mean\.default|weighted\.residuals|weights|weights\.glm|wilcox\.test|Wilcoxon|window|write\.ftable|xtabs|\.checkMFClasses|\.getXlevels|\.MFclass)\s*(\()</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>support.function.r</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.definition.parameters.r</string>
+						</dict>
+					</dict>
+					<key>contentName</key>
+					<string>meta.function-call.arguments.r</string>
+					<key>end</key>
+					<string>(\))</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.definition.parameters.r</string>
+						</dict>
+					</dict>
+					<key>name</key>
+					<string>meta.function-call.r</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>$self</string>
+						</dict>
+					</array>
 				</dict>
 			</array>
 		</dict>
