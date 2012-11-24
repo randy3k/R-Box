@@ -56,7 +56,7 @@
 		</dict>
 		<dict>
 			<key>begin</key>
-			<string>\b([a-zA-Z._][a-zA-Z0-9._]*)\s*(&lt;-|=)\s*(function)\s*(\()</string>
+			<string>\b([a-zA-Z._][a-zA-Z0-9._]*)\s*(&lt;-|=)\s*(?=(function)\s*(\())</string>
 			<key>beginCaptures</key>
 			<dict>
 				<key>1</key>
@@ -69,34 +69,16 @@
 					<key>name</key>
 					<string>keyword.operator.assignment.r</string>
 				</dict>
-				<key>3</key>
-				<dict>
-					<key>name</key>
-					<string>keyword.control.r</string>
-				</dict>
-				<key>4</key>
-				<dict>
-					<key>name</key>
-					<string>punctuation.definition.parameters.r</string>
-				</dict>
 			</dict>
 			<key>end</key>
-			<string>(\))</string>
-			<key>endCaptures</key>
-			<dict>
-				<key>1</key>
-				<dict>
-					<key>name</key>
-					<string>punctuation.definition.parameters.r</string>
-				</dict>
-			</dict>
+			<string>(?&lt;=\))</string>
 			<key>name</key>
 			<string>meta.function.r</string>
 			<key>patterns</key>
 			<array>
 				<dict>
 					<key>include</key>
-					<string>#function_parameter</string>
+					<string>#function</string>
 				</dict>
 			</array>
 		</dict>
@@ -197,16 +179,16 @@
 					<key>include</key>
 					<string>#function_parameter</string>
 				</dict>
+				<dict>
+					<key>include</key>
+					<string>$self</string>
+				</dict>
 			</array>
 		</dict>
 		<key>function_parameter</key>
 		<dict>
 			<key>patterns</key>
 			<array>
-				<dict>
-					<key>include</key>
-					<string>$self</string>
-				</dict>
 				<dict>
 					<key>captures</key>
 					<dict>
@@ -217,7 +199,7 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(?&lt;=\(|,|^)\s*([a-zA-Z._][a-zA-Z0-9._]*)(?=\s*(?:&lt;-|=[^=]|,|\n))</string>
+					<string>(?&lt;=\(|,|^)\s*([a-zA-Z._][a-zA-Z0-9._]*)(?=\s*(?:\)|&lt;-|=[^=]|,|\n))</string>
 				</dict>
 			</array>
 		</dict>
