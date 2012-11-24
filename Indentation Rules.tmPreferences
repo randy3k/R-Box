@@ -9,9 +9,9 @@
       <key>decreaseIndentPattern</key>
       <string>^\s*\}</string>
 			<key>bracketIndentNextLinePattern</key>
-			<string>^\s*\b(repeat\b|else\b|(((else\s+)?if|for|while)\s*\(.+\)))</string>
+			<string>^\s*\b(repeat\b|else\b|(((else\s+)?if|for|while)\s*(?'One'\(([^()]*|(One))*\))))\s*$</string>
 			<key>unIndentedLinePattern</key>
-			<string>^.*#</string>
+			<string>^\s*#</string>
 		</dict>
 	</dict>
 </plist>
