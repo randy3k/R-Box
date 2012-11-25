@@ -6,6 +6,8 @@ Introduction
 This plugin contains some simple features that helping writing R languages:
 * Indentation corrections
 * Useful commands
+* More comprehensive syntax coloring
+* Showing functions' parameters in Symbol List (`cmd+r`)
 
 Indentation corrections
 -----------------------
@@ -97,4 +99,4 @@ Settings
 **Default secondary application:** `Terminal`
 
 * Type ``Rapp Switcher`` in Command Palette to switch between `R`, `R64` and `Terminal`.<br>
-* Or edit Rsublime.sublime-settings to change settings
+* Or edit `Rsublime.sublime-settings` to change settings
