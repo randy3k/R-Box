@@ -54,7 +54,7 @@ class ChangeDirCommand(sublime_plugin.TextCommand, RCommon):
     # it is more efficient then reading settings everytime when "run" is executed
     def run(self, edit):
         path = os.path.dirname(self.view.file_name())
-        cmd = "setwd(\"" + string.replace(path, '"', '\\"') + "\")"
+        cmd = "setwd(\"" + self.clean(path) + "\")"
         self.rcmd(cmd)
 
 #########################
@@ -78,7 +78,7 @@ class SendSelectCommand(sublime_plugin.TextCommand, RCommon):
 class SourceCodeCommand(sublime_plugin.TextCommand, RCommon):
     def run(self, edit):
         path = self.view.file_name()
-        cmd = "source(\"" + string.replace(path, '"', '\\"') + "\")"
+        cmd = "source(\"" +  self.clean(path) + "\")"
         self.rcmd(cmd)
 
 # Rapp switcher
