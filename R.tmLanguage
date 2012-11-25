@@ -44,6 +44,10 @@
 		</dict>
 		<dict>
 			<key>include</key>
+			<string>#storage_type</string>
+		</dict>
+		<dict>
+			<key>include</key>
 			<string>#string</string>
 		</dict>
 		<dict>
@@ -245,7 +249,7 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>(\.\.\.|\$|:|\~)</string>
+					<string>(\.\.\.|\$|:|\~|@)</string>
 					<key>name</key>
 					<string>keyword.other.r</string>
 				</dict>
@@ -341,6 +345,18 @@
 							<string>$self</string>
 						</dict>
 					</array>
+				</dict>
+			</array>
+		</dict>
+		<key>storage_type</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>match</key>
+					<string>\b(character|complex|double|expression|integer|list|logical|numeric|single|raw)\b(?=\s*\()</string>
+					<key>name</key>
+					<string>storage.type.r</string>
 				</dict>
 			</array>
 		</dict>
