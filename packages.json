@@ -2,7 +2,7 @@
     "schema_version": "1.2",
     "packages": [
         {
-            "name": "Enchanced R",
+            "name": "Enhanced R",
             "description": "R plugin for Sublime Text 2: Enchancement of indentation rules and language definitions; Tools that make programing R in Sublime Text 2 FUN!",
             "author": "raymondkww, randy3k",
             "homepage": "https://github.com/raymondkww/R-sublime",
