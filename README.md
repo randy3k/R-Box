@@ -1,5 +1,5 @@
-R Plugin for Sublime Text 2
-====================
+Enhanced R: R Plugin for Sublime Text 2
+=======================================
 
 Introduction
 ------------
