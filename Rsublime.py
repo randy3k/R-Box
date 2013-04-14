@@ -2,8 +2,13 @@ import sublime
 import sublime_plugin
 import os
 import subprocess
-import string
 import re
+
+import sys
+if sys.version >= '3':
+    string = str
+else:
+    import string
 
 ########################
 #### R Common CLass ####
@@ -13,8 +18,8 @@ class RCommon:
     settings = sublime.load_settings('Rsublime.sublime-settings')
     if settings.has('Rapp'):
         Rapplist = settings.get('Rapp')
-        if isinstance(Rapplist, unicode):
-            Rapplist = [Rapplist, "Terminal"]
+    else:
+        Rapplist = None
     if not Rapplist:
         Rapplist = ["R64", "Terminal"]
     if Rapplist != settings.get('Rapp'):
@@ -69,6 +74,9 @@ class SendSelectCommand(sublime_plugin.TextCommand, RCommon):
                 cmd += self.view.substr(self.view.line(sel)) +'\n'
             else:
                 cmd += self.view.substr(sel) +'\n'
+
+        # save for later use
+        # '^.*(\{(?:(["\'])(?:[^\\\\]|\\\\.|\n)*?\\2|#.*$|[^\{\}]|\n|(?1))*\})'
         self.rcmd(cmd, which)
 
 ######################
