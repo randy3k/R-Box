@@ -93,13 +93,17 @@ class SourceCodeCommand(sublime_plugin.TextCommand, RCommon):
 
 class RappSwitcher(sublime_plugin.WindowCommand, RCommon):
     app_list = ["R64", "R", "Terminal"]
+
+    def show_quick_panel(self, options, done):
+        sublime.set_timeout(lambda: self.window.show_quick_panel(options, done), 10)
+
     def run(self):
-        self.window.show_quick_panel(["Choose your primary Rapp"]+ self.app_list, self.on_done)
+        self.show_quick_panel(["Choose your primary Rapp"]+ self.app_list, self.on_done)
 
     def on_done(self, action):
         if action>=1:
             self.set_Rapp(0, self.app_list[action-1])
-            self.window.show_quick_panel(["Choose your secondary Rapp"]+ self.app_list, self.on_done2)
+            self.show_quick_panel(["Choose your secondary Rapp"]+ self.app_list, self.on_done2)
 
     def on_done2(self, action):
         if action>=1:
