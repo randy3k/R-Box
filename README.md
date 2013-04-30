@@ -94,9 +94,8 @@ Kepmaps are changable by editing `Default (OSX).sublime-keymap`.
 Settings
 ---------
 ### Rapp ###
-**Default primary application:** `R64`
+**Default primary application:** `R`
 
 **Default secondary application:** `Terminal`
 
-* Type ``Rapp Switcher`` in Command Palette to switch between `R`, `R64` and `Terminal`.<br>
-* Or edit `Rsublime.sublime-settings` to change settings
+* Type ``R Application Switcher`` in Command Palette to switch between `R`, `R64` and `Terminal`.
