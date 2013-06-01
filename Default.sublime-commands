@@ -1,6 +1,12 @@
 [
     {
-        "caption": "R Application Switcher",
-        "command": "rapp_switcher"
+        "caption": "R Application Switcher (Primary)",
+        "command": "rapp_switcher",
+        "args": {"which": 0}
+    },
+    {
+        "caption": "R Application Switcher (Secondary)",
+        "command": "rapp_switcher",
+        "args": {"which": 1}
     }
 ]
