@@ -6,11 +6,11 @@
             "description": "R plugin for Sublime Text 2/3: Enchancement of indentation rules and language definitions; Tools that make programing R in Sublime Text 2/3 FUN!",
             "author": "raymondkww, randy3k",
             "homepage": "https://github.com/raymondkww/R-sublime",
-            "last_modified": "2012-11-15 18:00:00",
+            "last_modified": "2013-6-1 18:00:00",
             "platforms": {
                 "osx": [
                     {
-                        "version": "1.1.0",
+                        "version": "1.2.0",
                         "url": "https://nodeload.github.com/raymondkww/R-sublime/zip/master"
                     }
                 ]
