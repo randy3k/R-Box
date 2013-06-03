@@ -43,13 +43,14 @@ class RCommon:
         RCommon.Rapplist[which] = Rapp
 
     def get_Rapp(self):
-        self.settings = sublime.load_settings('Rsublime.sublime-settings')
-        RCommon.Rapplist = self.settings.get('Rapp')
+        settings = sublime.load_settings('Rsublime.sublime-settings')
+        RCommon.Rapplist = settings.get('Rapp')
         if RCommon.Rapplist == None:
                 RCommon.Rapplist = ["R", "Terminal"]
 
     def save_settings(self):
-        self.settings.set("Rapp", RCommon.Rapplist)
+        settings = sublime.load_settings('Rsublime.sublime-settings')
+        settings.set("Rapp", RCommon.Rapplist)
         sublime.save_settings('Rsublime.sublime-settings')
 
 class ChangeDirCommand(sublime_plugin.TextCommand, RCommon):
