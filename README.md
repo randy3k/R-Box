@@ -14,6 +14,7 @@ Supported Applications
 ---------------
 * Rgui i386 and x64 for Windows and Mac
 * Terminal and iTerm 2 for Mac
+* Rterm i386 and x64 for Windows
 * Tumx and screen for Linux
 
 Some useful key bindings
