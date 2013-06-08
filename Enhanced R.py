@@ -4,6 +4,8 @@ import os
 import subprocess
 import re
 
+settingsfile = 'Enhanced R.sublime-settings'
+
 class Robject:
     def __init__(self, view):
         self.view = view
@@ -24,7 +26,7 @@ class Robject:
     def rcmd(self, cmd):
         cmd = self.clean(cmd)
         plat = sublime_plugin.sys.platform
-        settings = sublime.load_settings('Enhanced R.sublime-settings')
+        settings = sublime.load_settings(settingsfile)
         if plat == 'darwin':
             App = settings.get('osx')['App']
             if re.match('R', App):
@@ -63,6 +65,7 @@ class Robject:
             subprocess.Popen(args)
 
         elif 'linux' in plat:
+            App = settings.get('linux')['App']
             if App == "tmux":
                 progpath = settings.get('linux')['tmux']
                 if not progpath: progpath = 'tmux'
@@ -77,21 +80,6 @@ class Robject:
                 subprocess.call([progpath, '-X', 'stuff', selection])
         else:
             sublime.error_message("Platform not supported!")
-
-#     def set_Rapp(self, which, Rapp):
-#         if RCommon.Rapplist == None: self.get_Rapp()
-#         RCommon.Rapplist[which] = Rapp
-
-#     def get_Rapp(self):
-#         settings = sublime.load_settings('Rsublime.sublime-settings')
-#         RCommon.Rapplist = settings.get('Rapp')
-#         if RCommon.Rapplist == None:
-#                 RCommon.Rapplist = ["R", "Terminal"]
-
-#     def save_settings(self):
-#         settings = sublime.load_settings('Rsublime.sublime-settings')
-#         settings.set("Rapp", RCommon.Rapplist)
-#         sublime.save_settings('Rsublime.sublime-settings')
 
 def pathclean(path):
     path = path.strip()
@@ -142,20 +130,43 @@ class RSourceCodeCommand(sublime_plugin.TextCommand):
         R = Robject(self.view)
         R.rcmd(cmd)
 
-# class RappSwitcher(sublime_plugin.WindowCommand, RCommon):
-#     app_list = ["R", "R64", "Terminal", "iTerm"]
-#     msg = ["Choose your Primary Rapp", "Choose your Secondary Rapp"]
-#     pop_string = ["R", "R64 (for R 2.x.x)", "Terminal", "iTerm 2"]
+class RappSwitcher(sublime_plugin.WindowCommand):
 
-#     def show_quick_panel(self, options, done):
-#         sublime.set_timeout(lambda: self.window.show_quick_panel(options, done), 10)
+    def show_quick_panel(self, options, done):
+        sublime.set_timeout(lambda: self.window.show_quick_panel(options, done), 10)
 
-#     def run(self, which):
-#         self.which = which
-#         self.show_quick_panel([self.msg[which]]+ self.pop_string, self.on_done)
+    def run(self):
+        plat = sublime_plugin.sys.platform
+        if plat == 'darwin':
+            self.app_list = ["R", "R64", "Terminal", "iTerm"]
+            pop_string = ["For R 3.x.x, R is 64 bit", "For R version 2.x.x", "Terminal", "iTerm 2"]
+        elif plat == "win32":
+            self.app_list = ["Ri386", "Rx64"]
+            pop_string = ["R i386", "R x64"]
+        elif "linux" in plat:
+            self.app_list = ["tmux", "screen"]
+            pop_string = ["tmux", "screen"]
+        else:
+            sublime.error_message("Platform not supported!")
 
-#     def on_done(self, action):
-#         if action>=1:
-#             self.set_Rapp(self.which, self.app_list[action-1])
-#             self.save_settings()
+        self.show_quick_panel([list(z) for z in zip(self.app_list, pop_string)], self.on_done)
 
+    def on_done(self, action):
+        if action==-1: return
+        settings = sublime.load_settings(settingsfile)
+        plat = sublime_plugin.sys.platform
+        if plat == 'darwin':
+            plat_setting = settings.get('osx')
+            plat_setting['App'] = self.app_list[action]
+            settings.set('osx', plat_setting)
+        elif plat == "win32":
+            plat_setting = settings.get('windows')
+            plat_setting['App'] = self.app_list[action]
+            settings.set('osx', plat_setting)
+        elif "linux" in plat:
+            plat_setting = settings.get('linux')
+            plat_setting['App'] = self.app_list[action]
+            settings.set('osx', plat_setting)
+        else:
+            sublime.error_message("Platform not supported!")
+        sublime.save_settings(settingsfile)
