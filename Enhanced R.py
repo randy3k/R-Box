@@ -12,15 +12,12 @@ class Robject:
 
     def clean(self, cmd):
         plat = sublime_plugin.sys.platform
+        if plat == "darwin":
+            cmd = cmd.replace('\\', '\\\\')
+            cmd = cmd.replace('"', '\\"')
         cmd = cmd.rstrip('\n')
         if len(re.findall("\n", cmd)) == 0:
             cmd = cmd.strip()
-        if plat == "darwin" or "linux" in plat:
-            cmd = cmd.replace('\\', '\\\\')
-            cmd = cmd.replace('"', '\\"')
-            cmd = cmd.rstrip('\n')
-        elif plat == "windows":
-            pass
         return cmd
 
     def rcmd(self, cmd):
@@ -162,11 +159,11 @@ class RappSwitcher(sublime_plugin.WindowCommand):
         elif plat == "win32":
             plat_setting = settings.get('windows')
             plat_setting['App'] = self.app_list[action]
-            settings.set('osx', plat_setting)
+            settings.set('windows', plat_setting)
         elif "linux" in plat:
             plat_setting = settings.get('linux')
             plat_setting['App'] = self.app_list[action]
-            settings.set('osx', plat_setting)
+            settings.set('linux', plat_setting)
         else:
             sublime.error_message("Platform not supported!")
         sublime.save_settings(settingsfile)
