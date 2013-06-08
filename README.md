@@ -10,6 +10,12 @@ This plugin contains some simple features that helping writing R languages:
 * For Windows, [AutoHotkey](http://www.autohotkey.com) which is an automation script is used 
 and the binary exe is also included.
 
+Supported Applications
+---------------
+* Rgui i386 and x64 for Windows and Mac
+* Terminal and iTerm 2 for Mac
+* Tumx and screen for Linux
+
 Some useful key bindings
 ---------------
 #### Sending Code (default: R)
