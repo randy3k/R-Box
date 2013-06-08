@@ -4,63 +4,9 @@ Enhanced R: R Plugin for Sublime Text 2/3
 Introduction
 ------------
 This plugin contains some simple features that helping writing R languages:
-* Indentation corrections
+* More comprehensive Indentation and Syntax
 * Useful commands
-* More comprehensive syntax coloring
-* Showing functions' parameters in Symbol List (`cmd+r`)
-
-Indentation corrections
------------------------
-### Indentation without braces
-It corrects the strange behavior when `for`, `while`, `if`, `else` and `repeat` are used without braces. In this situation, original indentation rule does not indent the next line. e.g.:
-
-Original:
-
-    for (i in (1:10))
-    cat('Hello, baby!')
-
-Now:
-
-    for (i in (1:10))
-        cat('Hello, baby!')
-
-### Extra indentation
-It corrects the extra indentation in case like:
-
-Original:
-
-    if (baby==1){
-      cat("Hello baby!")
-      } else {
-        cat("Hello dady!\n")
-      }
-
-Now:
-
-    if (baby==1){
-      cat("Hello baby!")
-    } else {
-      cat("Hello dady!\n")
-    }
-
-### Comment
-Comment does not affect indentation. e.g.,
-
-Original:
-
-    for (i in (1:10)){
-      1+1
-            #it is is comment!{
-              1+1
-    }
-
-Now:
-
-    for (i in (1:10)){
-      1+1
-            #it is is comment!{
-      1+1
-    }
+* Works on all Platforms
 
 Useful Commands
 ---------------

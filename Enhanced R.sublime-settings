@@ -1,0 +1,17 @@
+{
+    "osx" : {
+        "App" : "R", // In default R.app is called. For 3.x.x, R.app is 64 bit.
+    },
+
+    "windows" : {
+        "App" : "Rx64",
+        "Ri386" : "", // path to R i386
+        "Rx64" : "", // path to R x64
+    },
+
+    "linux": {
+        "App" : "tmux",
+        "tmux" : "", // path to tmux
+        "screen" : "", // path to screen
+    }
+}
