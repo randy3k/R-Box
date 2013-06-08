@@ -1,0 +1,17 @@
+[
+  { "keys": ["ctrl+enter"], "command": "r_send_select", "context":
+    [
+      { "key": "selector", "operator": "equal", "operand": "source.r" }
+    ]
+  },
+  { "keys": ["ctrl+\\"], "command": "r_change_dir", "context":
+    [
+      { "key": "selector", "operator": "equal", "operand": "source.r" }
+    ]
+  },
+  { "keys": ["ctrl+b"], "command": "r_source_code", "context":
+    [
+      { "key": "selector", "operator": "equal", "operand": "source.r" }
+    ]
+  }
+]
