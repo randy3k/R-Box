@@ -51,12 +51,21 @@ class Robject:
             if App == "Rx64":
                 progpath = settings.get('windows')['Rx64']
                 if not progpath: progpath = "1"
+                ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rgui.ahk')
             elif App == "Ri386":
                 progpath = settings.get('windows')['Ri386']
                 if not progpath: progpath = "0"
+                ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rgui.ahk')
+            if App == "Rtermx64":
+                progpath = settings.get('windows')['Rtermx64']
+                if not progpath: progpath = "1"
+                ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rterm.ahk')
+            elif App == "Rtermi386":
+                progpath = settings.get('windows')['Rtermi386']
+                if not progpath: progpath = "0"
+                ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rterm.ahk')
 
             ahk_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','AutoHotkey')
-            ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','R.ahk')
             # manually add "\n" to keep the indentation of first line of block code
             args = [ahk_path, ahk_script_path, progpath, "\n"+cmd ]
             subprocess.Popen(args)
