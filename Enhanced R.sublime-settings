@@ -5,13 +5,15 @@
 
     "windows" : {
         "App" : "Rx64",
-        "Ri386" : "", // path to R i386
-        "Rx64" : "", // path to R x64
+        // "Ri386" : "", // path to R i386
+        // "Rx64" : "", // path to R x64
+        // "Rtermi386" : "", // path to Rterm i386
+        // "Rtermx64" : "", // path to Rterm x64
     },
 
     "linux": {
         "App" : "tmux",
-        "tmux" : "", // path to tmux
-        "screen" : "", // path to screen
+        // "tmux" : "", // path to tmux
+        // "screen" : "", // path to screen
     }
 }
