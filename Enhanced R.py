@@ -10,14 +10,19 @@ class Robject:
 
     def clean(self, cmd):
         plat = sublime_plugin.sys.platform
-        if plat == 'darwin':
+        cmd = cmd.rstrip('\n')
+        if len(re.findall("\n", cmd)) == 0:
             cmd = cmd.strip()
+        if plat == "darwin" or "linux" in plat:
             cmd = cmd.replace('\\', '\\\\')
             cmd = cmd.replace('"', '\\"')
+            cmd = cmd.rstrip('\n')
+        elif plat == "windows":
+            pass
         return cmd
 
     def rcmd(self, cmd):
-        self.cmd = self.clean(cmd)
+        cmd = self.clean(cmd)
         plat = sublime_plugin.sys.platform
         settings = sublime.load_settings('Enhanced R.sublime-settings')
         if plat == 'darwin':
@@ -41,25 +46,33 @@ class Robject:
                                     'end tell\n')
                     args.extend(['-e', apple_script])
                     subprocess.Popen(args)
+
         elif plat == 'win32':
-            pass
+            App = settings.get('windows')['App']
+            if App == "Rx64":
+                progpath = settings.get('windows')['Rx64']
+                if not progpath: progpath = "1"
+            elif App == "Ri386":
+                progpath = settings.get('windows')['Ri386']
+                if not progpath: progpath = "0"
+
+            ahk_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','AutoHotkey')
+            ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','R.ahk')
+            # manually add "\n" to keep the indentation of first line of block code
+            args = [ahk_path, ahk_script_path, progpath, "\n"+cmd ]
+            subprocess.Popen(args)
+
         elif 'linux' in plat:
             if App == "tmux":
-                # Get the full pathname of the tmux, if it's
                 progpath = settings.get('linux')['tmux']
-                # If path isn't specified, just call without path
-                if not progpath:
-                    progpath = 'tmux'
+                if not progpath: progpath = 'tmux'
 
                 subprocess.call([progpath, 'set-buffer', selection])
                 subprocess.call([progpath, 'paste-buffer', '-d'])
 
             elif App == "screen":
-                # Get the full pathname of the tmux, if it's
                 progpath = settings.get('linux')['screen']
-                # If path isn't specified, just call without path
-                if not progpath:
-                    progpath = 'screen'
+                if not progpath: progpath = 'screen'
 
                 subprocess.call([progpath, '-X', 'stuff', selection])
         else:
@@ -80,12 +93,11 @@ class Robject:
 #         settings.set("Rapp", RCommon.Rapplist)
 #         sublime.save_settings('Rsublime.sublime-settings')
 
-class RChangeDirCommand(sublime_plugin.TextCommand):
-    def run(self, edit):
-        path = os.path.dirname(self.view.file_name())
-        cmd = "setwd(\"" + self.clean(path) + "\")"
-        rcmd(cmd)
-
+def pathclean(path):
+    path = path.strip()
+    path = path.replace('\\', '\\\\')
+    path = path.replace('"', '\\"')
+    return path
 
 class RSendSelectCommand(sublime_plugin.TextCommand):
     def expand_sel(self, sel):
@@ -115,10 +127,18 @@ class RSendSelectCommand(sublime_plugin.TextCommand):
         R = Robject(self.view)
         R.rcmd(cmd)
 
+
+class RChangeDirCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        path = os.path.dirname(self.view.file_name())
+        cmd = "setwd(\"" + pathclean(path) + "\")"
+        R = Robject(self.view)
+        R.rcmd(cmd)
+
 class RSourceCodeCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         path = self.view.file_name()
-        cmd = "source(\"" +  clean(path) + "\")"
+        cmd = "source(\"" +  pathclean(path) + "\")"
         R = Robject(self.view)
         R.rcmd(cmd)
 

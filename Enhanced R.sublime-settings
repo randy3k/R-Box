@@ -1,6 +1,6 @@
 {
     "osx" : {
-        "App" : "R", // In default R.app is called. For 3.x.x, R.app is 64 bit.
+        "App" : "R", // Default is R.app. For 3.x.x, R.app is 64 bit.
     },
 
     "windows" : {

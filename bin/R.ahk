@@ -45,6 +45,7 @@ RGetOrStart()
 Rpaste:
 {
     oldclipboard = %clipboard%
+
     if 0=2
     {
         ;Rguiexe =  "C:\Program Files\R\R-3.0.1\bin\i386\Rgui.exe"
@@ -61,7 +62,10 @@ Rpaste:
             OutputDebug Rhome from registry is %Rhome%
             Rguiexe := Rhome . "\bin\i386\Rgui.exe"
         }
-        clipboard = %2%`n
+        cmd = %2%
+        cmd := RegExReplace(cmd, "^\n", "")
+        newline = `n
+        clipboard := cmd . newline
         x64 := Instr(Rguiexe, "x64")>0
     }
     else
