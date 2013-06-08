@@ -18,12 +18,12 @@ Some useful key bindings
 * Send the selection to R (See settings for choosing default application)
 * If no syntax is selected, it sends the whole line where the cursor stays at.
 
-### Changing Working Directory
+#### Changing Working Directory
 **Keybinding:** `Cmd-\`
 
 * Change working directory to where the current working script stays
 
-### Sourcing file (Primary)
+####  Sourcing file (Primary)
 **Keybinding:** `Cmd-b`
 
 * Tell R to source the working script
