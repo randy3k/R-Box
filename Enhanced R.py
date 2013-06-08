@@ -16,19 +16,19 @@ def clean(cmd):
         cmd = cmd.strip()
     return cmd
 
-def get(os, key):
+def get(os, key, default=None):
     settings = sublime.load_settings(settingsfile)
     plat_settings = settings.get(os)
     if key in plat_settings:
         return plat_settings[key]
     else:
-        return ""
+        return default
 
 def rcmd(cmd):
     cmd = clean(cmd)
     plat = sublime_plugin.sys.platform
     if plat == 'darwin':
-        App = get("osx", "App")
+        App = get("osx", "App", "R")
         if re.match('R', App):
             args = ['osascript']
             args.extend(['-e', 'tell app "' + App + '" to cmd "' + cmd + '"'])
@@ -37,7 +37,7 @@ def rcmd(cmd):
             args = ['osascript']
             args.extend(['-e', 'tell app "Terminal" to do script "' + cmd + '" in front window\n'])
             subprocess.Popen(args)
-        elif App == 'iTerm':
+        elif re.match('iTerm', App):
                 args = ['osascript']
                 apple_script = ('tell application "' + App + '"\n'
                                     'tell the first terminal\n'
@@ -50,41 +50,38 @@ def rcmd(cmd):
                 subprocess.Popen(args)
 
     elif plat == 'win32':
-        App = App = get("windows", "App")
-        if App == "Rx64":
-            progpath = get("windows", "Rx64")
-            if not progpath: progpath = "1"
+        App = App = get("windows", "App", "R64")
+        if App == "R64":
+            progpath = get("windows", "R64", "1")
             ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rgui.ahk')
-        elif App == "Ri386":
-            progpath = get("windows", "Ri386")
-            if not progpath: progpath = "0"
+        elif App == "R32":
+            progpath = get("windows", "R32", "0")
             ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rgui.ahk')
-        if App == "Rtermx64":
-            progpath = get("windows", "Rtermx64")
-            if not progpath: progpath = "1"
+        if App == "Rterm64":
+            progpath = get("windows", "Rterm64", "1")
             ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rterm.ahk')
-        elif App == "Rtermi386":
-            progpath = get("windows", "Rtermi386")
-            if not progpath: progpath = "0"
+        elif App == "Rterm32":
+            progpath = get("windows", "Rterm32", "0")
             ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rterm.ahk')
 
         ahk_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','AutoHotkey')
-        # manually add "\n" to keep the indentation of first line of block code
-        args = [ahk_path, ahk_script_path, progpath, "\n"+cmd ]
+        # manually add "\n" to keep the indentation of first line of block code,
+        # "\n" is later removed in AutoHotkey script
+        cmd = "\n"+cmd
+
+        args = [ahk_path, ahk_script_path, progpath, cmd ]
         subprocess.Popen(args)
 
     elif 'linux' in plat:
-        App = get("linux", "App")
+        App = get("linux", "App", "tmux")
         if App == "tmux":
-            progpath = get("linux", "tmux")
-            if not progpath: progpath = 'tmux'
+            progpath = get("linux", "tmux", "tmux")
 
             subprocess.call([progpath, 'set-buffer', selection])
             subprocess.call([progpath, 'paste-buffer', '-d'])
 
         elif App == "screen":
-            progpath = get("linux", "screen")
-            if not progpath: progpath = 'screen'
+            progpath = get("linux", "screen", "screen")
 
             subprocess.call([progpath, '-X', 'stuff', selection])
     else:
@@ -143,9 +140,9 @@ class RappSwitcher(sublime_plugin.WindowCommand):
         plat = sublime_plugin.sys.platform
         if plat == 'darwin':
             self.app_list = ["R", "R64", "Terminal", "iTerm"]
-            pop_string = ["For R 3.x.x, R is 64 bit", "For R version 2.x.x", "Terminal", "iTerm 2"]
+            pop_string = ["For R 3.x.x, R is 64 bit ready", "For R version 2.x.x only", "Terminal", "iTerm 2"]
         elif plat == "win32":
-            self.app_list = ["Ri386", "Rx64", "Rtermi386", "Rtermx64"]
+            self.app_list = ["R32", "R64", "Rterm32", "Rterm64"]
             pop_string = ["R i386", "R x64", "Rterm i386", "Rterm x64"]
         elif "linux" in plat:
             self.app_list = ["tmux", "screen"]
@@ -171,6 +168,5 @@ class RappSwitcher(sublime_plugin.WindowCommand):
             plat_settings = settings.get('linux')
             plat_settings['App'] = self.app_list[action]
             settings.set('linux', plat_settings)
-        else:
-            sublime.error_message("Platform not supported!")
+
         sublime.save_settings(settingsfile)

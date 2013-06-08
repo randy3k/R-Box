@@ -1,19 +1,34 @@
 {
     "osx" : {
-        "App" : "R", // Default is R.app. For 3.x.x, R.app is 64 bit.
+        // R R64 Terminal or iTerm
+        // Default is R.app. For 3.x.x, R.app is 64 bit.
+        "App" : "R",
     },
 
     "windows" : {
-        "App" : "Rx64",
-        // "Ri386" : "", // path to R i386
-        // "Rx64" : "", // path to R x64
-        // "Rtermi386" : "", // path to Rterm i386
-        // "Rtermx64" : "", // path to Rterm x64
+        // R32 R64 Rterm32 or Rterm64
+        "App" : "R64",
+
+        // path to R i386
+        // "R32" : "",
+
+        // path to R x64
+        // "R64" : "",
+
+        // path to Rterm i386
+        // "Rterm32" : "",
+
+        // path to Rterm x64
+        // "Rterm64" : "",
     },
 
     "linux": {
         "App" : "tmux",
-        // "tmux" : "", // path to tmux
-        // "screen" : "", // path to screen
+
+        // path to tmux
+        // "tmux" : "",
+
+        // path to screen
+        // "screen" : "",
     }
 }
