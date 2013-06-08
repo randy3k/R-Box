@@ -18,14 +18,14 @@
                             {
                                 "command": "open_file", "args":
                                 {
-                                    "file": "${packages}/Enhanced R/Enhanced R.sublime-settings"
+                                    "file": "${packages}/Enhanced-R/Enhanced-R.sublime-settings"
                                 },
                                 "caption": "Settings – Default"
                             },
                             {
                                 "command": "open_file", "args":
                                 {
-                                    "file": "${packages}/User/Enhanced R.sublime-settings"
+                                    "file": "${packages}/User/Enhanced-R.sublime-settings"
                                 },
                                 "caption": "Settings – User"
                             },

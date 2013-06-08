@@ -1,4 +1,4 @@
-Enhanced R: R Plugin for Sublime Text 2/3
+Enhanced-R: R Plugin for Sublime Text 2/3
 =======================================
 
 Introduction
@@ -7,7 +7,7 @@ This plugin contains some simple features that helping writing R languages:
 * More comprehensive Indentation and Syntax
 * Some useful key bindings
 * Support multiple applications on Windows/Mac/Linux.
-* For Windows, [AutoHotkey](http://www.autohotkey.com) which is an automation script is used 
+* For Windows, [AutoHotkey](http://www.autohotkey.com) which is an automation script is used
 and the binary exe is also included.
 
 Supported Applications
@@ -37,7 +37,7 @@ Some useful key bindings
 
 Settings
 ---------
-#### Application 
+#### Application
 
 * Type ``R: Choose Application`` in Command Palette to switch between applications.
 
