@@ -5,43 +5,31 @@ Introduction
 ------------
 This plugin contains some simple features that helping writing R languages:
 * More comprehensive Indentation and Syntax
-* Useful commands
-* Works on all Platforms
+* Some useful key bindings
+* Support multiple applications on Windows/Mac/Linux.
+* For Windows, [AutoHotkey](http://www.autohotkey.com) which is an automation script is used 
+and the binary exe is also included.
 
-Useful Commands
+Some useful key bindings
 ---------------
-### Sending Code to primary application (default: R)###
+#### Sending Code (default: R)
 **Keybinding:** `Cmd-Enter`
 
-* Send the selection to R
+* Send the selection to R (See settings for choosing default application)
 * If no syntax is selected, it sends the whole line where the cursor stays at.
-* See settings to choose default R application to send to.
 
-### Sending Code to secondary application (default: Terminal)###
-**Keybinding:** `Cmd-Alt-Enter`
-
-* Send the selection to R session in terminal
-* An R session needs to be running on terminal.
-* If no syntax is selected, it sends the whole line where the cursor stays at.
-* Useful for people working on server
-
-### Changing Working Directory (Primary)###
+### Changing Working Directory
 **Keybinding:** `Cmd-\`
 
 * Change working directory to where the current working script stays
 
-### Sourcing file (Primary)###
-**Keybinding:** `Cmd-.`
+### Sourcing file (Primary)
+**Keybinding:** `Cmd-b`
 
 * Tell R to source the working script
 
-Kepmaps are changable by editing `Default (OSX).sublime-keymap`.
-
 Settings
 ---------
-### Rapp ###
-**Default primary application:** `R`
+#### Application 
 
-**Default secondary application:** `Terminal`
-
-* Type ``R Application Switcher`` in Command Palette to switch between `R`, `R64` and `Terminal`.
+* Type ``R: Choose Application`` in Command Palette to switch between applications.
