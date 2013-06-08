@@ -4,26 +4,35 @@ import os
 import subprocess
 import re
 
-settingsfile = 'Enhanced R.sublime-settings'
+settingsfile = 'Enhanced-R.sublime-settings'
 
+
+# escape double quote
+def escape_dq(string):
+    string = string.replace('\\', '\\\\')
+    string = string.replace('"', '\\"')
+    return string
+
+# clean command before sending to R
 def clean(cmd):
     plat = sublime_plugin.sys.platform
     if plat == "darwin":
-        cmd = cmd.replace('\\', '\\\\')
-        cmd = cmd.replace('"', '\\"')
+        cmd = escape_dq(cmd)
     cmd = cmd.rstrip('\n')
     if len(re.findall("\n", cmd)) == 0:
-        cmd = cmd.strip()
+        cmd = cmd.lstrip()
     return cmd
 
-def get(os, key, default=None):
+# get platform specific key
+def get(plat, key, default=None):
     settings = sublime.load_settings(settingsfile)
-    plat_settings = settings.get(os)
+    plat_settings = settings.get(plat)
     if key in plat_settings:
         return plat_settings[key]
     else:
         return default
 
+# the main function
 def rcmd(cmd):
     cmd = clean(cmd)
     plat = sublime_plugin.sys.platform
@@ -87,13 +96,9 @@ def rcmd(cmd):
     else:
         sublime.error_message("Platform not supported!")
 
-def pathclean(path):
-    path = path.strip()
-    path = path.replace('\\', '\\\\')
-    path = path.replace('"', '\\"')
-    return path
-
 class RSendSelectCommand(sublime_plugin.TextCommand):
+
+    # expand selection to {...} when being triggered
     def expand_sel(self, sel):
         esel = self.view.find(r"""^.*(\{(?:(["\'])(?:[^\\\\]|\\\\.|\n)*?\\2|#.*$|[^\{\}]|\n|(?1))*\})"""
             , self.view.line(sel).begin())
@@ -105,12 +110,14 @@ class RSendSelectCommand(sublime_plugin.TextCommand):
         for sel in self.view.sel():
             if sel.empty():
                 thiscmd = self.view.substr(self.view.line(sel))
+                # if the line ends with {, expand to {...}
                 if re.match(r".*\{\s*$", thiscmd):
                     esel = self.expand_sel(sel)
                     if esel:
                         thiscmd = self.view.substr(esel)
             else:
                 thiscmd = self.view.substr(sel)
+                # if selection is function meta definition, expand to {...}
                 if self.view.score_selector(sel.end()-1, "meta.function.r") and \
                     not self.view.score_selector(sel.end(), "meta.function.r"):
                     esel = self.expand_sel(sel)
@@ -122,13 +129,13 @@ class RSendSelectCommand(sublime_plugin.TextCommand):
 class RChangeDirCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         path = os.path.dirname(self.view.file_name())
-        cmd = "setwd(\"" + pathclean(path) + "\")"
+        cmd = "setwd(\"" + escape_dq(path) + "\")"
         rcmd(cmd)
 
 class RSourceCodeCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         path = self.view.file_name()
-        cmd = "source(\"" +  pathclean(path) + "\")"
+        cmd = "source(\"" +  escape_dq(path) + "\")"
         rcmd(cmd)
 
 class RappSwitcher(sublime_plugin.WindowCommand):
@@ -140,7 +147,7 @@ class RappSwitcher(sublime_plugin.WindowCommand):
         plat = sublime_plugin.sys.platform
         if plat == 'darwin':
             self.app_list = ["R", "R64", "Terminal", "iTerm"]
-            pop_string = ["For R 3.x.x, R is 64 bit ready", "For R version 2.x.x only", "Terminal", "iTerm 2"]
+            pop_string = ["For R 3.x.x, R is 64 bit ready", "For R 2.x.x only", "Terminal", "iTerm 2"]
         elif plat == "win32":
             self.app_list = ["R32", "R64", "Rterm32", "Rterm64"]
             pop_string = ["R i386", "R x64", "Rterm i386", "Rterm x64"]
