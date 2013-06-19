@@ -15,7 +15,7 @@ def escape_dq(string):
 
 # clean command before sending to R
 def clean(cmd):
-    plat = ssublime.platform()
+    plat = sublime.platform()
     if plat == "osx":
         cmd = escape_dq(cmd)
     cmd = cmd.rstrip('\n')
