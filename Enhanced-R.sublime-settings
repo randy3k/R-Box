@@ -31,5 +31,5 @@
         // path to screen
         // "screen" : "",
     },
-    "extensions": ["r", "R", "S", "s","Rprofile"]
+    "extensions": ["r", "R", "s", "S", "Rprofile"]
 }
