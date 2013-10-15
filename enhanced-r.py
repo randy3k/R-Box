@@ -86,13 +86,13 @@ def rcmd(cmd):
         if App == "tmux":
             progpath = get("linux", "tmux", "tmux")
 
-            subprocess.call([progpath, 'set-buffer', cmd])
+            subprocess.call([progpath, 'set-buffer', cmd + "\n"])
             subprocess.call([progpath, 'paste-buffer', '-d'])
 
         elif App == "screen":
             progpath = get("linux", "screen", "screen")
 
-            subprocess.call([progpath, '-X', 'stuff', cmd])
+            subprocess.call([progpath, '-X', 'stuff', cmd + "\n"])
     else:
         sublime.error_message("Platform not supported!")
 
