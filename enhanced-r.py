@@ -58,7 +58,7 @@ def rcmd(cmd):
                 subprocess.Popen(args)
 
     elif plat == 'windows':
-        App = App = get("windows", "App", "R64")
+        App = get("windows", "App", "R64")
         progpath = get("linux", App, str(1) if App == "R64" else str(0))
         ahk_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','AutoHotkey')
         ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rgui.ahk')
@@ -73,16 +73,13 @@ def rcmd(cmd):
         App = get("linux", "App", "tmux")
         if App == "tmux":
             progpath = get("linux", "tmux", "tmux")
-
             subprocess.call([progpath, 'set-buffer', cmd + "\n"])
             subprocess.call([progpath, 'paste-buffer', '-d'])
 
         elif App == "screen":
             progpath = get("linux", "screen", "screen")
-
             subprocess.call([progpath, '-X', 'stuff', cmd + "\n"])
-    else:
-        sublime.error_message("Platform not supported!")
+
 
 class RSendSelectCommand(sublime_plugin.TextCommand):
 

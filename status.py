@@ -28,29 +28,27 @@ def get(plat, key, default=None):
 def get_Rscript():
     plat = sublime.platform()
     if plat == "windows":
-        Rscript = get(plat, "Rscript")
         App = get(plat, "R", "R64")
         arch = "x64" if App == "R64" else "i386"
+        Rscript = get(plat, "Rscript")
         if not Rscript:
             akey=OpenKey(HKEY_LOCAL_MACHINE, "SOFTWARE\\R-core\\"+App, 0, KEY_WOW64_64KEY|KEY_READ)
             path=QueryValueEx(akey, "InstallPath")[0]
             Rscript = path + "\\bin\\"  + arch + "\\Rscript.exe"
-
     else:
         Rscript = get(plat, "Rscript", "Rscript")
     # print(Rscript)
     return Rscript
 
 def mycheck_output(args):
-    if sys.platform == "win32":
-        startupinfo = subprocess.STARTUPINFO()
-        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        output = subprocess.Popen(args, stdout=subprocess.PIPE, startupinfo=startupinfo).communicate()[0]
+	if sys.platform == "win32":
+		startupinfo = subprocess.STARTUPINFO()
+		startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+		output = subprocess.Popen(args, stdout=subprocess.PIPE, startupinfo=startupinfo).communicate()[0]
+	else:
+		output = subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0]
 
-    else:
-        output = subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0]
-
-    return output.decode('utf-8')
+	return output.decode('utf-8')
 
 
 class RStatusListener(sublime_plugin.EventListener):
