@@ -11,7 +11,7 @@ This plugin contains some simple features that helping writing R languages:
 as a bridge between R and ST.
 * Showing function prototype in status bar
 
-<img src="https://github.com/randy3k/Enhanced-R/raw/master/status.png">
+<img width=300 src="https://github.com/randy3k/Enhanced-R/raw/master/status.png">
 
 Supported Applications
 ---------------
