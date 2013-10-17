@@ -3,15 +3,19 @@
         // R / R64 / Terminal / iTerm
         "App" : "R"
         // paths to Rscript binary
-        // "Rscript" : "",
+        // "Rscript" : "/usr/bin/Rscript",
     },
 
     "windows" : {
         // R / R64
         "App" : "R64"
 
+        // paths to R bibary
+        // "R" : "C:\Program Files\R\R-3.0.1\bin\i386\Rgui.exe",
+        // "R64" : "C:\Program Files\R\R-3.0.1\bin\x64\Rgui.exe",
+
         // paths to Rscript binary
-        // "Rscript" : "",
+        // "Rscript" : ""C:\Program Files\R\R-3.0.1\bin\x64\Rscript.exe"",
     },
 
     "linux": {

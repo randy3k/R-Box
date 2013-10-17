@@ -59,15 +59,14 @@ def rcmd(cmd):
 
     elif plat == 'windows':
         App = App = get("windows", "App", "R64")
-        x64 = 1 if App == "R64" else 0
-
+        progpath = get("linux", App, str(1) if App == "R64" else str(0))
         ahk_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','AutoHotkey')
         ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rgui.ahk')
         # manually add "\n" to keep the indentation of first line of block code,
         # "\n" is later removed in AutoHotkey script
         cmd = "\n"+cmd
 
-        args = [ahk_path, ahk_script_path, str(x64), cmd ]
+        args = [ahk_path, ahk_script_path, progpath, cmd ]
         subprocess.Popen(args)
 
     elif plat == 'linux':
