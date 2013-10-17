@@ -41,15 +41,6 @@ def get_Rscript():
     # print(Rscript)
     return Rscript
 
-def myPopen(args):
-    if sys.platform == "win32":
-        startupinfo = subprocess.STARTUPINFO()
-        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        proc = subprocess.Popen(args, startupinfo=startupinfo)
-    else:
-        proc = subprocess.Popen(args)
-    return proc
-
 def mycheck_output(args):
     if sys.platform == "win32":
         startupinfo = subprocess.STARTUPINFO()
