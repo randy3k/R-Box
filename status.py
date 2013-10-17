@@ -34,7 +34,7 @@ def get_Rscript():
         if not Rscript:
             akey=OpenKey(HKEY_LOCAL_MACHINE, "SOFTWARE\\R-core\\"+App, 0, KEY_WOW64_64KEY|KEY_READ)
             path=QueryValueEx(akey, "InstallPath")[0]
-            Rscript = path + "\\bin\\"  + arch + r"\\Rscript.exe"
+            Rscript = path + "\\bin\\"  + arch + "\\Rscript.exe"
 
     else:
         Rscript = get(plat, "Rscript", "Rscript")
