@@ -8,7 +8,7 @@
 
     "windows" : {
         // R / R64
-        "App" : "R"
+        "App" : "R64"
 
         // paths to Rscript binary
         // "Rscript" : "",
