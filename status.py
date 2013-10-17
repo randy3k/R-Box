@@ -3,8 +3,8 @@ import sublime_plugin
 import os
 import subprocess
 import re
-import threading
 import sys
+
 if sys.platform == "win32":
     if sys.version_info >= (3, 0, 0):
         from winreg import *
@@ -41,6 +41,25 @@ def get_Rscript():
     # print(Rscript)
     return Rscript
 
+def myPopen(args):
+    if sys.platform == "win32":
+        startupinfo = subprocess.STARTUPINFO()
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        proc = subprocess.Popen(args, startupinfo=startupinfo)
+    else:
+        proc = subprocess.Popen(args)
+    return proc
+
+def mycheck_output(args):
+    if sys.platform == "win32":
+        startupinfo = subprocess.STARTUPINFO()
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        output = subprocess.Popen(args, stdout=subprocess.PIPE, startupinfo=startupinfo).communicate()[0]
+
+    else:
+        output = subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0]
+
+    return output.decode('utf-8')
 
 
 class RStatusListener(sublime_plugin.EventListener):
@@ -67,15 +86,7 @@ class RStatusListener(sublime_plugin.EventListener):
         else:
             Rscript = get_Rscript()
             plat = sublime.platform()
-            if plat == "windows":
-                startupinfo = subprocess.STARTUPINFO()
-                startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-                output = subprocess.Popen([Rscript, '-e', 'args(' + func + ')'],\
-                     stdout=subprocess.PIPE, startupinfo=startupinfo).communicate()[0]
-            else:
-                output = subprocess.Popen([Rscript, '-e', 'args(' + func + ')'],\
-                     stdout=subprocess.PIPE).communicate()[0]
-            output = output.decode('utf-8')
+            output = mycheck_output([Rscript, '-e', 'args(' + func + ')'])
             if not re.match("function ", output): return
             output = re.sub(r"^function ", "", output)
             output = re.sub(r"\)[^)]*$", ")", output)
