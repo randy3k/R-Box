@@ -9,12 +9,14 @@ This plugin contains some simple features that helping writing R languages:
 * Support multiple applications on Windows/Mac/Linux.
 * For Windows, [AutoHotkey](http://www.autohotkey.com) which is an automation script is used
 as a bridge between R and ST.
+* Showing function prototype in status bar
+
+<img src="https://github.com/randy3k/Enhanced-R/raw/master/status.png">
 
 Supported Applications
 ---------------
-* Rgui i386 and x64 for Windows and Mac
+* R GUI i386 and x64 for Windows and Mac
 * Terminal and iTerm 2 for Mac
-* Rterm i386 and x64 for Windows
 * Tmux and screen for Linux
 
 Some useful key bindings

@@ -6,7 +6,6 @@ import re
 
 settingsfile = 'Enhanced-R.sublime-settings'
 
-
 # escape double quote
 def escape_dq(string):
     string = string.replace('\\', '\\\\')
@@ -60,25 +59,15 @@ def rcmd(cmd):
 
     elif plat == 'windows':
         App = App = get("windows", "App", "R64")
-        if App == "R64":
-            progpath = get("windows", "R64", "1")
-            ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rgui.ahk')
-        elif App == "R32":
-            progpath = get("windows", "R32", "0")
-            ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rgui.ahk')
-        if App == "Rterm64":
-            progpath = get("windows", "Rterm64", "1")
-            ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rterm.ahk')
-        elif App == "Rterm32":
-            progpath = get("windows", "Rterm32", "0")
-            ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rterm.ahk')
+        x64 = 1 if App == "R64" else 0
 
         ahk_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','AutoHotkey')
+        ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rgui.ahk')
         # manually add "\n" to keep the indentation of first line of block code,
         # "\n" is later removed in AutoHotkey script
         cmd = "\n"+cmd
 
-        args = [ahk_path, ahk_script_path, progpath, cmd ]
+        args = [ahk_path, ahk_script_path, str(x64), cmd ]
         subprocess.Popen(args)
 
     elif plat == 'linux':
@@ -117,12 +106,6 @@ class RSendSelectCommand(sublime_plugin.TextCommand):
                         thiscmd = self.view.substr(esel)
             else:
                 thiscmd = self.view.substr(sel)
-                # if selection is function meta definition, expand to {...}
-                if self.view.score_selector(sel.end()-1, "meta.function.r") and \
-                    not self.view.score_selector(sel.end(), "meta.function.r"):
-                    esel = self.expand_sel(sel)
-                    if esel:
-                        thiscmd = self.view.substr(esel)
             cmd += thiscmd +'\n'
         rcmd(cmd)
 
@@ -147,10 +130,10 @@ class RappSwitcher(sublime_plugin.WindowCommand):
         plat = sublime.platform()
         if plat == 'osx':
             self.app_list = ["R", "R64", "Terminal", "iTerm"]
-            pop_string = ["For R 3.x.x, R is 64 bit ready", "For R 2.x.x only", "Terminal", "iTerm 2"]
+            pop_string = ["R is 64 bit for 3.x.x", "R 2.x.x only", "Terminal", "iTerm 2"]
         elif plat == "windows":
-            self.app_list = ["R32", "R64", "Rterm32", "Rterm64"]
-            pop_string = ["R i386", "R x64", "Rterm i386", "Rterm x64"]
+            self.app_list = ["R", "R64"]
+            pop_string = ["R i386", "R x64"]
         elif plat == "linux":
             self.app_list = ["tmux", "screen"]
             pop_string = ["tmux", "screen"]
