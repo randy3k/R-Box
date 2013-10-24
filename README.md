@@ -32,7 +32,7 @@ Some useful key bindings
 
 * Change working directory to where the current working script stays
 
-####  Sourcing file (Primary)
+####  Sourcing file
 **Keybinding:** `C-b`
 
 * Tell R to source the working script
