@@ -3,15 +3,16 @@ Enhanced-R: R Plugin for Sublime Text 2/3
 
 Introduction
 ------------
-This plugin contains some simple features that helping writing R languages:
+This plugin contains some simple features that helps in writing R languages:
 * More comprehensive Indentation and Syntax
 * Some useful key bindings
-* Support multiple applications on Windows/Mac/Linux.
-* For Windows, [AutoHotkey](http://www.autohotkey.com) which is an automation script is used
-as a bridge between R and ST.
 * Showing function prototype in status bar
 
 <img width=300 src="https://github.com/randy3k/Enhanced-R/raw/master/status.png">
+* Support multiple applications on Windows/Mac/Linux.
+* For Windows, [AutoHotkey](http://www.autohotkey.com) which is an automation script is used
+as a bridge between R and ST.
+
 
 Supported Applications
 ---------------
@@ -26,11 +27,12 @@ Some useful key bindings
 
 * Send the selection to R (See settings for choosing default application)
 * If no syntax is selected, it sends the whole line where the cursor stays at.
+* Or if the current line ends with `{`, it finds the matching `}` and sends the whole block.
 
 #### Changing Working Directory
 **Keybinding:** `C-\`
 
-* Change working directory to where the current working script stays
+* Change working directory to where the current working script is located
 
 ####  Sourcing file
 **Keybinding:** `C-b`
