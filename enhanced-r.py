@@ -136,7 +136,7 @@ class RappSwitcher(sublime_plugin.WindowCommand):
             self.app_list = ["R", "R64", "Terminal", "iTerm"]
             pop_string = ["R is 64 bit for 3.x.x", "R 2.x.x only", "Terminal", "iTerm 2"]
         elif plat == "windows":
-            self.app_list = ["R", "R64"]
+            self.app_list = ["R32", "R64"]
             pop_string = ["R i386", "R x64"]
         elif plat == "linux":
             self.app_list = ["tmux", "screen"]

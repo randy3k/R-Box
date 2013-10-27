@@ -29,11 +29,10 @@ def get_setting(key, default=None):
 def get_Rscript():
     plat = sublime.platform()
     if plat == "windows":
-        App = get_setting("R", "R64")
-        arch = "x64" if App == "R64" else "i386"
+        arch = "x64" if get_setting("App", "R64") == "R64" else "i386"
         Rscript = get_setting("Rscript")
         if not Rscript:
-            akey=OpenKey(HKEY_LOCAL_MACHINE, "SOFTWARE\\R-core\\"+App, 0, KEY_WOW64_64KEY|KEY_READ)
+            akey=OpenKey(HKEY_LOCAL_MACHINE, "SOFTWARE\\R-core\\R", 0, KEY_READ)
             path=QueryValueEx(akey, "InstallPath")[0]
             Rscript = path + "\\bin\\"  + arch + "\\Rscript.exe"
     else:
