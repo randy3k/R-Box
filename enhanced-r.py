@@ -23,7 +23,8 @@ def clean(cmd):
     return cmd
 
 # get platform specific key
-def get(plat, key, default=None):
+def get_setting(key, default=None):
+    plat = sublime.platform()
     settings = sublime.load_settings(settingsfile)
     plat_settings = settings.get(plat)
     if key in plat_settings:
@@ -36,7 +37,7 @@ def rcmd(cmd):
     cmd = clean(cmd)
     plat = sublime.platform()
     if plat == 'osx':
-        App = get("osx", "App", "R")
+        App = get_setting("App", "R")
         if re.match('R', App):
             args = ['osascript']
             args.extend(['-e', 'tell app "' + App + '" to cmd "' + cmd + '"'])
@@ -58,8 +59,8 @@ def rcmd(cmd):
                 subprocess.Popen(args)
 
     elif plat == 'windows':
-        App = get("windows", "App", "R64")
-        progpath = get("windows", App, str(1) if App == "R64" else str(0))
+        App = get_setting("App", "R64")
+        progpath = get_setting(App, str(1) if App == "R64" else str(0))
         ahk_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','AutoHotkey')
         ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rgui.ahk')
         # manually add "\n" to keep the indentation of first line of block code,
@@ -70,14 +71,14 @@ def rcmd(cmd):
         subprocess.Popen(args)
 
     elif plat == 'linux':
-        App = get("linux", "App", "tmux")
+        App = get_setting("App", "tmux")
         if App == "tmux":
-            progpath = get("linux", "tmux", "tmux")
+            progpath = get_setting("tmux", "tmux")
             subprocess.call([progpath, 'set-buffer', cmd + "\n"])
             subprocess.call([progpath, 'paste-buffer', '-d'])
 
         elif App == "screen":
-            progpath = get("linux", "screen", "screen")
+            progpath = get_setting("screen", "screen")
             subprocess.call([progpath, '-X', 'stuff', cmd + "\n"])
 
 
@@ -111,7 +112,7 @@ class RChangeDirCommand(sublime_plugin.TextCommand):
         if not fname:
             sublime.error_message("Save the file!")
             return
-        dirname = os.path.dirname(fname)        
+        dirname = os.path.dirname(fname)
         cmd = "setwd(\"" + escape_dq(dirname) + "\")"
         rcmd(cmd)
 
@@ -119,7 +120,7 @@ class RSourceCodeCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         fname = self.view.file_name()
         if not fname:
-            sublime.error_message("Save the file!") 
+            sublime.error_message("Save the file!")
             return
         cmd = "source(\"" +  escape_dq(fname) + "\")"
         rcmd(cmd)
