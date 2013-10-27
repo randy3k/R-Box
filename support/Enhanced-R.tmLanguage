@@ -366,7 +366,7 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>'</string>
+					<string>&apos;</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>0</key>
@@ -376,7 +376,7 @@
 						</dict>
 					</dict>
 					<key>end</key>
-					<string>'</string>
+					<string>&apos;</string>
 					<key>endCaptures</key>
 					<dict>
 						<key>0</key>
@@ -399,7 +399,7 @@
 				</dict>
 				<dict>
 					<key>begin</key>
-					<string>"</string>
+					<string>&quot;</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>0</key>
@@ -409,7 +409,7 @@
 						</dict>
 					</dict>
 					<key>end</key>
-					<string>"</string>
+					<string>&quot;</string>
 					<key>endCaptures</key>
 					<dict>
 						<key>0</key>
@@ -664,83 +664,82 @@
 						</dict>
 					</array>
 				</dict>
-        <dict>
-          <key>begin</key>
-          <string>\b(address|alloc\.col|as\.chron\.IDate|as\.chron\.ITime|as\.data\.table|as\.IDate|as\.ITime|between|chgroup|chmatch|chorder|CJ|copy|data\.table|dcast\.data\.table|fread|haskey|hour|IDateTime|is\.data\.table|key|last|like|mday|month|quarter|rbindlist|set|setattr|setcolorder|setkey|setkeyv|setnames|SJ|tables|test\.data\.table|timetaken|truelength|wday|week|yday|year)\s*(\()</string>
-          <key>beginCaptures</key>
-          <dict>
-            <key>1</key>
-            <dict>
-              <key>name</key>
-              <string>support.function.r</string>
-            </dict>
-            <key>2</key>
-            <dict>
-              <key>name</key>
-              <string>punctuation.definition.parameters.r</string>
-            </dict>
-          </dict>
-          <key>contentName</key>
-          <string>meta.function-call.arguments.r</string>
-          <key>end</key>
-          <string>(\))</string>
-          <key>endCaptures</key>
-          <dict>
-            <key>1</key>
-            <dict>
-              <key>name</key>
-              <string>punctuation.definition.parameters.r</string>
-            </dict>
-          </dict>
-          <key>name</key>
-          <string>meta.function-call.r</string>
-          <key>patterns</key>
-          <array>
-            <dict>
-              <key>include</key>
-              <string>$self</string>
-            </dict>
-          </array>
-        </dict>
-				
-        <dict>
-          <key>begin</key>
-          <string>\b(aes|aes_all|aes_auto|aes_string|annotate|annotation_custom|annotation_logticks|annotation_map|annotation_raster|autoplot|benchplot|borders|calc_element|continuous_scale|coord|coord_cartesian|coord_equal|coord_fixed|coord_flip|coord_map|coord_polar|coord_trans|cut_interval|cut_number|discrete_scale|element_blank|element_line|element_rect|element_text|expand_limits|facet|facet_grid|facet_null|facet_wrap|fortify|geom_abline|geom_area|geom_bar|geom_bin2d|geom_blank|geom_boxplot|geom_contour|geom_crossbar|geom_density|geom_density2d|geom_dotplot|geom_errorbar|geom_errorbarh|geom_freqpoly|geom_hex|geom_histogram|geom_hline|geom_jitter|geom_line|geom_linerange|geom_map|geom_path|geom_point|geom_pointrange|geom_polygon|geom_quantile|geom_raster|geom_rect|geom_ribbon|geom_rug|geom_segment|geom_smooth|geom_step|geom_text|geom_tile|geom_violin|geom_vline|gg_dep|ggfluctuation|ggmissing|ggorder|ggpcp|ggplot|ggplot_build|ggplot_gtable|ggplotGrob|ggsave|ggstructure|ggtitle|guide_colorbar|guide_colourbar|guide_legend|guides|is\.coord|is\.facet|is\.ggplot|is\.theme|label_both|label_bquote|label_parsed|label_value|labs|last_plot|layer|map_data|mean_cl_boot|mean_cl_normal|mean_sdl|mean_se|median_hilow|opts|plotmatrix|position_dodge|position_fill|position_identity|position_jitter|position_stack|qplot|quickplot|rel|resolution|scale_alpha|scale_alpha_continuous|scale_alpha_discrete|scale_alpha_identity|scale_alpha_manual|scale_area|scale_color_brewer|scale_color_continuous|scale_color_discrete|scale_color_gradient|scale_color_gradient2|scale_color_gradientn|scale_color_grey|scale_color_hue|scale_color_identity|scale_color_manual|scale_colour_brewer|scale_colour_continuous|scale_colour_discrete|scale_colour_gradient|scale_colour_gradient2|scale_colour_gradientn|scale_colour_grey|scale_colour_hue|scale_colour_identity|scale_colour_manual|scale_fill_brewer|scale_fill_continuous|scale_fill_discrete|scale_fill_gradient|scale_fill_gradient2|scale_fill_gradientn|scale_fill_grey|scale_fill_hue|scale_fill_identity|scale_fill_manual|scale_linetype|scale_linetype_continuous|scale_linetype_discrete|scale_linetype_identity|scale_linetype_manual|scale_shape|scale_shape_continuous|scale_shape_discrete|scale_shape_identity|scale_shape_manual|scale_size|scale_size_area|scale_size_continuous|scale_size_discrete|scale_size_identity|scale_size_manual|scale_x_continuous|scale_x_date|scale_x_datetime|scale_x_discrete|scale_x_log10|scale_x_reverse|scale_x_sqrt|scale_y_continuous|scale_y_date|scale_y_datetime|scale_y_discrete|scale_y_log10|scale_y_reverse|scale_y_sqrt|should_stop|stat_abline|stat_bin|stat_bin2d|stat_bindot|stat_binhex|stat_boxplot|stat_contour|stat_density|stat_density2d|stat_ecdf|stat_function|stat_hline|stat_identity|stat_qq|stat_quantile|stat_smooth|stat_spoke|stat_sum|stat_summary|stat_summary_hex|stat_summary2d|stat_unique|stat_vline|stat_ydensity|theme|theme_blank|theme_bw|theme_classic|theme_get|theme_gray|theme_grey|theme_line|theme_minimal|theme_rect|theme_segment|theme_set|theme_text|theme_update|update_element|update_geom_defaults|update_labels|update_stat_defaults|waiver|xlab|xlim|ylab|ylim)\s*(\()</string>
-          <key>beginCaptures</key>
-          <dict>
-            <key>1</key>
-            <dict>
-              <key>name</key>
-              <string>support.function.r</string>
-            </dict>
-            <key>2</key>
-            <dict>
-              <key>name</key>
-              <string>punctuation.definition.parameters.r</string>
-            </dict>
-          </dict>
-          <key>contentName</key>
-          <string>meta.function-call.arguments.r</string>
-          <key>end</key>
-          <string>(\))</string>
-          <key>endCaptures</key>
-          <dict>
-            <key>1</key>
-            <dict>
-              <key>name</key>
-              <string>punctuation.definition.parameters.r</string>
-            </dict>
-          </dict>
-          <key>name</key>
-          <string>meta.function-call.r</string>
-          <key>patterns</key>
-          <array>
-            <dict>
-              <key>include</key>
-              <string>$self</string>
-            </dict>
-          </array>
-        </dict>
+				<dict>
+					<key>begin</key>
+					<string>\b(address|alloc\.col|as\.chron\.IDate|as\.chron\.ITime|as\.data\.table|as\.IDate|as\.ITime|between|chgroup|chmatch|chorder|CJ|copy|data\.table|dcast\.data\.table|fread|haskey|hour|IDateTime|is\.data\.table|key|last|like|mday|month|quarter|rbindlist|set|setattr|setcolorder|setkey|setkeyv|setnames|SJ|tables|test\.data\.table|timetaken|truelength|wday|week|yday|year)\s*(\()</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>support.function.r</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.definition.parameters.r</string>
+						</dict>
+					</dict>
+					<key>contentName</key>
+					<string>meta.function-call.arguments.r</string>
+					<key>end</key>
+					<string>(\))</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.definition.parameters.r</string>
+						</dict>
+					</dict>
+					<key>name</key>
+					<string>meta.function-call.r</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>$self</string>
+						</dict>
+					</array>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>\b(aes|aes_all|aes_auto|aes_string|annotate|annotation_custom|annotation_logticks|annotation_map|annotation_raster|autoplot|benchplot|borders|calc_element|continuous_scale|coord|coord_cartesian|coord_equal|coord_fixed|coord_flip|coord_map|coord_polar|coord_trans|cut_interval|cut_number|discrete_scale|element_blank|element_line|element_rect|element_text|expand_limits|facet|facet_grid|facet_null|facet_wrap|fortify|geom_abline|geom_area|geom_bar|geom_bin2d|geom_blank|geom_boxplot|geom_contour|geom_crossbar|geom_density|geom_density2d|geom_dotplot|geom_errorbar|geom_errorbarh|geom_freqpoly|geom_hex|geom_histogram|geom_hline|geom_jitter|geom_line|geom_linerange|geom_map|geom_path|geom_point|geom_pointrange|geom_polygon|geom_quantile|geom_raster|geom_rect|geom_ribbon|geom_rug|geom_segment|geom_smooth|geom_step|geom_text|geom_tile|geom_violin|geom_vline|gg_dep|ggfluctuation|ggmissing|ggorder|ggpcp|ggplot|ggplot_build|ggplot_gtable|ggplotGrob|ggsave|ggstructure|ggtitle|guide_colorbar|guide_colourbar|guide_legend|guides|is\.coord|is\.facet|is\.ggplot|is\.theme|label_both|label_bquote|label_parsed|label_value|labs|last_plot|layer|map_data|mean_cl_boot|mean_cl_normal|mean_sdl|mean_se|median_hilow|opts|plotmatrix|position_dodge|position_fill|position_identity|position_jitter|position_stack|qplot|quickplot|rel|resolution|scale_alpha|scale_alpha_continuous|scale_alpha_discrete|scale_alpha_identity|scale_alpha_manual|scale_area|scale_color_brewer|scale_color_continuous|scale_color_discrete|scale_color_gradient|scale_color_gradient2|scale_color_gradientn|scale_color_grey|scale_color_hue|scale_color_identity|scale_color_manual|scale_colour_brewer|scale_colour_continuous|scale_colour_discrete|scale_colour_gradient|scale_colour_gradient2|scale_colour_gradientn|scale_colour_grey|scale_colour_hue|scale_colour_identity|scale_colour_manual|scale_fill_brewer|scale_fill_continuous|scale_fill_discrete|scale_fill_gradient|scale_fill_gradient2|scale_fill_gradientn|scale_fill_grey|scale_fill_hue|scale_fill_identity|scale_fill_manual|scale_linetype|scale_linetype_continuous|scale_linetype_discrete|scale_linetype_identity|scale_linetype_manual|scale_shape|scale_shape_continuous|scale_shape_discrete|scale_shape_identity|scale_shape_manual|scale_size|scale_size_area|scale_size_continuous|scale_size_discrete|scale_size_identity|scale_size_manual|scale_x_continuous|scale_x_date|scale_x_datetime|scale_x_discrete|scale_x_log10|scale_x_reverse|scale_x_sqrt|scale_y_continuous|scale_y_date|scale_y_datetime|scale_y_discrete|scale_y_log10|scale_y_reverse|scale_y_sqrt|should_stop|stat_abline|stat_bin|stat_bin2d|stat_bindot|stat_binhex|stat_boxplot|stat_contour|stat_density|stat_density2d|stat_ecdf|stat_function|stat_hline|stat_identity|stat_qq|stat_quantile|stat_smooth|stat_spoke|stat_sum|stat_summary|stat_summary_hex|stat_summary2d|stat_unique|stat_vline|stat_ydensity|theme|theme_blank|theme_bw|theme_classic|theme_get|theme_gray|theme_grey|theme_line|theme_minimal|theme_rect|theme_segment|theme_set|theme_text|theme_update|update_element|update_geom_defaults|update_labels|update_stat_defaults|waiver|xlab|xlim|ylab|ylim)\s*(\()</string>
+					<key>beginCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>support.function.r</string>
+						</dict>
+						<key>2</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.definition.parameters.r</string>
+						</dict>
+					</dict>
+					<key>contentName</key>
+					<string>meta.function-call.arguments.r</string>
+					<key>end</key>
+					<string>(\))</string>
+					<key>endCaptures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.definition.parameters.r</string>
+						</dict>
+					</dict>
+					<key>name</key>
+					<string>meta.function-call.r</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>$self</string>
+						</dict>
+					</array>
+				</dict>
 			</array>
 		</dict>
 	</dict>
