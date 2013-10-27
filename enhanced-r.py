@@ -107,14 +107,21 @@ class RSendSelectCommand(sublime_plugin.TextCommand):
 
 class RChangeDirCommand(sublime_plugin.TextCommand):
     def run(self, edit):
-        path = os.path.dirname(self.view.file_name())
-        cmd = "setwd(\"" + escape_dq(path) + "\")"
+        fname = self.view.file_name()
+        if not fname:
+            sublime.error_message("Save the file!")
+            return
+        dirname = os.path.dirname(fname)        
+        cmd = "setwd(\"" + escape_dq(dirname) + "\")"
         rcmd(cmd)
 
 class RSourceCodeCommand(sublime_plugin.TextCommand):
     def run(self, edit):
-        path = self.view.file_name()
-        cmd = "source(\"" +  escape_dq(path) + "\")"
+        fname = self.view.file_name()
+        if not fname:
+            sublime.error_message("Save the file!") 
+            return
+        cmd = "source(\"" +  escape_dq(fname) + "\")"
         rcmd(cmd)
 
 class RappSwitcher(sublime_plugin.WindowCommand):
