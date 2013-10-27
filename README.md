@@ -4,11 +4,15 @@ Enhanced-R: R Plugin for Sublime Text 2/3
 Introduction
 ------------
 This plugin contains some simple features that helps in writing R languages:
+
 * More comprehensive Indentation and Syntax
 * Some useful key bindings
 * Showing function prototype in status bar
-
+ 
+<p align="center">
 <img width=300 src="https://github.com/randy3k/Enhanced-R/raw/master/status.png">
+</p>
+
 * Support multiple applications on Windows/Mac/Linux.
 * For Windows, [AutoHotkey](http://www.autohotkey.com) which is an automation script is used
 as a bridge between R and ST.
@@ -39,6 +43,7 @@ Some useful key bindings
 
 * Tell R to source the working script
 
+
 Settings
 ---------
 #### Application
@@ -49,3 +54,12 @@ Settings
 
 * In default, Enahnced R will search application's location automatically. To manaully edit application's path, go to
 Preferences -> Package Settings -> Enhanced R -> Settings
+
+#### Packages from which function prototypes are shown
+
+```
+{
+    // a list of packages which functions will show in the status bar
+    // "default_pkgs": ["base", "graphics", "grDevices", "methods", "stats", "utils"],
+}
+```
