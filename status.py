@@ -27,6 +27,10 @@ def get_setting(key, default=None):
         return default
 
 def get_Rscript():
+    global Rscript_saved
+    if Rscript_saved:
+        return Rscript_saved
+
     plat = sublime.platform()
     if plat == "windows":
         arch = "x64" if get_setting("App", "R64") == "R64" else "i386"
@@ -38,6 +42,8 @@ def get_Rscript():
     else:
         Rscript = get_setting("Rscript", "Rscript")
     # print(Rscript)
+
+    Rscript_saved = Rscript
     return Rscript
 
 def mycheck_output(args):
@@ -132,7 +138,7 @@ class RStatusListener(sublime_plugin.EventListener):
 
     def obtain_func_prototype(self, view):
         global container
-        funcsel = view.find_all(r"\b(?:[a-zA-Z0-9._:]*)\s*(?:<-|=)\s*function\s*(\((?:(?:[^()]*|(?1)))*\))")
+        funcsel = view.find_all(r"""\b(?:[a-zA-Z0-9._:]*)\s*(?:<-|=)\s*function\s*(\((?:(["\'])(?:[^\\]|\\.)*?\2|#.*$|[^()]|(?1))*\))""")
         for s in funcsel:
             m = re.match(r"^([^ ]+)\s*(?:<-|=)\s*(?:function)\s*(.+)$", view.substr(s))
             if m:
