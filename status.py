@@ -17,7 +17,8 @@ last_row = 0
 settingsfile = 'Enhanced-R.sublime-settings'
 
 # get platform specific key
-def get(plat, key, default=None):
+def get_setting(key, default=None):
+    plat = sublime.platform()
     settings = sublime.load_settings(settingsfile)
     plat_settings = settings.get(plat)
     if key in plat_settings:
@@ -28,15 +29,15 @@ def get(plat, key, default=None):
 def get_Rscript():
     plat = sublime.platform()
     if plat == "windows":
-        App = get(plat, "R", "R64")
+        App = get_setting("R", "R64")
         arch = "x64" if App == "R64" else "i386"
-        Rscript = get(plat, "Rscript")
+        Rscript = get_setting("Rscript")
         if not Rscript:
             akey=OpenKey(HKEY_LOCAL_MACHINE, "SOFTWARE\\R-core\\"+App, 0, KEY_WOW64_64KEY|KEY_READ)
             path=QueryValueEx(akey, "InstallPath")[0]
             Rscript = path + "\\bin\\"  + arch + "\\Rscript.exe"
     else:
-        Rscript = get(plat, "Rscript", "Rscript")
+        Rscript = get_setting("Rscript", "Rscript")
     # print(Rscript)
     return Rscript
 
@@ -75,7 +76,10 @@ class RStatusListener(sublime_plugin.EventListener):
         else:
             Rscript = get_Rscript()
             plat = sublime.platform()
-            output = mycheck_output([Rscript, '-e', 'args(' + func + ')'])
+            args = [Rscript, '-e', 'args(' + func + ')']
+            default_pkgs = sublime.load_settings(settingsfile).get("default_pkgs", "")
+            if default_pkgs: args.append('--default-packages=' + ",".join(default_pkgs))
+            output = mycheck_output(args)
             if not re.match("function ", output): return
             output = re.sub(r"^function ", "", output)
             output = re.sub(r"\)[^)]*$", ")", output)

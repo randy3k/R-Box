@@ -29,5 +29,9 @@
         // paths to Rscript binary
         // "Rscript" : "",
     },
+    // a list of packages which functions will show in the status bar
+    // "default_pkgs": ["base", "graphics", "grDevices", "methods", "stats", "utils"],
+
+    // a list of extensions
     "extensions": ["r", "R", "s", "S", ".Rprofile"]
 }
