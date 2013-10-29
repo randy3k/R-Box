@@ -15,6 +15,7 @@ if sys.platform == "win32":
 container = {}
 last_row = 0
 settingsfile = 'Enhanced-R.sublime-settings'
+Rscript_saved = None
 
 # get platform specific key
 def get_setting(key, default=None):
