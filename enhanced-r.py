@@ -3,6 +3,7 @@ import sublime_plugin
 import os
 import subprocess
 import re
+import ctypes
 
 settingsfile = 'Enhanced-R.sublime-settings'
 
@@ -61,7 +62,7 @@ def rcmd(cmd):
     elif plat == 'windows':
         App = get_setting("App", "R64")
         progpath = get_setting(App, str(1) if App == "R64" else str(0))
-        ahk_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','AutoHotkey')
+        ahk_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','AutoHotkeyU32')
         ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rgui.ahk')
         # manually add "\n" to keep the indentation of first line of block code,
         # "\n" is later removed in AutoHotkey script

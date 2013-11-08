@@ -45,7 +45,7 @@ if 0=2
     ;Rguiexe = "C:\Program Files\R\R-3.0.1\bin\x64\Rgui.exe"
     Rguiexe = %1%
     if (Rguiexe = 1) {
-        RegRead, Rhome, HKEY_LOCAL_MACHINE,SOFTWARE\R-core\R64, InstallPath
+        RegRead, Rhome, HKEY_LOCAL_MACHINE,SOFTWARE\R-core\R, InstallPath
         OutputDebug Rhome from registry is %Rhome%
         Rguiexe := Rhome . "\bin\x64\Rgui.exe"
     }
