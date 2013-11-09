@@ -2,7 +2,7 @@
     "osx" : {
         // R / R64 / Terminal / iTerm
         "App" : "R"
-        // paths to Rscript binary
+        // path to Rscript binary
         // "Rscript" : "/usr/bin/Rscript",
     },
 
@@ -10,11 +10,11 @@
         // R32 / R64
         "App" : "R64"
 
-        // paths to R bibary
+        // path to R binary
         // "R32" : "C:\\Program Files\\R\\R-3.0.1\\bin\\i386\\Rgui.exe",
         // "R64" : "C:\\Program Files\\R\\R-3.0.1\\bin\\x64\\Rgui.exe",
 
-        // paths to Rscript binary
+        // path to Rscript binary
         // "Rscript" : "C:\\Program Files\\R\\R-3.0.1\\bin\\x64\\Rscript.exe",
     },
 
@@ -22,13 +22,14 @@
         // tmux / screen
         "App" : "tmux"
 
-        // paths
+        // path
         // "tmux" : "tmux",
         // "screen" : "screen",
 
-        // paths to Rscript binary
+        // path to Rscript binary
         // "Rscript" : "",
     },
+
     // a list of packages which functions will show in the status bar
     // "default_pkgs": ["base", "graphics", "grDevices", "methods", "stats", "utils"],
 
