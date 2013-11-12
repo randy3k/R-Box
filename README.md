@@ -7,15 +7,12 @@ This plugin contains some simple features that helps in writing R languages:
 
 * More comprehensive Indentation and Syntax
 * Send commands to different applications such as R GUI, Terminal and [SublimeREPL](https://github.com/wuub/SublimeREPL).
-* Show function prototype in status bar
+* Show function hints in status bar
  
 <p align="center">
 <img width=300 src="https://github.com/randy3k/Enhanced-R/raw/master/status.png">
 </p>
 
-* Support multiple applications on Windows/Mac/Linux.
-* For Windows, [AutoHotkey](http://www.autohotkey.com) which is an automation script is used
-as a bridge between R and ST.
 
 
 Supported Applications
@@ -25,7 +22,10 @@ Supported Applications
 * Tmux and screen for Linux
 * [SublimeREPL](https://github.com/wuub/SublimeREPL)
 
-Some useful key bindings
+Note: For Windows, [AutoHotkey](http://www.autohotkey.com) which is an automation script is used
+as a bridge between R and ST.
+
+Key bindings
 ---------------
 #### Sending Code (default: R)
 **Keybinding:** `C-Enter`
@@ -47,16 +47,18 @@ Some useful key bindings
 
 Settings
 ---------
-#### Application
 
-* Type ``R: Choose Application`` in Command Palette to switch between applications.
-
-#### Application path
-
-* In default, Enahnced R will search application's location automatically. To manaully edit application's path, go to
 Preferences -> Package Settings -> Enhanced R -> Settings
 
-#### Packages for showing function prototypes
+#### Application
+
+* ``R: Choose Application`` in Command Palette to switch between applications.
+
+#### Application paths
+
+* In default, Enahnced R will search application's location automatically. You may manaully edit application's path.
+
+#### Packages for function hints.
 
 ```
 {
