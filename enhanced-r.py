@@ -13,15 +13,7 @@ def escape_dq(string):
     string = string.replace('"', '\\"')
     return string
 
-# clean command before sending to R
-def clean(cmd):
-    plat = sublime.platform()
-    if plat == "osx":
-        cmd = escape_dq(cmd)
-    cmd = cmd.rstrip('\n')
-    if len(re.findall("\n", cmd)) == 0:
-        cmd = cmd.lstrip()
-    return cmd
+
 
 # get platform specific key
 def get_setting(key, default=None):
@@ -34,53 +26,66 @@ def get_setting(key, default=None):
         return default
 
 # the main function
-def rcmd(cmd):
-    cmd = clean(cmd)
-    plat = sublime.platform()
-    if plat == 'osx':
-        App = get_setting("App", "R")
-        if re.match('R', App):
-            args = ['osascript']
-            args.extend(['-e', 'tell app "' + App + '" to cmd "' + cmd + '"'])
-            subprocess.Popen(args)
-        elif App == 'Terminal':
-            args = ['osascript']
-            args.extend(['-e', 'tell app "Terminal" to do script "' + cmd + '" in front window\n'])
-            subprocess.Popen(args)
-        elif re.match('iTerm', App):
+class RSendTextCommand(sublime_plugin.TextCommand):
+    def run(self, edit, cmd):
+
+        # clean command before sending to R
+        cmd = cmd.rstrip('\n')
+        if len(re.findall("\n", cmd)) == 0:
+            cmd = cmd.lstrip()
+
+        App = get_setting("App")
+        if App == "SublimeREPL":
+            external_id = self.view.scope_name(0).split(" ")[0].split(".", 1)[1]
+            self.view.window().run_command("repl_send", {"external_id": external_id, "text": cmd})
+            return
+
+        plat = sublime.platform()
+        if plat == 'osx':
+            cmd = escape_dq(cmd)
+            App = get_setting("App", "R")
+            if re.match('R', App):
                 args = ['osascript']
-                apple_script = ('tell application "' + App + '"\n'
-                                    'tell the first terminal\n'
-                                        'tell current session\n'
-                                            'write text "' + cmd + '"\n'
-                                        'end tell\n'
-                                    'end tell\n'
-                                'end tell\n')
-                args.extend(['-e', apple_script])
+                args.extend(['-e', 'tell app "' + App + '" to cmd "' + cmd + '"'])
                 subprocess.Popen(args)
+            elif App == 'Terminal':
+                args = ['osascript']
+                args.extend(['-e', 'tell app "Terminal" to do script "' + cmd + '" in front window\n'])
+                subprocess.Popen(args)
+            elif re.match('iTerm', App):
+                    args = ['osascript']
+                    apple_script = ('tell application "' + App + '"\n'
+                                        'tell the first terminal\n'
+                                            'tell current session\n'
+                                                'write text "' + cmd + '"\n'
+                                            'end tell\n'
+                                        'end tell\n'
+                                    'end tell\n')
+                    args.extend(['-e', apple_script])
+                    subprocess.Popen(args)
 
-    elif plat == 'windows':
-        App = get_setting("App", "R64")
-        progpath = get_setting(App, str(1) if App == "R64" else str(0))
-        ahk_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','AutoHotkeyU32')
-        ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rgui.ahk')
-        # manually add "\n" to keep the indentation of first line of block code,
-        # "\n" is later removed in AutoHotkey script
-        cmd = "\n"+cmd
+        elif plat == 'windows':
+            App = get_setting("App", "R64")
+            progpath = get_setting(App, str(1) if App == "R64" else str(0))
+            ahk_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','AutoHotkeyU32')
+            ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rgui.ahk')
+            # manually add "\n" to keep the indentation of first line of block code,
+            # "\n" is later removed in AutoHotkey script
+            cmd = "\n"+cmd
 
-        args = [ahk_path, ahk_script_path, progpath, cmd ]
-        subprocess.Popen(args)
+            args = [ahk_path, ahk_script_path, progpath, cmd ]
+            subprocess.Popen(args)
 
-    elif plat == 'linux':
-        App = get_setting("App", "tmux")
-        if App == "tmux":
-            progpath = get_setting("tmux", "tmux")
-            subprocess.call([progpath, 'set-buffer', cmd + "\n"])
-            subprocess.call([progpath, 'paste-buffer', '-d'])
+        elif plat == 'linux':
+            App = get_setting("App", "tmux")
+            if App == "tmux":
+                progpath = get_setting("tmux", "tmux")
+                subprocess.call([progpath, 'set-buffer', cmd + "\n"])
+                subprocess.call([progpath, 'paste-buffer', '-d'])
 
-        elif App == "screen":
-            progpath = get_setting("screen", "screen")
-            subprocess.call([progpath, '-X', 'stuff', cmd + "\n"])
+            elif App == "screen":
+                progpath = get_setting("screen", "screen")
+                subprocess.call([progpath, '-X', 'stuff', cmd + "\n"])
 
 
 class RSendSelectCommand(sublime_plugin.TextCommand):
@@ -105,7 +110,7 @@ class RSendSelectCommand(sublime_plugin.TextCommand):
             else:
                 thiscmd = self.view.substr(sel)
             cmd += thiscmd +'\n'
-        rcmd(cmd)
+        self.view.run_command("r_send_text", {"cmd": cmd})
 
 class RChangeDirCommand(sublime_plugin.TextCommand):
     def run(self, edit):
@@ -115,7 +120,7 @@ class RChangeDirCommand(sublime_plugin.TextCommand):
             return
         dirname = os.path.dirname(fname)
         cmd = "setwd(\"" + escape_dq(dirname) + "\")"
-        rcmd(cmd)
+        self.view.run_command("r_send_text", {"cmd": cmd})
 
 class RSourceCodeCommand(sublime_plugin.TextCommand):
     def run(self, edit):
@@ -124,7 +129,7 @@ class RSourceCodeCommand(sublime_plugin.TextCommand):
             sublime.error_message("Save the file!")
             return
         cmd = "source(\"" +  escape_dq(fname) + "\")"
-        rcmd(cmd)
+        self.view.run_command("r_send_text", {"cmd": cmd})
 
 class RappSwitcher(sublime_plugin.WindowCommand):
 
@@ -134,14 +139,14 @@ class RappSwitcher(sublime_plugin.WindowCommand):
     def run(self):
         plat = sublime.platform()
         if plat == 'osx':
-            self.app_list = ["R", "R64", "Terminal", "iTerm"]
-            pop_string = ["R is 64 bit for 3.x.x", "R 2.x.x only", "Terminal", "iTerm 2"]
+            self.app_list = ["R", "R64", "Terminal", "iTerm", "SublimeREPL"]
+            pop_string = ["R is 64 bit for 3.x.x", "R 2.x.x only", "Terminal", "iTerm 2", "SublimeREPL"]
         elif plat == "windows":
-            self.app_list = ["R32", "R64"]
-            pop_string = ["R i386", "R x64"]
+            self.app_list = ["R32", "R64", "SublimeREPL"]
+            pop_string = ["R i386", "R x64", "SublimeREPL"]
         elif plat == "linux":
-            self.app_list = ["tmux", "screen"]
-            pop_string = ["tmux", "screen"]
+            self.app_list = ["tmux", "screen", "SublimeREPL"]
+            pop_string = ["tmux", "screen", "SublimeREPL"]
         else:
             sublime.error_message("Platform not supported!")
 

@@ -23,6 +23,7 @@ Supported Applications
 * R GUI i386 and x64 for Windows and Mac
 * Terminal and iTerm 2 for Mac
 * Tmux and screen for Linux
+* [SublimeREPL](https://github.com/wuub/SublimeREPL)
 
 Some useful key bindings
 ---------------
