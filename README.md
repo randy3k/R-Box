@@ -6,8 +6,8 @@ Introduction
 This plugin contains some simple features that helps in writing R languages:
 
 * More comprehensive Indentation and Syntax
-* Some useful key bindings
-* Showing function prototype in status bar
+* Send commands to different applications such as R GUI, Terminal and [SublimeREPL](https://github.com/wuub/SublimeREPL).
+* Show function prototype in status bar
  
 <p align="center">
 <img width=300 src="https://github.com/randy3k/Enhanced-R/raw/master/status.png">
