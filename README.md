@@ -56,7 +56,7 @@ Settings
 * In default, Enahnced R will search application's location automatically. To manaully edit application's path, go to
 Preferences -> Package Settings -> Enhanced R -> Settings
 
-#### Packages from which function prototypes are shown
+#### Packages for showing function prototypes
 
 ```
 {
