@@ -15,7 +15,6 @@ if sys.platform == "win32":
 container = {}
 last_row = 0
 settingsfile = 'Enhanced-R.sublime-settings'
-Rscript_saved = None
 
 # get platform specific key
 def get_setting(key, default=None):
@@ -28,10 +27,6 @@ def get_setting(key, default=None):
         return default
 
 def get_Rscript():
-    global Rscript_saved
-    if Rscript_saved:
-        return Rscript_saved
-
     plat = sublime.platform()
     if plat == "windows":
         arch = "x64" if get_setting("App", "R64") == "R64" else "i386"
@@ -42,20 +37,21 @@ def get_Rscript():
             Rscript = path + "\\bin\\"  + arch + "\\Rscript.exe"
     else:
         Rscript = get_setting("Rscript", "Rscript")
-    # print(Rscript)
 
-    Rscript_saved = Rscript
     return Rscript
 
 def mycheck_output(args):
-	if sys.platform == "win32":
-		startupinfo = subprocess.STARTUPINFO()
-		startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-		output = subprocess.Popen(args, stdout=subprocess.PIPE, startupinfo=startupinfo).communicate()[0]
-	else:
-		output = subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0]
+    try:
+    	if sys.platform == "win32":
+    		startupinfo = subprocess.STARTUPINFO()
+    		startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+    		output = subprocess.Popen(args, stdout=subprocess.PIPE, startupinfo=startupinfo).communicate()[0]
+    	else:
+    		output = subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0].decode('utf-8')
+    except:
+        output = ""
 
-	return output.decode('utf-8')
+    return output
 
 
 class RStatusListener(sublime_plugin.EventListener):
