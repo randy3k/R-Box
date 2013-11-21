@@ -7,7 +7,7 @@ This plugin contains some simple features that helps in writing R languages:
 * Show function hint in status bar
  
 <p align="center">
-<img width=300 src="https://github.com/randy3k/Enhanced-R/raw/master/status.png">
+<img width=500 src="https://github.com/randy3k/Enhanced-R/raw/master/status.png">
 </p>
 
 ----
