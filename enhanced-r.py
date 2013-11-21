@@ -4,6 +4,7 @@ import os
 import subprocess
 import re
 import ctypes
+import time
 
 settingsfile = 'Enhanced-R.sublime-settings'
 
@@ -42,9 +43,27 @@ class RSendTextCommand(sublime_plugin.TextCommand):
 
         plat = sublime.platform()
         if plat == 'osx':
-            cmd = escape_dq(cmd)
             App = get_setting("App", "R")
-            if re.match('R', App):
+
+            if App == "RStudio":
+                args = ['osascript']
+                apple_script = ('tell application "RStudio" to activate\n'
+                                'delay 0.25\n'
+                                'tell application "System Events"\n'
+                                    'keystroke "v" using {command down}\n'
+                                    'keystroke return\n'
+                                'end tell\n'
+                                'tell application "Sublime Text" to activate\n')
+                args.extend(['-e', apple_script])
+                # print(args[2])
+                oldcb = sublime.get_clipboard()
+                sublime.set_clipboard(cmd)
+                proc = subprocess.Popen(args)
+                # time.sleep(1)
+                # sublime.set_clipboard(oldcb)
+
+            cmd = escape_dq(cmd)
+            if re.match('R[0-9]*$', App):
                 args = ['osascript']
                 args.extend(['-e', 'tell app "' + App + '" to cmd "' + cmd + '"'])
                 subprocess.Popen(args)
@@ -139,8 +158,8 @@ class RappSwitcher(sublime_plugin.WindowCommand):
     def run(self):
         plat = sublime.platform()
         if plat == 'osx':
-            self.app_list = ["R", "R64", "Terminal", "iTerm", "SublimeREPL"]
-            pop_string = ["R is 64 bit for 3.x.x", "R 2.x.x only", "Terminal", "iTerm 2", "SublimeREPL"]
+            self.app_list = ["R", "R64", "Terminal", "iTerm", "SublimeREPL", "RSpace", "RStudio"]
+            pop_string = ["R is 64 bit for 3.x.x", "R 2.x.x only", "Terminal", "iTerm 2", "SublimeREPL", "RSpace", "RStudio"]
         elif plat == "windows":
             self.app_list = ["R32", "R64", "SublimeREPL"]
             pop_string = ["R i386", "R x64", "SublimeREPL"]
