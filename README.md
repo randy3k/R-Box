@@ -14,10 +14,11 @@ This plugin contains some simple features that helps in writing R languages:
 
 Supported Applications
 ---------------
-* R GUI for Windows and Mac
-* Terminal and iTerm 2 for Mac
-* Tmux and screen for Linux
+* R GUI on Windows and Mac
+* Terminal and iTerm 2 on Mac
+* Tmux and screen on Linux
 * [SublimeREPL](https://github.com/wuub/SublimeREPL)
+* (In beta) RStudio on Mac
 
 Note: For Windows, [AutoHotkey](http://www.autohotkey.com) which is an automation script is used
 as a bridge between R and ST.
