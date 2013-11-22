@@ -31,7 +31,7 @@
     },
 
     // auto advance lines after sending command
-    "auto_advance": false,
+    "auto_advance": true,
 
     // a list of packages which functions will show in the status bar
     // "default_pkgs": ["base", "graphics", "grDevices", "methods", "stats", "utils"],
