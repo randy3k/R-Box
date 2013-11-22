@@ -14,8 +14,6 @@ def escape_dq(string):
     string = string.replace('"', '\\"')
     return string
 
-
-
 # get platform specific key
 def get_setting(key, default=None):
     plat = sublime.platform()
@@ -110,27 +108,34 @@ class RSendTextCommand(sublime_plugin.TextCommand):
 class RSendSelectCommand(sublime_plugin.TextCommand):
 
     # expand selection to {...} when being triggered
-    def expand_sel(self, sel, advance=False):
+    def expand_sel(self, sel):
         esel = self.view.find(r"""^.*(\{(?:(["\'])(?:[^\\]|\\.)*?\2|#.*$|[^\{\}]|(?1))*\})"""
             , self.view.line(sel).begin())
         if self.view.line(sel).begin() == esel.begin():
             return esel
 
     def run(self, edit):
+        view = self.view
         cmd = ''
-        for sel in self.view.sel():
+        for sel in [s for s in view.sel()]:
             if sel.empty():
-                thiscmd = self.view.substr(self.view.line(sel))
+                thiscmd = view.substr(view.line(sel))
+                line = view.rowcol(sel.end())[0]
                 # if the line ends with {, expand to {...}
                 if re.match(r".*\{\s*$", thiscmd):
                     esel = self.expand_sel(sel)
                     if esel:
-                        thiscmd = self.view.substr(esel)
+                        thiscmd = view.substr(esel)
+                        line = view.rowcol(esel.end())[0]
+                if view.settings().get("auto_advance", False):
+                    view.sel().subtract(sel)
+                    pt = view.text_point(line+1,0)
+                    view.sel().add(sublime.Region(pt,pt))
             else:
-                thiscmd = self.view.substr(sel)
+                thiscmd = view.substr(sel)
             cmd += thiscmd +'\n'
 
-        self.view.run_command("r_send_text", {"cmd": cmd})
+        view.run_command("r_send_text", {"cmd": cmd})
 
 class RChangeDirCommand(sublime_plugin.TextCommand):
     def run(self, edit):

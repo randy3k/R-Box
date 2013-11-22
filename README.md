@@ -58,6 +58,13 @@ Preferences -> Package Settings -> Enhanced R -> Settings
 
 * In default, Enahnced R will automatically search for applications. You may manaully edit applications' paths.
 
+#### Auto advance lines after sending command
+```
+{
+    // auto advance lines after sending command
+    "auto_advance": false,
+}    
+```
 #### Packages for function hints.
 
 ```
@@ -66,3 +73,4 @@ Preferences -> Package Settings -> Enhanced R -> Settings
     // "default_pkgs": ["base", "graphics", "grDevices", "methods", "stats", "utils"],
 }
 ```
+
