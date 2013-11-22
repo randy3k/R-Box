@@ -1,6 +1,6 @@
 [
     {
-        "caption": "R: Choose Application",
-        "command": "rapp_switcher"
+        "caption": "R Application Switch",
+        "command": "rapp_switch"
     }
 ]

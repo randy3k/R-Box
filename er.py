@@ -156,7 +156,7 @@ class RSourceCodeCommand(sublime_plugin.TextCommand):
         cmd = "source(\"" +  escape_dq(fname) + "\")"
         self.view.run_command("r_send_text", {"cmd": cmd})
 
-class RappSwitcher(sublime_plugin.WindowCommand):
+class RappSwitch(sublime_plugin.WindowCommand):
 
     def show_quick_panel(self, options, done):
         sublime.set_timeout(lambda: self.window.show_quick_panel(options, done), 10)

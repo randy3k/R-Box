@@ -18,7 +18,7 @@ Supported Applications
 * Terminal and iTerm 2 on Mac
 * Tmux and screen on Linux
 * [SublimeREPL](https://github.com/wuub/SublimeREPL)
-* (In beta) RStudio on Mac
+* (In beta) [RStudio](http://www.rstudio.com) on Mac
 
 Note: For Windows, [AutoHotkey](http://www.autohotkey.com) which is an automation script is used
 as a bridge between R and ST.
@@ -53,11 +53,11 @@ Preferences -> Package Settings -> Enhanced R -> Settings
 
 #### Application
 
-* ``R: Choose Application`` in Command Palette to switch between applications.
+* ``R Application Switch`` in Command Palette to switch between applications.
 
 #### Application paths
 
-* In default, Enahnced R will automatically search for applications. You may manaully edit applications' paths.
+* In default, Enhanced R will automatically search for applications. You may manually edit applications' paths.
 
 #### Auto advance lines after sending command
 ```
