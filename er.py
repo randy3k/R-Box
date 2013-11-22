@@ -110,7 +110,7 @@ class RSendTextCommand(sublime_plugin.TextCommand):
 class RSendSelectCommand(sublime_plugin.TextCommand):
 
     # expand selection to {...} when being triggered
-    def expand_sel(self, sel):
+    def expand_sel(self, sel, advance=False):
         esel = self.view.find(r"""^.*(\{(?:(["\'])(?:[^\\]|\\.)*?\2|#.*$|[^\{\}]|(?1))*\})"""
             , self.view.line(sel).begin())
         if self.view.line(sel).begin() == esel.begin():
@@ -129,6 +129,7 @@ class RSendSelectCommand(sublime_plugin.TextCommand):
             else:
                 thiscmd = self.view.substr(sel)
             cmd += thiscmd +'\n'
+
         self.view.run_command("r_send_text", {"cmd": cmd})
 
 class RChangeDirCommand(sublime_plugin.TextCommand):
@@ -158,8 +159,8 @@ class RappSwitcher(sublime_plugin.WindowCommand):
     def run(self):
         plat = sublime.platform()
         if plat == 'osx':
-            self.app_list = ["R", "R64", "Terminal", "iTerm", "SublimeREPL", "RSpace", "RStudio"]
-            pop_string = ["R is 64 bit for 3.x.x", "R 2.x.x only", "Terminal", "iTerm 2", "SublimeREPL", "RSpace", "RStudio"]
+            self.app_list = ["R", "R64", "Terminal", "iTerm", "SublimeREPL", "RStudio"]
+            pop_string = ["R is 64 bit for 3.x.x", "R 2.x.x only", "Terminal", "iTerm 2", "SublimeREPL", "RStudio"]
         elif plat == "windows":
             self.app_list = ["R32", "R64", "SublimeREPL"]
             pop_string = ["R i386", "R x64", "SublimeREPL"]
