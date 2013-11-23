@@ -1,6 +1,6 @@
-Enhanced-R: R Plugin for Sublime Text 2/3
+Enhanced-R package for Sublime Text 2/3
 ------------
-This plugin contains some simple features that helps in writing R languages:
+This package helps in writing R languages:
 
 * More comprehensive Indentation and Syntax
 * Send commands to different applications such as R GUI, Terminal and [SublimeREPL](https://github.com/wuub/SublimeREPL).
