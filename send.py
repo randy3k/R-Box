@@ -3,7 +3,6 @@ import sublime_plugin
 import os
 import subprocess
 import re
-import ctypes
 import time
 
 settingsfile = 'Enhanced-R.sublime-settings'
@@ -15,7 +14,7 @@ def escape_dq(string):
     return string
 
 # get platform specific key
-def get_setting(key, default=None):
+def platform_setting(key, default=None):
     plat = sublime.platform()
     settings = sublime.load_settings(settingsfile)
     plat_settings = settings.get(plat)
@@ -33,7 +32,7 @@ class RSendTextCommand(sublime_plugin.TextCommand):
         if len(re.findall("\n", cmd)) == 0:
             cmd = cmd.lstrip()
 
-        App = get_setting("App")
+        App = platform_setting("App")
         if App == "SublimeREPL":
             external_id = self.view.scope_name(0).split(" ")[0].split(".", 1)[1]
             self.view.window().run_command("repl_send", {"external_id": external_id, "text": cmd})
@@ -41,7 +40,7 @@ class RSendTextCommand(sublime_plugin.TextCommand):
 
         plat = sublime.platform()
         if plat == 'osx':
-            App = get_setting("App", "R")
+            App = platform_setting("App", "R")
 
             if App == "RStudio":
                 args = ['osascript']
@@ -82,8 +81,8 @@ class RSendTextCommand(sublime_plugin.TextCommand):
                     subprocess.Popen(args)
 
         elif plat == 'windows':
-            App = get_setting("App", "R64")
-            progpath = get_setting(App, str(1) if App == "R64" else str(0))
+            App = platform_setting("App", "R64")
+            progpath = platform_setting(App, str(1) if App == "R64" else str(0))
             ahk_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','AutoHotkeyU32')
             ahk_script_path = os.path.join(sublime.packages_path(), 'Enhanced-R', 'bin','Rgui.ahk')
             # manually add "\n" to keep the indentation of first line of block code,
@@ -94,14 +93,14 @@ class RSendTextCommand(sublime_plugin.TextCommand):
             subprocess.Popen(args)
 
         elif plat == 'linux':
-            App = get_setting("App", "tmux")
+            App = platform_setting("App", "tmux")
             if App == "tmux":
-                progpath = get_setting("tmux", "tmux")
+                progpath = platform_setting("tmux", "tmux")
                 subprocess.call([progpath, 'set-buffer', cmd + "\n"])
                 subprocess.call([progpath, 'paste-buffer', '-d'])
 
             elif App == "screen":
-                progpath = get_setting("screen", "screen")
+                progpath = platform_setting("screen", "screen")
                 subprocess.call([progpath, '-X', 'stuff', cmd + "\n"])
 
 
@@ -156,42 +155,3 @@ class RSourceCodeCommand(sublime_plugin.TextCommand):
         cmd = "source(\"" +  escape_dq(fname) + "\")"
         self.view.run_command("r_send_text", {"cmd": cmd})
 
-class RappSwitch(sublime_plugin.WindowCommand):
-
-    def show_quick_panel(self, options, done):
-        sublime.set_timeout(lambda: self.window.show_quick_panel(options, done), 10)
-
-    def run(self):
-        plat = sublime.platform()
-        if plat == 'osx':
-            self.app_list = ["R", "R64", "Terminal", "iTerm", "SublimeREPL", "RStudio"]
-            pop_string = ["R is 64 bit for 3.x.x", "R 2.x.x only", "Terminal", "iTerm 2", "SublimeREPL", "RStudio"]
-        elif plat == "windows":
-            self.app_list = ["R32", "R64", "SublimeREPL"]
-            pop_string = ["R i386", "R x64", "SublimeREPL"]
-        elif plat == "linux":
-            self.app_list = ["tmux", "screen", "SublimeREPL"]
-            pop_string = ["tmux", "screen", "SublimeREPL"]
-        else:
-            sublime.error_message("Platform not supported!")
-
-        self.show_quick_panel([list(z) for z in zip(self.app_list, pop_string)], self.on_done)
-
-    def on_done(self, action):
-        if action==-1: return
-        settings = sublime.load_settings(settingsfile)
-        plat = sublime.platform()
-        if plat == 'osx':
-            plat_settings = settings.get('osx')
-            plat_settings['App'] = self.app_list[action]
-            settings.set('osx', plat_settings)
-        elif plat == "windows":
-            plat_settings = settings.get('windows')
-            plat_settings['App'] = self.app_list[action]
-            settings.set('windows', plat_settings)
-        elif plat == "linux":
-            plat_settings = settings.get('linux')
-            plat_settings['App'] = self.app_list[action]
-            settings.set('linux', plat_settings)
-
-        sublime.save_settings(settingsfile)
