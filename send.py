@@ -69,6 +69,9 @@ class RSendTextCommand(sublime_plugin.TextCommand):
                 args.extend(['-e', 'tell app "Terminal" to do script "' + cmd + '" in front window\n'])
                 subprocess.Popen(args)
             elif re.match('iTerm', App):
+                    # when cmd ends in a space, iterm does not execute. Thus append a line break.
+                    if (cmd[-1:] == ' '):
+                        cmd += '\n'
                     args = ['osascript']
                     apple_script = ('tell application "' + App + '"\n'
                                         'tell the first terminal\n'
