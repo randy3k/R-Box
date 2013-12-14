@@ -129,7 +129,7 @@ class RSendSelectCommand(sublime_plugin.TextCommand):
                     if esel:
                         thiscmd = view.substr(esel)
                         line = view.rowcol(esel.end())[0]
-                if view.settings().get("auto_advance", False):
+                if view.settings().get("r_auto_advance", False):
                     view.sel().subtract(sel)
                     pt = view.text_point(line+1,0)
                     view.sel().add(sublime.Region(pt,pt))

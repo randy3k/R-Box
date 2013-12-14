@@ -31,10 +31,10 @@
     },
 
     // auto advance lines after sending command
-    "auto_advance": true,
+    "r_auto_advance": true,
 
     // auto completions
-    "auto_completions": true,
+    "r_auto_completions": true,
 
     // a list of packages which functions will show in the status bar
     // "default_pkgs": ["base", "graphics", "grDevices", "methods", "stats", "utils"],
