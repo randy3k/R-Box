@@ -40,5 +40,5 @@
     "extensions": ["r", "R", "s", "S", ".Rprofile"],
 
     //  Allows for  '.' in R object names
-    "word_separators": "/\\()\"‘-:,;~!@#$%^&*|+=[]{}`~?"
+    // "word_separators": "/\\()\"‘-:,;~!@#$%^&*|+=[]{}`~?"
 }
