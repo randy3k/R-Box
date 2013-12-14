@@ -33,11 +33,14 @@
     // auto advance lines after sending command
     "auto_advance": true,
 
+    // auto completions
+    "auto_completions": true,
+
     // a list of packages which functions will show in the status bar
     // "default_pkgs": ["base", "graphics", "grDevices", "methods", "stats", "utils"],
 
     // a list of extensions
-    "extensions": ["r", "R", "s", "S", ".Rprofile"],
+    "extensions": ["r", "R", "s", "S", ".Rprofile"]
 
     //  Allows for  '.' in R object names
     // "word_separators": "/\\()\"‘-:,;~!@#$%^&*|+=[]{}`~?"
