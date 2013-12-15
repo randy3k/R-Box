@@ -63,15 +63,23 @@ Preferences -> Package Settings -> Enhanced R -> Settings
 ```
 {
     // auto advance lines after sending command
-    "auto_advance": false,
+    "r_auto_advance": false
 }    
 ```
+
+#### Auto completions
+```
+{
+    "r_auto_completions": false
+}    
+```
+
 #### Packages for function hints.
 
 ```
 {
     // a list of packages which functions will show in the status bar
-    // "default_pkgs": ["base", "graphics", "grDevices", "methods", "stats", "utils"],
+    // "default_pkgs": ["base", "graphics", "grDevices", "methods", "stats", "utils"]
 }
 ```
 
