@@ -111,7 +111,7 @@ class RSendSelectCommand(sublime_plugin.TextCommand):
 
     # expand selection to {...} when being triggered
     def expand_sel(self, sel):
-        esel = self.view.find(r"""^.*(\{(?:(["\'])(?:[^\\]|\\.)*?\2|#.*$|[^\{\}]|(?1))*\})"""
+        esel = self.view.find(r"""^.*(\{(?:(["\'])(?:[^\\]|\\.)*?\2|#.*$|[^\{\}]|(?1))*\}).*$"""
             , self.view.line(sel).begin())
         if self.view.line(sel).begin() == esel.begin():
             return esel
