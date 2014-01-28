@@ -20,8 +20,11 @@ class RCompletions(sublime_plugin.EventListener):
             return None
         if not view.settings().get("r_auto_completions"): return None
 
-        point = locations[0]
+        default_completions = [(item, item) for sublist in [view.extract_completions(prefix)]
+         for item in sublist if len(item) > 3]
+        default_completions = list(set(default_completions))
+
         if not self.completions: self.completions = load_jsonfile()['completions']
         r = [(p,p) for p in self.completions if type(p) == str ]
-        return (r,  sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS)
+        return (r+default_completions,  sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS)
 
