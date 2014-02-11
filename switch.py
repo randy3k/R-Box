@@ -12,7 +12,7 @@ class RappSwitch(sublime_plugin.WindowCommand):
         plat = sublime.platform()
         if plat == 'osx':
             self.app_list = ["R", "R64", "Terminal", "iTerm", "SublimeREPL", "RStudio"]
-            pop_string = ["R is 64 bit for 3.x.x", "R 2.x.x only", "Terminal", "iTerm 2", "SublimeREPL", "RStudio"]
+            pop_string = ["", "R 2.x.x only", "Terminal", "iTerm 2", "SublimeREPL", "RStudio"]
         elif plat == "windows":
             self.app_list = ["R32", "R64", "SublimeREPL"]
             pop_string = ["R i386", "R x64", "SublimeREPL"]
