@@ -49,6 +49,7 @@ def mycheck_output(args):
     	else:
     		output = subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0].decode('utf-8')
     except:
+        print("Cannot locate Rscript, please provide the path to Rscript in the settings")
         output = ""
 
     return output
