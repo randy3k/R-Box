@@ -45,7 +45,7 @@ def mycheck_output(args):
     	if sys.platform == "win32":
     		startupinfo = subprocess.STARTUPINFO()
     		startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-    		output = subprocess.Popen(args, stdout=subprocess.PIPE, startupinfo=startupinfo).communicate()[0]
+    		output = subprocess.Popen(args, stdout=subprocess.PIPE, startupinfo=startupinfo).communicate()[0].decode('utf-8')
     	else:
     		output = subprocess.Popen(args, stdout=subprocess.PIPE).communicate()[0].decode('utf-8')
     except:
