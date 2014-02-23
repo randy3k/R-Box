@@ -10,23 +10,23 @@
         // R32 / R64
         "App" : "R64"
 
-        // path to R binary
+        // path to Rgui
         // "R32" : "C:\\Program Files\\R\\R-3.0.1\\bin\\i386\\Rgui.exe",
         // "R64" : "C:\\Program Files\\R\\R-3.0.1\\bin\\x64\\Rgui.exe",
 
-        // path to Rscript binary
+        // path to Rscript
+        // "Rscript" : "C:\\Program Files\\R\\R-3.0.1\\bin\\i386\\Rscript.exe",
         // "Rscript" : "C:\\Program Files\\R\\R-3.0.1\\bin\\x64\\Rscript.exe",
     },
 
     "linux": {
         // tmux / screen
         "App" : "tmux"
-
         // path
         // "tmux" : "tmux",
         // "screen" : "screen",
 
-        // path to Rscript binary
+        // path to Rscript
         // "Rscript" : "",
     },
 
