@@ -8,7 +8,7 @@ import codecs
 def load_jsonfile():
     jsonFilepath = os.path.join(sublime.packages_path(), 'Enhanced-R', 'support', 'completions.json')
     jsonFile = codecs.open(jsonFilepath, "r", encoding="utf-8")
-    print(jsonFilepath)
+    # print(jsonFilepath)
     data = json.load(jsonFile)
     jsonFile.close()
     return data
