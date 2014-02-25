@@ -58,7 +58,7 @@ def mycheck_output(args):
 class RStatusListener(sublime_plugin.EventListener):
 
     def RStatusUpdater(self, view):
-        point = view.sel()[0].end() if view.sel() else 0
+        point = view.sel()[0].end() if len(view.sel())>0 else 0
         if not view.score_selector(point, "source.r"):
             return
 
@@ -96,7 +96,7 @@ class RStatusListener(sublime_plugin.EventListener):
 
     def on_modified(self, view):
         if view.is_scratch() or view.settings().get('is_widget'): return
-        point = view.sel()[0].end() if view.sel() else 0
+        point = view.sel()[0].end() if len(view.sel())>0 else 0
         if not view.score_selector(point, "source.r"):
             return
         # run it in another thread
@@ -104,7 +104,7 @@ class RStatusListener(sublime_plugin.EventListener):
 
     def on_selection_modified(self,view):
         if view.is_scratch() or view.settings().get('is_widget'): return
-        point = view.sel()[0].end() if view.sel() else 0
+        point = view.sel()[0].end() if len(view.sel())>0 else 0
         if not view.score_selector(point, "source.r"):
             return
         this_row = view.rowcol(point)[0]
@@ -114,21 +114,21 @@ class RStatusListener(sublime_plugin.EventListener):
 
     def on_post_save(self, view):
         if view.is_scratch() or view.settings().get('is_widget'): return
-        point = view.sel()[0].end() if view.sel() else 0
+        point = view.sel()[0].end() if len(view.sel())>0 else 0
         if not view.score_selector(point, "source.r"):
             return
         self.obtain_func_prototype(view)
 
     def on_load(self, view):
         if view.is_scratch() or view.settings().get('is_widget'): return
-        point = view.sel()[0].end() if view.sel() else 0
+        point = view.sel()[0].end() if len(view.sel())>0 else 0
         if not view.score_selector(point, "source.r"):
             return
         self.obtain_func_prototype(view)
 
     def on_activated(self, view):
         if view.is_scratch() or view.settings().get('is_widget'): return
-        point = view.sel()[0].end() if view.sel() else 0
+        point = view.sel()[0].end() if len(view.sel())>0 else 0
         if not view.score_selector(point, "source.r"):
             return
         self.obtain_func_prototype(view)
