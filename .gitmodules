@@ -1,0 +1,3 @@
+[submodule "R-Extended"]
+    path = R-Extended
+    url = git://github.com/randy3k/R-Extended.git

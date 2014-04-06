@@ -1,0 +1,29 @@
+[
+  {
+    "keys": ["ctrl+enter"],
+    "command": "r_box_send_selection", "context": [
+      {
+        "key": "selector", "operator": "equal", "operand": "source.r"
+      }
+    ]
+  },
+  {
+    "keys": ["ctrl+\\"],
+    "command": "r_box_change_dir",
+    "context": [
+      {
+        "key": "selector", "operator": "equal", "operand": "source.r"}
+    ]
+  },
+  {
+    "keys": ["ctrl+b"],
+    "command": "r_box_source_code",
+    "context": [
+      {
+        "key": "selector", "operator": "equal", "operand": "source.r"},
+      {
+        "key": "selector", "operator": "not_equal", "operand": "text.tex.latex"
+      }
+    ]
+  }
+]
