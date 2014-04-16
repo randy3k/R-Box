@@ -1,7 +1,6 @@
 import sublime
 import sublime_plugin
 
-
 class RBoxAppSwitch(sublime_plugin.WindowCommand):
 
     def show_quick_panel(self, options, done):

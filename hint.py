@@ -5,13 +5,10 @@ import subprocess
 import re
 import sys
 if sys.platform == "win32":
-   if sys.version_info >= (3, 0, 0):
-        from winreg import *
-   else:
-        from _winreg import *
-from .settings import RBoxSettings
+        from winreg import OpenKey, QueryValueEx, HKEY_LOCAL_MACHINE, KEY_READ
+from .misc import *
 
-container = {}
+cache = {}
 last_row = 0
 
 
@@ -29,7 +26,7 @@ def get_Rscript():
 
     return Rscript
 
-def mycheck_output(args):
+def check_output(args):
     try:
     	if sys.platform == "win32":
     		startupinfo = subprocess.STARTUPINFO()
@@ -61,27 +58,26 @@ class RBoxStatusListener(sublime_plugin.EventListener):
         view.set_status("R-Box", "")
         func = m.group(1)
 
-        global container
-        # print(func in container)
-        if func in container:
-            prototype = container[func]
+        global cache
+        if func in cache:
+            call = cache[func]
         else:
             Rscript = get_Rscript()
             plat = sublime.platform()
             args = [Rscript, '-e', 'args(' + func + ')']
             packages = RBoxSettings("packages", None)
             if packages: args.append('--default-packages=' + ",".join(packages))
-            output = mycheck_output(args)
+            output = check_output(args)
             if not re.match("function ", output): return
             output = re.sub(r"^function ", "", output)
             output = re.sub(r"\)[^)]*$", ")", output)
             output =re.sub(r"\s*\n\s*", " ", output)
-            prototype = func + output
-            container.update({func: prototype})
+            call = func + output
+            cache.update({func: call})
 
         global last_row
         last_row = this_row
-        view.set_status("R-Box", prototype)
+        view.set_status("R-Box", call)
 
     def on_modified(self, view):
         if view.is_scratch() or view.settings().get('is_widget'): return
@@ -89,7 +85,7 @@ class RBoxStatusListener(sublime_plugin.EventListener):
         if not view.score_selector(point, "source.r"):
             return
         # run it in another thread
-        sublime.set_timeout(lambda : self.RStatusUpdater(view), 100)
+        sublime.set_timeout(lambda : self.RStatusUpdater(view), 1)
 
     def on_selection_modified(self,view):
         if view.is_scratch() or view.settings().get('is_widget'): return
@@ -106,27 +102,27 @@ class RBoxStatusListener(sublime_plugin.EventListener):
         point = view.sel()[0].end() if len(view.sel())>0 else 0
         if not view.score_selector(point, "source.r"):
             return
-        self.obtain_func_prototype(view)
+        self.obtain_func_call(view)
 
     def on_load(self, view):
         if view.is_scratch() or view.settings().get('is_widget'): return
         point = view.sel()[0].end() if len(view.sel())>0 else 0
         if not view.score_selector(point, "source.r"):
             return
-        self.obtain_func_prototype(view)
+        self.obtain_func_call(view)
 
     def on_activated(self, view):
         if view.is_scratch() or view.settings().get('is_widget'): return
         point = view.sel()[0].end() if len(view.sel())>0 else 0
         if not view.score_selector(point, "source.r"):
             return
-        self.obtain_func_prototype(view)
-        # print(container)
+        self.obtain_func_call(view)
+        # print(cache)
 
-    def obtain_func_prototype(self, view):
-        global container
+    def obtain_func_call(self, view):
+        global cache
         funcsel = view.find_all(r"""\b(?:[a-zA-Z0-9._:]*)\s*(?:<-|=)\s*function\s*(\((?:(["\'])(?:[^\\]|\\.)*?\2|#.*$|[^()]|(?1))*\))""")
         for s in funcsel:
             m = re.match(r"^([^ ]+)\s*(?:<-|=)\s*(?:function)\s*(.+)$", view.substr(s))
             if m:
-                container.update({m.group(1): m.group(1)+m.group(2)})
+                cache.update({m.group(1): m.group(1)+m.group(2)})

@@ -4,13 +4,8 @@ import os
 import subprocess
 import re
 import time
-from .settings import RBoxSettings
+from .misc import *
 
-# escape double quote
-def escape_dq(string):
-    string = string.replace('\\', '\\\\')
-    string = string.replace('"', '\\"')
-    return string
 
 # the main function
 class RBoxSendTextCommand(sublime_plugin.TextCommand):
