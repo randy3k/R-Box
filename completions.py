@@ -19,14 +19,9 @@ class RBoxCompletions(sublime_plugin.EventListener):
             return None
         if not RBoxSettings("auto_completions"): return None
 
-        default_completions = [(item, item) for sublist in [view.extract_completions(prefix)]
-            for item in sublist if len(item) > 3]
-        default_completions = list(set(default_completions))
-
         if not self.completions:
             j = dict(load_jsonfile())
             self.completions = list(chain.from_iterable(j.values()))
             self.completions = [(p, p) for p in self.completions if type(p) == str ]
-        return (self.completions+default_completions,
-            sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS)
+        return (self.completions,  sublime.INHIBIT_EXPLICIT_COMPLETIONS)
 

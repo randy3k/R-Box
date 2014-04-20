@@ -26,4 +26,4 @@ class RBoxAppSwitch(sublime_plugin.WindowCommand):
         if action==-1: return
         settings = sublime.load_settings('R-Box.sublime-settings')
         settings.set('App', self.app_list[action])
-        sublime.save_settings(settingsfile)
+        sublime.save_settings('R-Box.sublime-settings')

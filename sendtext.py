@@ -39,6 +39,7 @@ class RBoxSendTextCommand(sublime_plugin.TextCommand):
                 oldcb = sublime.get_clipboard()
                 sublime.set_clipboard(cmd)
                 proc = subprocess.Popen(args)
+                time.sleep(0.5)
                 sublime.set_clipboard(oldcb)
 
             cmd = escape_dq(cmd)
