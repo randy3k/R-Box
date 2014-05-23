@@ -29,15 +29,17 @@ There is no roadmap when it will be released, but I will do it eventually.
 
 ### Usage
 
+`C` is `ctrl` for Windows/Linux, `cmd` for Mac.
+
 Send Command to GUI/Terminal.
 
-- `c+enter` to send code to gui/terminal
-- `c+\\` to change working dir
-- `c+b` to source the current file
+- `C+enter` to send code to gui/terminal
+- `C+\\` to change working dir
+- `C+b` to source the current file
 
 Change R Applications
 
-- `c+shift+p` -> `R-Box Application`
+- `C+shift+p` -> `R-Box Application`
 
 
 ### Settings
