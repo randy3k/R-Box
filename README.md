@@ -9,7 +9,6 @@ so I decided to create a new repo for it.
 This package contains a extended version of the R syntax
 definition, so you do not have to install
 any syntax definitions for R (and savely disable the default `R` package). 
-However, if you are only interested in the syntax definitions, you can just visit [here](https://github.com/randy3k/R-Extended).
 
 Features:
 
@@ -17,7 +16,7 @@ Features:
   2. Send commands to various applicaionts (R gui, Terminal, iTerm 2, screen, tmux...)
   3. Function hints in status bar
   4. Autocompletions for base R commands
-  5. more to be discovered
+  5. Support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
 
 ### Getting start
 
@@ -30,6 +29,17 @@ There is no roadmap when it will be released, but I will do it eventually.
 
 ### Usage
 
-Send Command to GUI/Terminals.
+Send Command to GUI/Terminal.
+
+- `c+enter` to send code to gui/terminal
+- `c+\\` to change working dir
+- `c+b` to source the current file
+
+Change R Applications
+
+- `c+shift+p` -> `R-Box Application`
+
 
 ### Settings
+
+See `Preference -> Package Settings -> R-Box`
