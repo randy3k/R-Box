@@ -1,14 +1,9 @@
-R-Box package for Sublime Text 3
+R package for Sublime Text 3
 ------------
 
-It is a next generation of the R package
-[Enhanced-R](https://github.com/randy3k/Enhanced-R). I have refactored the
+It is a next generation of [Enhanced-R](https://github.com/randy3k/Enhanced-R). I have refactored the
 original code and the old settings are not compatible with the current setup,
-so I decided to create a new repo for it.
-
-This package contains a extended version of the R syntax
-definition, so you do not have to install
-any syntax definitions for R (and savely disable the default `R` package). 
+so I opened a new repo for it.
 
 Features:
 
@@ -17,6 +12,10 @@ Features:
   3. Function hints in status bar
   4. Autocompletions for base R commands
   5. Support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
+
+This package contains an extended version of the R syntax
+definition, so you can safely disable the default `R` package.
+
 
 ### Getting start
 
