@@ -10,7 +10,7 @@
         "id": "package-settings",
         "children": [
           {
-            "caption": "Enhanced R",
+            "caption": "R-Box",
             "children": [
               {
                 "command": "open_file",

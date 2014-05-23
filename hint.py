@@ -8,9 +8,6 @@ if sys.platform == "win32":
         from winreg import OpenKey, QueryValueEx, HKEY_LOCAL_MACHINE, KEY_READ
 from .misc import *
 
-cache = {}
-last_row = 0
-
 
 def get_Rscript():
     plat = sublime.platform()
@@ -42,10 +39,13 @@ def check_output(args):
 
 
 class RBoxStatusListener(sublime_plugin.EventListener):
+    cache = {}
+    last_row = 0
 
     def RStatusUpdater(self, view):
         point = view.sel()[0].end() if len(view.sel())>0 else 0
         if not view.score_selector(point, "source.r"):
+            view.set_status("R-Box", "")
             return
 
         this_row = view.rowcol(point)[0]
@@ -58,9 +58,8 @@ class RBoxStatusListener(sublime_plugin.EventListener):
         view.set_status("R-Box", "")
         func = m.group(1)
 
-        global cache
-        if func in cache:
-            call = cache[func]
+        if func in self.cache:
+            call = self.cache[func]
         else:
             Rscript = get_Rscript()
             plat = sublime.platform()
@@ -73,10 +72,9 @@ class RBoxStatusListener(sublime_plugin.EventListener):
             output = re.sub(r"\)[^)]*$", ")", output)
             output =re.sub(r"\s*\n\s*", " ", output)
             call = func + output
-            cache.update({func: call})
+            self.cache.update({func: call})
 
-        global last_row
-        last_row = this_row
+        self.last_row = this_row
         view.set_status("R-Box", call)
 
     def on_modified(self, view):
@@ -93,8 +91,7 @@ class RBoxStatusListener(sublime_plugin.EventListener):
         if not view.score_selector(point, "source.r"):
             return
         this_row = view.rowcol(point)[0]
-        global last_row
-        if this_row!= last_row: view.set_status("R-Box", "")
+        if this_row!= self.last_row: view.set_status("R-Box", "")
 
 
     def on_post_save(self, view):
@@ -117,12 +114,11 @@ class RBoxStatusListener(sublime_plugin.EventListener):
         if not view.score_selector(point, "source.r"):
             return
         self.obtain_func_call(view)
-        # print(cache)
+        # print(self.cache)
 
     def obtain_func_call(self, view):
-        global cache
         funcsel = view.find_all(r"""\b(?:[a-zA-Z0-9._:]*)\s*(?:<-|=)\s*function\s*(\((?:(["\'])(?:[^\\]|\\.)*?\2|#.*$|[^()]|(?1))*\))""")
         for s in funcsel:
             m = re.match(r"^([^ ]+)\s*(?:<-|=)\s*(?:function)\s*(.+)$", view.substr(s))
             if m:
-                cache.update({m.group(1): m.group(1)+m.group(2)})
+                self.cache.update({m.group(1): m.group(1)+m.group(2)})
