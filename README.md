@@ -20,12 +20,10 @@ Features:
 
 ### Getting start
 
-```bash
-git clone https://github.com/randy3k/R-Box /path/to/sublime/packages/
-```
 
-It is still under development and nothing near to be finished.
-There is no roadmap when it will be released, but I will do it eventually.
+- Install via [Package Control](https://sublime.wbond.net)
+
+
 
 ### Usage
 
