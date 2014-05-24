@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>fileTypes</key>
+	<array>
+		<string>rnw</string>
+	</array>
+	<key>foldingStartMarker</key>
+	<string>\\begin\{.*\}|%.*\(fold\)\s*$</string>
+	<key>foldingStopMarker</key>
+	<string>\\end\{.*\}|%.*\(end\)\s*$</string>
+	<key>keyEquivalent</key>
+	<string>^~M</string>
+	<key>name</key>
+	<string>R Sweave</string>
+	<key>patterns</key>
+	<array>
+		<dict>
+			<key>begin</key>
+			<string>^\s*&lt;&lt;.*?&gt;&gt;=\s*$</string>
+			<key>beginCaptures</key>
+			<dict>
+				<key>1</key>
+				<dict>
+					<key>name</key>
+					<string>entity.name.function.r</string>
+				</dict>
+				<key>2</key>
+				<dict>
+					<key>name</key>
+					<string>keyword.operator.assignment.r</string>
+				</dict>
+			</dict>
+			<key>end</key>
+			<string>^\s*@\s*$</string>
+			<key>name</key>
+			<string>text.tex.rchunk source.r</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>source.r</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
+			<key>include</key>
+			<string>text.tex.latex</string>
+		</dict>
+	</array>
+	<key>repository</key>
+	<dict/>
+	<key>scopeName</key>
+	<string>text.tex.r.sweave</string>
+	<key>uuid</key>
+	<string>921eb720-bf8c-11e3-8a33-0800200c9a66</string>
+</dict>
+</plist>
