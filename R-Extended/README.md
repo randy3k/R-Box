@@ -1,6 +1,6 @@
 R Extended for Sublime Text 2/3
 ------------
-This package contains  comprehensive syntax definitions for the R language. You don't have to install this if you already have  [R-Box](https://github.com/randy3k/R-Box) installed as [R-Box](https://github.com/randy3k/R-Box) is shipping with a copy of R-Extended.
+This package contains a set of comprehensive syntax definitions for the R language. You don't have to install this if you already have  [R-Box](https://github.com/randy3k/R-Box) installed as [R-Box](https://github.com/randy3k/R-Box) is shipping with a copy of R-Extended.
 
 R-Extended support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
 
