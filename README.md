@@ -15,7 +15,7 @@ Features:
 
 This package contains an extended version of the R syntax
 definition, so you can safely disable the default `R` package.
-
+If you are only interested in the syntax files, check [R-Extended](https://github.com/randy3k/R-Extended).
 
 ### Getting start
 
