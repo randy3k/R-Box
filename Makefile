@@ -1,10 +1,10 @@
-all: push push-subtree
+all:
 
 push:
 		git push
 
-push-subtree:
+subtree-push:
 		git subtree push --prefix=R-Extended syntax master
 
-pull-subtree:
+subtree-pull:
 		git subtree pull --prefix=R-Extended syntax master --squash
