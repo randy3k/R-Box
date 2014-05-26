@@ -42,3 +42,8 @@ Change R Applications
 ### Settings
 
 See `Preference -> Package Settings -> R-Box`
+
+
+### License
+
+R-Box is licensed under the MIT License. Files under `bin` are included with their own licenses.
