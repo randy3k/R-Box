@@ -7,6 +7,8 @@ class RBoxSourcePromptCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
         view = self.view
+        point = view.sel()[0].end() if len(view.sel())>0 else 0
+
         if view.settings().get("auto_match_enabled"):
             view.run_command("insert_snippet", {"contents": "\"${1:$SELECTION}\""})
         else:
