@@ -7,9 +7,11 @@ class RBoxSourcePromptCommand(sublime_plugin.TextCommand):
 
     def run(self, edit):
         view = self.view
-        point = view.sel()[0].end() if len(view.sel())>0 else 0
-        if not view.score_selector(point, "source.r"):
-            return
+        if view.settings().get("auto_match_enabled"):
+            view.run_command("insert_snippet", {"contents": "\"${1:$SELECTION}\""})
+        else:
+            view.run_command("insert", {"characters" : "\""})
+
         fname = view.file_name()
         if not fname: return
 
@@ -19,10 +21,6 @@ class RBoxSourcePromptCommand(sublime_plugin.TextCommand):
         if sel[0].begin() != sel[0].end(): return
         contentb = view.substr(sublime.Region(view.line(point).begin(), point))
         m = re.match(r".*?(source|sourceCpp)\($", contentb)
-        if view.settings().get("auto_match_enabled"):
-            view.run_command("insert_snippet", {"contents": "\"${1:$SELECTION}\""})
-        else:
-            view.run_command("insert", {"characters" : "\""})
 
         if not m: return
 
