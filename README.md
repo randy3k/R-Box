@@ -12,6 +12,7 @@ Features:
   3. Function hints in status bar
   4. Autocompletions for base R commands
   5. Support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
+  6. [knitr](https://github.com/yihui/knitr) build command for R markdown and Rnw files.
 
 This package contains an extended version of the R syntax
 definition, so you can safely disable the default `R` package.
@@ -32,8 +33,8 @@ Send Command to GUI/Terminal.
 
 - `C + enter` to send code to gui/terminal
 - `C + \` to change working dir
-- `C + b` to source the current file
- 
+- `C + b` to source the current R file, or to run [knitr](https://github.com/yihui/knitr) for Rnw or R markdown files.
+
 Change R Applications
 
 - `C + shift + p` -> `R-Box Application`
