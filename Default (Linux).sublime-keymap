@@ -17,8 +17,8 @@
     "command": "r_box_source_code",
     "context": [
       { "key": "selector", "operator": "equal", "operand": "source.r" },
-      { "key": "selector", "operator": "not_equal", "operand": "text.tex.latex" },
-      { "key": "selector", "operator": "not_equal", "operand": "text.html.markdown" }
+      { "key": "selector", "operator": "not_equal", "operand": "text.tex.rsweave" },
+      { "key": "selector", "operator": "not_equal", "operand": "text.html.rmarkdown" }
     ]
   }
 ]
