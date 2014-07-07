@@ -1,9 +1,7 @@
 R package for Sublime Text 3
 ------------
 
-It is a next generation of [Enhanced-R](https://github.com/randy3k/Enhanced-R). I have refactored the
-original code and the old settings are not compatible with the current setup,
-so I opened a new repo for it.
+It is previously known as [Enhanced-R](https://github.com/randy3k/Enhanced-R) and it is now refactored for ST3.
 
 Features:
 
@@ -17,6 +15,8 @@ Features:
 This package contains an extended version of the R syntax
 definition, so you can safely disable the default `R` package.
 If you are only interested in the syntax files, check [R-Extended](https://github.com/randy3k/R-Extended).
+
+If you like it and would like to tip me for some snacks, click [gittip](https://www.gittip.com/randy3k/).
 
 ### Getting start
 
