@@ -30,6 +30,6 @@ getregexp = function(pkg){
 packages = c("base", "stats", "methods", "utils",
     "graphics", "grDevices", "data.table", "ggplot2")
 
-m = fromJSON(file="R Extended.JSON-tmLanguage")
+m = fromJSON(file="R Extended.tmLanguage.JSON")
 m$repository$support_function$patterns = lapply(packages, getregexp)
-cat(toJSON(m), file="R Extended.JSON-tmLanguage")
+cat(toJSON(m), file="R Extended.tmLanguage.JSON")
