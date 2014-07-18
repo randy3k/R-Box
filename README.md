@@ -1,7 +1,7 @@
-R package for Sublime Text 3
+R package for Sublime Text
 ------------
 
-It is previously known as [Enhanced-R](https://github.com/randy3k/Enhanced-R) and it is now refactored for ST3.
+It is previously known as [Enhanced-R](https://github.com/randy3k/Enhanced-R) and it is now refactored for ST3. ST2 is also supported with no further support/development.
 
 Features:
 
