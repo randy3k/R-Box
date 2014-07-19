@@ -107,8 +107,8 @@ class RBoxSendTextCommand(sublime_plugin.TextCommand):
         elif plat == 'windows':
             App = RBoxSettings("App", "R64")
             progpath = RBoxSettings(App, str(1) if App == "R64" else str(0))
-            ahk_path = os.path.join(sublime.packages_path(), 'R-Box', 'bin','AutoHotkeyU32')
-            ahk_script_path = os.path.join(sublime.packages_path(), 'R-Box', 'bin','Rgui.ahk')
+            ahk_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin','AutoHotkeyU32')
+            ahk_script_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin','Rgui.ahk')
             # manually add "\n" to keep the indentation of first line of block code,
             # "\n" is later removed in AutoHotkey script
             cmd = "\n"+cmd
