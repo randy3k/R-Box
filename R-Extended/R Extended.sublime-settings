@@ -1,5 +1,4 @@
 {
     // a list of extensions
-    "extensions": ["r", "R", ".Rprofile"],
-    "word_separators": "/\\()\"‘-:,;~!@#$%^&*|+=[]{}`~?<>"
+    "extensions": ["r", "R", ".Rprofile"]
 }
