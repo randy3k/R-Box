@@ -52,7 +52,7 @@
 	<key>repository</key>
 	<dict/>
 	<key>scopeName</key>
-	<string>text.tex.rsweave</string>
+	<string>text.tex.latex.rsweave</string>
 	<key>uuid</key>
 	<string>921eb720-bf8c-11e3-8a33-0800200c9a66</string>
 </dict>
