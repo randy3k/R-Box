@@ -1,5 +1,4 @@
 [
-    // Roxygen
     { "keys": ["\""], "command": "r_box_source_prompt", "context":
         [
             { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
