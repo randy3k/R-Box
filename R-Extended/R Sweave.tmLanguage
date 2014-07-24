@@ -35,7 +35,7 @@
 			<key>end</key>
 			<string>^\s*@\s*$</string>
 			<key>name</key>
-			<string>text.tex.rchunk source.r</string>
+			<string>text.tex.latex.rchunk source.r</string>
 			<key>patterns</key>
 			<array>
 				<dict>
