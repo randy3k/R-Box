@@ -1,0 +1,12 @@
+[
+    // Roxygen
+    { "keys": ["'"], "command": "insert_snippet", "args": {"contents": "'"}, "context":
+        [
+            { "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+            { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+            { "key": "preceding_text", "operator": "regex_contains", "operand": "^\\s*#\\s*$", "match_all": true },
+            { "key": "eol_selector", "operator": "not_equal", "operand": "string.quoted.single", "match_all": true },
+            { "key": "selector", "operator": "equal", "operand": "source.r" }
+        ]
+    }
+]
