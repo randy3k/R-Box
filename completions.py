@@ -26,9 +26,10 @@ class RBoxCompletions(sublime_plugin.EventListener):
         if not self.completions:
             j = dict(load_jsonfile())
             self.completions = list(chain.from_iterable(j.values()))
-            self.completions = [(p, ) for p in self.completions if type(p) == str ]
+            self.completions = [item for item in self.completions if type(item) == str ]
 
+        completions = [(item,) for item in self.completions if item[0] is prefix]
         default_completions = [(item, ) for item in view.extract_completions(prefix) if len(item) > 3 and valid(item)]
 
-        r = list(set(self.completions+default_completions))
+        r = list(set(completions+default_completions))
         return (r,  0)
