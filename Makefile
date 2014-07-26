@@ -1,10 +1,7 @@
 all:
 
-push:
-		git push
+subpush:
+		git subtree push --prefix=syntax git@github.com:randy3k/R-Extended.git master
 
-subtree-push:
-		git subtree push --prefix=R-Extended git@github.com:randy3k/R-Extended.git master
-
-subtree-pull:
-		git subtree pull --prefix=R-Extended git@github.com:randy3k/R-Extended.git master --squash
+subpull:
+		git subtree pull --prefix=syntax git@github.com:randy3k/R-Extended.git master --squash
