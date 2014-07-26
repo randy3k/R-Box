@@ -18,7 +18,7 @@
     "context": [
       { "key": "selector", "operator": "equal", "operand": "source.r" },
       { "key": "selector", "operator": "not_equal", "operand": "text.tex.latex.rsweave" },
-      { "key": "selector", "operator": "not_equal", "operand": "text.html.rmarkdown" }
+      { "key": "selector", "operator": "not_equal", "operand": "text.html.markdown.rmarkdown" }
     ]
   }
 ]

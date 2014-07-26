@@ -1,5 +1,5 @@
 {
-    "selector": "text.html.rmarkdown",
+    "selector": "text.html.markdown.rmarkdown",
     "working_dir": "${project_path:${folder}}",
     "cmd": [ "Rscript -e \"library(knitr); knit('$file', output='$file_path/$file_base_name.md')\"" ],
     "shell": true

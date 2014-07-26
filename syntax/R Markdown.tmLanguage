@@ -558,7 +558,7 @@
       <array>
         <dict>
           <key>include</key>
-          <string>text.html.rmarkdown</string>
+          <string>text.html.markdown.rmarkdown</string>
         </dict>
       </array>
     </dict>
@@ -2217,7 +2217,7 @@
     </dict>
   </dict>
   <key>scopeName</key>
-  <string>text.html.rmarkdown</string>
+  <string>text.html.markdown.rmarkdown</string>
   <key>uuid</key>
   <string>6e6bb010-e202-11e3-8b68-0800200c9a66</string>
 </dict>
