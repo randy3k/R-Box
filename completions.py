@@ -7,10 +7,8 @@ from itertools import chain
 from .misc import *
 
 def load_jsonfile():
-    jsonFilepath = os.path.join(sublime.packages_path(), 'R-Box', 'completions.json')
-    jsonFile = open(jsonFilepath, "r", encoding="utf-8")
-    data = json.load(jsonFile)
-    jsonFile.close()
+    jsonFilepath = os.path.join('Packages', 'R-Box', 'completions.json')
+    data = json.loads(sublime.load_resource(jsonFilepath))
     return data
 
 def valid(str):
@@ -23,7 +21,7 @@ class RBoxCompletions(sublime_plugin.EventListener):
             return None
         if not RBoxSettings("auto_completions"): return None
 
-        if not self.completions:
+        if True or not self.completions:
             j = dict(load_jsonfile())
             self.completions = list(chain.from_iterable(j.values()))
             self.completions = [item for item in self.completions if type(item) == str ]
