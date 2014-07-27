@@ -7,7 +7,7 @@ from itertools import chain
 from .misc import *
 
 def load_jsonfile():
-    jsonFilepath = os.path.join('Packages', 'R-Box', 'completions.json')
+    jsonFilepath = "/".join(['Packages', 'R-Box', 'completions.json'])
     data = json.loads(sublime.load_resource(jsonFilepath))
     return data
 
