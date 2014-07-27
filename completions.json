@@ -1790,6 +1790,7 @@
     "process.events",
     "prompt",
     "promptData",
+    "promptImport",
     "promptPackage",
     "rc.getOption",
     "rc.options",
