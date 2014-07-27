@@ -358,7 +358,7 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>^(#')\s*</string>
+					<string>^(#&apos;)\s*</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
@@ -431,7 +431,7 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>'</string>
+					<string>&apos;</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>0</key>
@@ -441,7 +441,7 @@
 						</dict>
 					</dict>
 					<key>end</key>
-					<string>'</string>
+					<string>&apos;</string>
 					<key>endCaptures</key>
 					<dict>
 						<key>0</key>
@@ -464,7 +464,7 @@
 				</dict>
 				<dict>
 					<key>begin</key>
-					<string>"</string>
+					<string>&quot;</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>0</key>
@@ -474,7 +474,7 @@
 						</dict>
 					</dict>
 					<key>end</key>
-					<string>"</string>
+					<string>&quot;</string>
 					<key>endCaptures</key>
 					<dict>
 						<key>0</key>
@@ -623,7 +623,7 @@
 				</dict>
 				<dict>
 					<key>begin</key>
-					<string>\b(adist|alarm|apropos|aregexec|argsAnywhere|as\.person|as\.personList|as\.relistable|as\.roman|aspell|aspell_package_C_files|aspell_package_R_files|aspell_package_Rd_files|aspell_package_vignettes|aspell_write_personal_dictionary_file|assignInMyNamespace|assignInNamespace|available\.packages|bibentry|browseEnv|browseURL|browseVignettes|bug\.report|capture\.output|changedFiles|checkCRAN|chooseBioCmirror|chooseCRANmirror|citation|cite|citeNatbib|citEntry|citFooter|citHeader|close\.socket|combn|compareVersion|contrib\.url|count\.fields|CRAN\.packages|create\.post|data|data\.entry|dataentry|de|de\.ncols|de\.restore|de\.setup|debugger|demo|download\.file|download\.packages|dump\.frames|edit|emacs|example|file_test|file\.edit|fileSnapshot|find|findLineNum|fix|fixInNamespace|flush\.console|formatOL|formatUL|getAnywhere|getCRANmirrors|getFromNamespace|getParseData|getParseText|getSrcDirectory|getSrcFilename|getSrcLocation|getSrcref|getTxtProgressBar|globalVariables|head|head\.matrix|help|help\.request|help\.search|help\.start|history|install\.packages|installed\.packages|is\.relistable|limitedLabels|loadhistory|localeToCharset|ls\.str|lsf\.str|maintainer|make\.packages.html|make\.socket|makeRweaveLatexCodeRunner|memory\.limit|memory\.size|menu|methods|modifyList|new\.packages|news|nsl|object\.size|old\.packages|package\.skeleton|packageDescription|packageName|packageStatus|packageVersion|page|person|personList|pico|process\.events|prompt|promptData|promptPackage|rc\.getOption|rc\.options|rc\.settings|rc\.status|read\.csv|read\.delim|read\.DIF|read\.fortran|read\.fwf|read\.socket|read\.table|readCitationFile|recover|relist|remove\.packages|removeSource|Rprof|Rprofmem|RShowDoc|RSiteSearch|rtags|Rtangle|RtangleSetup|RtangleWritedoc|RweaveChunkPrefix|RweaveEvalWithOpt|RweaveLatex|RweaveLatexFinish|RweaveLatexOptions|RweaveLatexSetup|RweaveLatexWritedoc|RweaveTryStop|savehistory|select\.list|sessionInfo|setBreakpoint|setRepositories|setTxtProgressBar|stack|Stangle|str|strOptions|summaryRprof|suppressForeignCheck|Sweave|SweaveHooks|SweaveSyntaxLatex|SweaveSyntaxNoweb|SweaveSyntConv|tail|tail\.matrix|tar|timestamp|toBibtex|toLatex|txtProgressBar|type\.convert|unstack|untar|unzip|update\.packages|update\.packageStatus|upgrade|url\.show|URLdecode|URLencode|vi|View|vignette|write\.csv|write\.socket|write\.table|xedit|xemacs|zip)\s*(\()</string>
+					<string>\b(adist|alarm|apropos|aregexec|argsAnywhere|as\.person|as\.personList|as\.relistable|as\.roman|aspell|aspell_package_C_files|aspell_package_R_files|aspell_package_Rd_files|aspell_package_vignettes|aspell_write_personal_dictionary_file|assignInMyNamespace|assignInNamespace|available\.packages|bibentry|browseEnv|browseURL|browseVignettes|bug\.report|capture\.output|changedFiles|checkCRAN|chooseBioCmirror|chooseCRANmirror|citation|cite|citeNatbib|citEntry|citFooter|citHeader|close\.socket|combn|compareVersion|contrib\.url|count\.fields|CRAN\.packages|create\.post|data|data\.entry|dataentry|de|de\.ncols|de\.restore|de\.setup|debugger|demo|download\.file|download\.packages|dump\.frames|edit|emacs|example|file_test|file\.edit|fileSnapshot|find|findLineNum|fix|fixInNamespace|flush\.console|formatOL|formatUL|getAnywhere|getCRANmirrors|getFromNamespace|getParseData|getParseText|getSrcDirectory|getSrcFilename|getSrcLocation|getSrcref|getTxtProgressBar|globalVariables|head|head\.matrix|help|help\.request|help\.search|help\.start|history|install\.packages|installed\.packages|is\.relistable|limitedLabels|loadhistory|localeToCharset|ls\.str|lsf\.str|maintainer|make\.packages.html|make\.socket|makeRweaveLatexCodeRunner|memory\.limit|memory\.size|menu|methods|modifyList|new\.packages|news|nsl|object\.size|old\.packages|package\.skeleton|packageDescription|packageName|packageStatus|packageVersion|page|person|personList|pico|process\.events|prompt|promptData|promptImport|promptPackage|rc\.getOption|rc\.options|rc\.settings|rc\.status|read\.csv|read\.delim|read\.DIF|read\.fortran|read\.fwf|read\.socket|read\.table|readCitationFile|recover|relist|remove\.packages|removeSource|Rprof|Rprofmem|RShowDoc|RSiteSearch|rtags|Rtangle|RtangleSetup|RtangleWritedoc|RweaveChunkPrefix|RweaveEvalWithOpt|RweaveLatex|RweaveLatexFinish|RweaveLatexOptions|RweaveLatexSetup|RweaveLatexWritedoc|RweaveTryStop|savehistory|select\.list|sessionInfo|setBreakpoint|setRepositories|setTxtProgressBar|stack|Stangle|str|strOptions|summaryRprof|suppressForeignCheck|Sweave|SweaveHooks|SweaveSyntaxLatex|SweaveSyntaxNoweb|SweaveSyntConv|tail|tail\.matrix|tar|timestamp|toBibtex|toLatex|txtProgressBar|type\.convert|unstack|untar|unzip|update\.packages|update\.packageStatus|upgrade|url\.show|URLdecode|URLencode|vi|View|vignette|write\.csv|write\.socket|write\.table|xedit|xemacs|zip)\s*(\()</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
