@@ -8,6 +8,7 @@ if sys.platform == "win32":
         from winreg import OpenKey, QueryValueEx, HKEY_LOCAL_MACHINE, KEY_READ
 from .misc import *
 
+# alternatively, it can be done by embedding a R runtime here.
 
 def get_Rscript():
     plat = sublime.platform()
