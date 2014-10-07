@@ -1,8 +1,6 @@
 R package for Sublime Text
 ------------
 
-It is previously known as [Enhanced-R](https://github.com/randy3k/Enhanced-R). It has been rewritten for better Sublime Text 3 support.
-
 Features:
 
   1. Multi platform support (windows/mac/linux)
