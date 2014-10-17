@@ -50,6 +50,7 @@ class RBoxSendTextCommand(sublime_plugin.TextCommand):
     def run(self, edit, cmd):
 
         # clean command before sending to R
+        cmd = cmd.expandtabs(4)
         cmd = cmd.rstrip('\n')
         if len(re.findall("\n", cmd)) == 0:
             cmd = cmd.lstrip()
