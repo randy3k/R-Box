@@ -84,7 +84,7 @@ class RBoxStatusListener(sublime_plugin.EventListener):
         if not view.score_selector(point, "source.r"):
             return
         # run it in another thread
-        sublime.set_timeout(lambda : self.RStatusUpdater(view), 1)
+        sublime.set_timeout_async(lambda : self.RStatusUpdater(view), 1)
 
     def on_selection_modified(self,view):
         if view.is_scratch() or view.settings().get('is_widget'): return
