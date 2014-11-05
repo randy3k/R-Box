@@ -50,6 +50,8 @@ class RBoxStatusListener(sublime_plugin.EventListener):
         point = view.sel()[0].end() if len(view.sel())>0 else 0
         if not view.score_selector(point, "source.r"):
             return
+        if not RBoxSettings("status_bar_hint", True):
+            return
         # run it in another thread
         sublime.set_timeout_async(lambda : self.RStatusUpdater(view), 1)
 
@@ -57,6 +59,8 @@ class RBoxStatusListener(sublime_plugin.EventListener):
         if view.is_scratch() or view.settings().get('is_widget'): return
         point = view.sel()[0].end() if len(view.sel())>0 else 0
         if not view.score_selector(point, "source.r"):
+            return
+        if not RBoxSettings("status_bar_hint", True):
             return
         this_row = view.rowcol(point)[0]
         if this_row!= self.last_row:
@@ -68,6 +72,8 @@ class RBoxStatusListener(sublime_plugin.EventListener):
         point = view.sel()[0].end() if len(view.sel())>0 else 0
         if not view.score_selector(point, "source.r"):
             return
+        if not RBoxSettings("status_bar_hint", True):
+            return
         sublime.set_timeout_async(lambda : self.capture_functions(view), 1)
 
     def on_load(self, view):
@@ -75,12 +81,16 @@ class RBoxStatusListener(sublime_plugin.EventListener):
         point = view.sel()[0].end() if len(view.sel())>0 else 0
         if not view.score_selector(point, "source.r"):
             return
+        if not RBoxSettings("status_bar_hint", True):
+            return
         sublime.set_timeout_async(lambda : self.capture_functions(view), 1)
 
     def on_activated(self, view):
         if view.is_scratch() or view.settings().get('is_widget'): return
         point = view.sel()[0].end() if len(view.sel())>0 else 0
         if not view.score_selector(point, "source.r"):
+            return
+        if not RBoxSettings("status_bar_hint", True):
             return
         sublime.set_timeout_async(lambda : self.capture_functions(view), 1)
         # print(self.cache)
