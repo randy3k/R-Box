@@ -5,129 +5,83 @@ import subprocess
 import re
 import time
 import sys
-from .misc import *
+import tempfile
+from .misc import RBoxSettings
 
+def clean(cmd):
+    cmd = cmd.expandtabs(4)
+    cmd = cmd.rstrip('\n')
+    if len(re.findall("\n", cmd)) == 0:
+        cmd = cmd.lstrip()
+    return cmd
 
-def update_resource(binname):
-    # from https://github.com/weslly/ColorPicker/blob/master/sublimecp.py=
-    targetdir = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin')
-    targetpath = os.path.join(targetdir, binname)
-    respath = 'Packages/R-Box/bin/' + binname
-    pkgpath = os.path.join(sublime.installed_packages_path(), 'R-Box.sublime-package')
-    unpkgpath = os.path.join(sublime.packages_path(), 'R-Box', 'bin', binname)
+def escape_dq(cmd):
+    cmd = cmd.replace('\\', '\\\\')
+    cmd = cmd.replace('"', '\\"')
+    return cmd
 
-    if os.path.exists(targetpath):
-        targetinfo = os.stat(targetpath)
-    else:
-        if not os.path.exists(targetdir):
-            os.makedirs(targetdir, 0o755)
-        targetinfo = None
+def sendtext(cmd):
+    plat = sublime.platform()
+    if plat == "osx":
+        prog = RBoxSettings("App", "R")
+    if plat == "windows":
+        prog = RBoxSettings("App", "R64")
+    if plat == "linux":
+        prog = RBoxSettings("App", "tmux")
 
-    if os.path.exists(unpkgpath):
-        pkginfo = os.stat(unpkgpath)
-    elif os.path.exists(pkgpath):
-        pkginfo = os.stat(pkgpath)
-    else:
-        return
+    if re.match('Terminal', prog):
+        cmd = clean(cmd)
+        cmd = escape_dq(cmd)
+        args = ['osascript']
+        args.extend(['-e', 'tell app "Terminal" to do script "' + cmd + '" in front window\n'])
+        subprocess.Popen(args)
 
-    if targetinfo == None or targetinfo.st_mtime < pkginfo.st_mtime:
-        data = sublime.load_binary_resource(respath)
-        print("* Updating " + targetpath)
-        with open(targetpath, 'wb') as binfile:
-            binfile.write(data)
-            binfile.close()
+    elif re.match('iTerm', prog):
+        cmd = clean(cmd)
+        cmd = escape_dq(cmd)
+        # when cmd ends in a space, iterm does not execute. Thus append a line break.
+        if (cmd[-1:] == ' '):
+            cmd += '\n'
+        args = ['osascript']
+        args.extend(['-e', 'tell app "iTerm" to tell the first terminal to tell current session to write text "' + cmd +'"'])
+        subprocess.Popen(args)
 
-    if not os.access(targetpath, os.X_OK):
-        os.chmod(targetpath, 0o755)
+    elif plat == "osx" and re.match('R[0-9]*$', prog):
+        cmd = clean(cmd)
+        cmd = escape_dq(cmd)
+        args = ['osascript']
+        args.extend(['-e', 'tell app "' + prog + '" to cmd "' + cmd + '"'])
+        subprocess.Popen(args)
 
-def plugin_loaded():
-    if sys.platform == "win32":
-        update_resource("AutoHotkeyU32.exe")
-        update_resource("Rgui.ahk")
+    elif plat == "windows" and re.match('R[0-9]*$', prog):
+        progpath = RBoxSettings(prog, str(1) if prog == "R64" else str(0))
+        ahk_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin','AutoHotkeyU32')
+        ahk_script_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin','Rgui.ahk')
+        # manually add "\n" to keep the indentation of first line of block code,
+        # "\n" is later removed in AutoHotkey script
+        cmd = "\n"+cmd
+        args = [ahk_path, ahk_script_path, progpath, cmd ]
+        subprocess.Popen(args)
 
-# the main function
-class RBoxSendTextCommand(sublime_plugin.TextCommand):
-    def run(self, edit, cmd):
+    elif prog == "tmux":
+        progpath = RBoxSettings("tmux", "tmux")
+        subprocess.call([progpath, 'set-buffer', cmd + "\n"])
+        subprocess.call([progpath, 'paste-buffer', '-d'])
 
-        # clean command before sending to R
-        cmd = cmd.expandtabs(4)
-        cmd = cmd.rstrip('\n')
-        if len(re.findall("\n", cmd)) == 0:
-            cmd = cmd.lstrip()
+    elif prog == "screen":
+        progpath = RBoxSettings("screen", "screen")
+        if len(cmd)<2000:
+            subprocess.call([progpath, '-X', 'stuff', cmd])
+        else:
+            with tempfile.NamedTemporaryFile() as tmp:
+                with open(tmp.name, 'w') as f:
+                    f.write(cmd)
+                    subprocess.call([progpath, '-X', 'stuff', ". %s\n" % (f.name)])
 
-        App = RBoxSettings("App", None)
-        if App == "SublimeREPL":
+    elif prog == "SublimeREPL":
             external_id = self.view.scope_name(0).split(" ")[0].split(".", 1)[1]
             self.view.window().run_command("repl_send", {"external_id": external_id, "text": cmd})
             return
-
-        plat = sublime.platform()
-        if plat == 'osx':
-            App = RBoxSettings("App", "R")
-
-            if App == "RStudio":
-                args = ['osascript']
-                apple_script = ('tell application "RStudio" to activate\n'
-                                'delay 0.25\n'
-                                'tell application "System Events"\n'
-                                    'keystroke "v" using {command down}\n'
-                                    'keystroke return\n'
-                                'end tell\n'
-                                'tell application "Sublime Text" to activate\n')
-                args.extend(['-e', apple_script])
-                oldcb = sublime.get_clipboard()
-                sublime.set_clipboard(cmd)
-                proc = subprocess.Popen(args)
-                time.sleep(0.5)
-                sublime.set_clipboard(oldcb)
-
-            cmd = escape_dq(cmd)
-            if re.match('R[0-9]*$', App):
-                args = ['osascript']
-                args.extend(['-e', 'tell app "' + App + '" to cmd "' + cmd + '"'])
-                subprocess.Popen(args)
-            elif App == 'Terminal':
-                args = ['osascript']
-                args.extend(['-e', 'tell app "Terminal" to do script "' + cmd + '" in front window\n'])
-                subprocess.Popen(args)
-            elif re.match('iTerm', App):
-                    # when cmd ends in a space, iterm does not execute. Thus append a line break.
-                    if (cmd[-1:] == ' '):
-                        cmd += '\n'
-                    args = ['osascript']
-                    apple_script = ('tell application "' + App + '"\n'
-                                        'tell the first terminal\n'
-                                            'tell current session\n'
-                                                'write text "' + cmd + '"\n'
-                                            'end tell\n'
-                                        'end tell\n'
-                                    'end tell\n')
-                    args.extend(['-e', apple_script])
-                    subprocess.Popen(args)
-
-        elif plat == 'windows':
-            App = RBoxSettings("App", "R64")
-            progpath = RBoxSettings(App, str(1) if App == "R64" else str(0))
-            ahk_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin','AutoHotkeyU32')
-            ahk_script_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin','Rgui.ahk')
-            # manually add "\n" to keep the indentation of first line of block code,
-            # "\n" is later removed in AutoHotkey script
-            cmd = "\n"+cmd
-
-            args = [ahk_path, ahk_script_path, progpath, cmd ]
-            subprocess.Popen(args)
-
-        elif plat == 'linux':
-            App = RBoxSettings("App", "tmux")
-            if App == "tmux":
-                progpath = RBoxSettings("tmux", "tmux")
-                subprocess.call([progpath, 'set-buffer', cmd + "\n"])
-                subprocess.call([progpath, 'paste-buffer', '-d'])
-
-            elif App == "screen":
-                progpath = RBoxSettings("screen", "screen")
-                subprocess.call([progpath, '-X', 'stuff', cmd + "\n"])
-
 
 class RBoxSendSelectionCommand(sublime_plugin.TextCommand):
 
@@ -159,7 +113,10 @@ class RBoxSendSelectionCommand(sublime_plugin.TextCommand):
                 thiscmd = view.substr(sel)
             cmd += thiscmd +'\n'
 
-        view.run_command("r_box_send_text", {"cmd": cmd})
+        sendtext(cmd)
+
+        if RBoxSettings("auto_advance", False):
+            view.show(view.sel())
 
 class RBoxChangeDirCommand(sublime_plugin.TextCommand):
     def run(self, edit):
@@ -169,7 +126,7 @@ class RBoxChangeDirCommand(sublime_plugin.TextCommand):
             return
         dirname = os.path.dirname(fname)
         cmd = "setwd(\"" + escape_dq(dirname) + "\")"
-        self.view.run_command("r_box_send_text", {"cmd": cmd})
+        sendtext(cmd)
 
 class RBoxSourceCodeCommand(sublime_plugin.TextCommand):
     def run(self, edit):
@@ -178,4 +135,4 @@ class RBoxSourceCodeCommand(sublime_plugin.TextCommand):
             sublime.error_message("Save the file!")
             return
         cmd = "source(\"" +  escape_dq(fname) + "\")"
-        self.view.run_command("r_box_send_text", {"cmd": cmd})
+        sendtext(cmd)

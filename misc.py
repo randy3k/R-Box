@@ -3,57 +3,45 @@ import os
 import re
 import sys
 
-# escape double quote
-def escape_dq(string):
-    string = string.replace('\\', '\\\\')
-    string = string.replace('"', '\\"')
-    return string
-
 # get setting key
 def RBoxSettings(key, default=None):
     plat = sublime.platform()
     settings = sublime.load_settings('R-Box.sublime-settings')
     return settings.get(key, default)
 
-# List a directory using quick panel
-def listdir(view, dir, base, ext, on_done):
-    if not os.path.isdir(dir):
-        sublime.status_message("Directory %s does not exist." % dir)
-        return
-    ls = os.listdir(dir)
-    if ext:
-        fnames = [f for f in ls if os.path.splitext(f)[1].lower() in ext]
-    else:
-        fnames = [f for f in ls if os.path.isfile(os.path.join(dir, f))]
-    if base:
-        fnames = [f for f in fnames if base.lower() in f.lower()]
+if sys.platform == "win32":
+    def update_resource(binname):
+        # from https://github.com/weslly/ColorPicker/blob/master/sublimecp.py=
+        targetdir = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin')
+        targetpath = os.path.join(targetdir, binname)
+        respath = 'Packages/R-Box/bin/' + binname
+        pkgpath = os.path.join(sublime.installed_packages_path(), 'R-Box.sublime-package')
+        unpkgpath = os.path.join(sublime.packages_path(), 'R-Box', 'bin', binname)
 
-    display = ["[ Create a new file ]", "> "+os.curdir, "> "+os.pardir] + \
-        ["> "+f for f in ls if os.path.isdir(os.path.join(dir, f))] + fnames
-
-    def on_action(i):
-        if i<0: return
-        elif display[i][0] == '>':
-            target = display[i][2:] if display[i][0] == '>' else display[i]
-            target_dir = os.path.normpath(os.path.join(dir, target))
-            sublime.set_timeout(lambda: listdir(view, target_dir, base, ext, on_done), 10)
-        elif i == 0:
-            view.window().show_input_panel("File: ", "", on_file, None, None)
+        if os.path.exists(targetpath):
+            targetinfo = os.stat(targetpath)
         else:
-            target = os.path.normpath(os.path.join(dir, display[i]))
-            on_done(target)
+            if not os.path.exists(targetdir):
+                os.makedirs(targetdir, 0o755)
+            targetinfo = None
 
-    def on_file(s):
-        target = os.path.normpath(os.path.join(dir, s))
-        if os.path.exists(target):
-            sublime.message_dialog("File %s exists." % target)
-            pass
+        if os.path.exists(unpkgpath):
+            pkginfo = os.stat(unpkgpath)
+        elif os.path.exists(pkgpath):
+            pkginfo = os.stat(pkgpath)
         else:
-            target_dir = os.path.dirname(target)
-            if not os.path.exists(target_dir): os.mkdir(target_dir)
-            f = open(target, 'w')
-            view.window().open_file(target)
-            on_done(target)
+            return
 
+        if targetinfo == None or targetinfo.st_mtime < pkginfo.st_mtime:
+            data = sublime.load_binary_resource(respath)
+            print("* Updating " + targetpath)
+            with open(targetpath, 'wb') as binfile:
+                binfile.write(data)
+                binfile.close()
 
-    sublime.set_timeout(lambda: view.window().show_quick_panel(display, on_action), 10)
+        if not os.access(targetpath, os.X_OK):
+            os.chmod(targetpath, 0o755)
+
+    def plugin_loaded():
+        update_resource("AutoHotkeyU32.exe")
+        update_resource("Rgui.ahk")
