@@ -40,7 +40,6 @@ class RBoxStatusListener(sublime_plugin.EventListener):
 
         if func in self.cache:
             call = self.cache[func]
-        print(len(self.cache))
 
         self.last_row = this_row
         view.set_status("r_box", call)
