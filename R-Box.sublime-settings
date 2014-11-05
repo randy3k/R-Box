@@ -10,11 +10,6 @@
     // "R32" : "C:\\Program Files\\R\\R-3.1.0\\bin\\i386\\Rgui.exe",
     // "R64" : "C:\\Program Files\\R\\R-3.1.0\\bin\\x64\\Rgui.exe",
 
-    // path to Rscript binary
-    // "Rscript" : "/usr/bin/Rscript",
-    // "Rscript" : "C:\\Program Files\\R\\R-3.1.0\\bin\\i386\\Rscript.exe",
-    // "Rscript" : "C:\\Program Files\\R\\R-3.1.0\\bin\\x64\\Rscript.exe",
-
     // path to tmux / screen
     // "tmux" : "tmux",
     // "screen" : "screen",
