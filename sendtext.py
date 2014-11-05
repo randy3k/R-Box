@@ -79,9 +79,10 @@ def sendtext(cmd):
                     subprocess.call([progpath, '-X', 'stuff', ". %s\n" % (f.name)])
 
     elif prog == "SublimeREPL":
-            external_id = self.view.scope_name(0).split(" ")[0].split(".", 1)[1]
-            sublime.active_window().run_command("repl_send", {"external_id": external_id, "text": cmd})
-            return
+        view = sublime.active_window().active_view()
+        external_id = view.scope_name(0).split(" ")[0].split(".", 1)[1]
+        sublime.active_window().run_command("repl_send", {"external_id": external_id, "text": cmd})
+        return
 
 class RBoxSendSelectionCommand(sublime_plugin.TextCommand):
 
