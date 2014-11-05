@@ -21,6 +21,8 @@ def escape_dq(cmd):
     return cmd
 
 def sendtext(cmd):
+    if cmd.strip() == "":
+        return
     plat = sublime.platform()
     if plat == "osx":
         prog = RBoxSettings("App", "R")
