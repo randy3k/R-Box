@@ -80,7 +80,7 @@ def sendtext(cmd):
 
     elif prog == "SublimeREPL":
             external_id = self.view.scope_name(0).split(" ")[0].split(".", 1)[1]
-            self.view.window().run_command("repl_send", {"external_id": external_id, "text": cmd})
+            sublime.active_window().run_command("repl_send", {"external_id": external_id, "text": cmd})
             return
 
 class RBoxSendSelectionCommand(sublime_plugin.TextCommand):
