@@ -5,6 +5,7 @@ import subprocess
 import re
 import sys
 import json
+from .misc import RBoxSettings
 
 def load_jsonfile():
     jsonFilepath = "/".join(['Packages', 'R-Box', 'hint.json'])
@@ -20,6 +21,8 @@ class RBoxStatusListener(sublime_plugin.EventListener):
         point = view.sel()[0].end() if len(view.sel())>0 else 0
         if not view.score_selector(point, "source.r"):
             view.set_status("r_box", "")
+            return
+        if not RBoxSettings("status_bar_hint", True):
             return
 
         if not self.cache:

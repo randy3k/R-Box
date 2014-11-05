@@ -27,7 +27,8 @@
     // "grDevices", "data.table", "ggplot2"
     "auto_completions": true,
 
-    // packages for status hint
-    "packages": ["base", "graphics", "grDevices", "methods",
-        "stats", "utils"]
+    // status bar hint for the following packages
+    // "base", "stats", "methods", "utils", "graphics",
+    // "grDevices", "data.table", "ggplot2"
+    "status_bar_hint": true
 }
