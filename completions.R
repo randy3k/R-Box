@@ -1,5 +1,5 @@
 # generate completions.json
-library(rjson)
+library(RJSONIO)
 library(data.table)
 library(ggplot2)
 
@@ -16,7 +16,7 @@ packages = c("base", "stats", "methods", "utils",
 completions = lapply(packages, getobjs)
 names(completions) = packages
 
-cat(toJSON(completions), file="completions.json")
+cat(toJSON(completions, pretty=TRUE), file="completions.json")
 
 l = list()
 for (pname in packages){
@@ -32,4 +32,4 @@ for (pname in packages){
     }
 }
 
-cat(toJSON(l), file="hint.json")
+cat(toJSON(l, pretty=TRUE), file="hint.json")
