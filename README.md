@@ -27,17 +27,11 @@ If you like it, you could send me some tips via [![](http://img.shields.io/gitti
 
 ### Usage
 
-`C` is `ctrl` for Windows/Linux, `cmd` for Mac.
+In the following, `C` is `ctrl` for Windows/Linux, `cmd` for Mac.
 
-Send Command to GUI/Terminal.
-
-- `C + enter` to send code to gui/terminal
+- `C + enter` to send code to gui/terminal. R.app is the default for mac, R64.exe is default for windows and tmux is the default for linux. To change the application, do `C + shift + p` -> `R-Box Application`.
 - `C + \` to change working dir
 - `C + b` to source the current R file, or to run [knitr](https://github.com/yihui/knitr) for Rnw or R markdown files.
-
-Change R Applications
-
-- `C + shift + p` -> `R-Box Application`
 
 
 ### Settings
