@@ -6,13 +6,18 @@ dict_begin = str_locate(str, "<key>support_function</key>\\s*<dict>\\s*<key>patt
 dict_end = str_locate(str, "\n\\s*</array>\\s*</dict>\\s*</dict>\\s*<key>scopeName</key>")[1]
 
 template = "\t\t\t\t<dict>\n\t\t\t\t\t<key>begin</key>\n\t\t\t\t\t<string>\\b(foo)\\s*(\\()</string>\n\t\t\t\t\t<key>beginCaptures</key>\n\t\t\t\t\t<dict>\n\t\t\t\t\t\t<key>1</key>\n\t\t\t\t\t\t<dict>\n\t\t\t\t\t\t\t<key>name</key>\n\t\t\t\t\t\t\t<string>support.function.r</string>\n\t\t\t\t\t\t</dict>\n\t\t\t\t\t\t<key>2</key>\n\t\t\t\t\t\t<dict>\n\t\t\t\t\t\t\t<key>name</key>\n\t\t\t\t\t\t\t<string>punctuation.definition.parameters.r</string>\n\t\t\t\t\t\t</dict>\n\t\t\t\t\t</dict>\n\t\t\t\t\t<key>comment</key>\n\t\t\t\t\t<string>base</string>\n\t\t\t\t\t<key>contentName</key>\n\t\t\t\t\t<string>meta.function-call.arguments.r</string>\n\t\t\t\t\t<key>end</key>\n\t\t\t\t\t<string>(\\))</string>\n\t\t\t\t\t<key>endCaptures</key>\n\t\t\t\t\t<dict>\n\t\t\t\t\t\t<key>1</key>\n\t\t\t\t\t\t<dict>\n\t\t\t\t\t\t\t<key>name</key>\n\t\t\t\t\t\t\t<string>punctuation.definition.parameters.r</string>\n\t\t\t\t\t\t</dict>\n\t\t\t\t\t</dict>\n\t\t\t\t\t<key>name</key>\n\t\t\t\t\t<string>meta.function-call.r</string>\n\t\t\t\t\t<key>patterns</key>\n\t\t\t\t\t<array>\n\t\t\t\t\t\t<dict>\n\t\t\t\t\t\t\t<key>include</key>\n\t\t\t\t\t\t\t<string>$self</string>\n\t\t\t\t\t\t</dict>\n\t\t\t\t\t</array>\n\t\t\t\t</dict>\n"
-filter = function(l){
+
+getfuns = function(pkg){
+    l = ls(pattern="*", paste0("package:",pkg))
     ind = grep("^[a-zA-Z\\._]+$", l)
     l = l[ind]
-    l[nchar(l) > 3]
-}
-getfuns = function(pkg){
-    filter(ls(pattern="*", paste0("package:",pkg)))
+    l = l[nchar(l) > 3]
+    ind = rep(TRUE, length(l))
+    for (i in seq_along(l)){
+        obj = get(l[i], envir = as.environment(paste0("package:", pkg)))
+        ind[i] = is.function(obj)
+    }
+    l[ind]
 }
 getregexp = function(pkg){
     s = template
