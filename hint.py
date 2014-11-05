@@ -54,7 +54,6 @@ class RBoxStatusListener(sublime_plugin.EventListener):
         # run it in another thread
         sublime.set_timeout_async(lambda : self.RStatusUpdater(view), 1)
 
-
     def on_selection_modified(self,view):
         if view.is_scratch() or view.settings().get('is_widget'): return
         point = view.sel()[0].end() if len(view.sel())>0 else 0
@@ -65,30 +64,29 @@ class RBoxStatusListener(sublime_plugin.EventListener):
             view.set_status("r_box", "")
             view.settings().set("r_box_status", False)
 
-
     def on_post_save(self, view):
         if view.is_scratch() or view.settings().get('is_widget'): return
         point = view.sel()[0].end() if len(view.sel())>0 else 0
         if not view.score_selector(point, "source.r"):
             return
-        self.obtain_func_call(view)
+        sublime.set_timeout_async(lambda : self.capture_functions(view), 1)
 
     def on_load(self, view):
         if view.is_scratch() or view.settings().get('is_widget'): return
         point = view.sel()[0].end() if len(view.sel())>0 else 0
         if not view.score_selector(point, "source.r"):
             return
-        self.obtain_func_call(view)
+        sublime.set_timeout_async(lambda : self.capture_functions(view), 1)
 
     def on_activated(self, view):
         if view.is_scratch() or view.settings().get('is_widget'): return
         point = view.sel()[0].end() if len(view.sel())>0 else 0
         if not view.score_selector(point, "source.r"):
             return
-        self.obtain_func_call(view)
+        sublime.set_timeout_async(lambda : self.capture_functions(view), 1)
         # print(self.cache)
 
-    def obtain_func_call(self, view):
+    def capture_functions(self, view):
         if not self.cache:
             self.cache = dict(load_jsonfile())
         funcsel = view.find_all(r"""\b(?:[a-zA-Z0-9._:]*)\s*(?:<-|=)\s*function\s*(\((?:(["\'])(?:[^\\]|\\.)*?\2|#.*$|[^()]|(?1))*\))""")
