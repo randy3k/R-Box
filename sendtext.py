@@ -56,6 +56,7 @@ def sendtext(cmd):
         subprocess.Popen(args)
 
     elif plat == "windows" and re.match('R[0-9]*$', prog):
+        cmd = clean(cmd)
         progpath = RBoxSettings(prog, str(1) if prog == "R64" else str(0))
         ahk_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin','AutoHotkeyU32')
         ahk_script_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin','Rgui.ahk')
@@ -66,11 +67,13 @@ def sendtext(cmd):
         subprocess.Popen(args)
 
     elif prog == "tmux":
+        cmd = clean(cmd)
         progpath = RBoxSettings("tmux", "tmux")
         subprocess.call([progpath, 'set-buffer', cmd])
         subprocess.call([progpath, 'paste-buffer', '-d'])
 
     elif prog == "screen":
+        cmd = clean(cmd)
         progpath = RBoxSettings("screen", "screen")
         if len(cmd)<2000:
             subprocess.call([progpath, '-X', 'stuff', cmd])
@@ -81,6 +84,7 @@ def sendtext(cmd):
                     subprocess.call([progpath, '-X', 'stuff', ". %s\n" % (f.name)])
 
     elif prog == "SublimeREPL":
+        cmd = clean(cmd)
         view = sublime.active_window().active_view()
         external_id = view.scope_name(0).split(" ")[0].split(".", 1)[1]
         sublime.active_window().run_command("repl_send", {"external_id": external_id, "text": cmd})
