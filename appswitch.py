@@ -9,8 +9,8 @@ class RBoxAppSwitch(sublime_plugin.WindowCommand):
     def run(self):
         plat = sublime.platform()
         if plat == 'osx':
-            self.app_list = ["R", "Terminal", "iTerm", "SublimeREPL"]
-            pop_string = ["", "Terminal", "iTerm 2", "SublimeREPL"]
+            self.app_list = ["R", "Terminal", "iTerm", "tmux", "screen", "SublimeREPL"]
+            pop_string = ["", "Terminal", "iTerm 2", "tmux", "screen", "SublimeREPL"]
         elif plat == "windows":
             self.app_list = ["R32", "R64", "SublimeREPL"]
             pop_string = ["R i386", "R x64", "SublimeREPL"]

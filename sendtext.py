@@ -67,11 +67,13 @@ def sendtext(cmd):
         subprocess.Popen(args)
 
     elif prog == "tmux":
+        cmd = clean(cmd) + "\n"
         progpath = RBoxSettings("tmux", "tmux")
         subprocess.call([progpath, 'set-buffer', cmd])
         subprocess.call([progpath, 'paste-buffer', '-d'])
 
     elif prog == "screen":
+        cmd = clean(cmd) + "\n"
         progpath = RBoxSettings("screen", "screen")
         if len(cmd)<2000:
             subprocess.call([progpath, '-X', 'stuff', cmd])
