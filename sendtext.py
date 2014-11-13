@@ -67,10 +67,14 @@ def sendtext(cmd):
         subprocess.Popen(args)
 
     elif prog == "tmux":
-        cmd = clean(cmd) + "\n"
         progpath = RBoxSettings("tmux", "tmux")
-        subprocess.call([progpath, 'set-buffer', cmd])
-        subprocess.call([progpath, 'paste-buffer', '-d'])
+        # `tmux set-buffer` fails if more than 16352 characters are
+        # passed to it. Send in chunks to avoid the problem.
+        n = 15000
+        chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
+        for chunk in chunks:
+            subprocess.call([progpath, 'set-buffer', chunk])
+            subprocess.call([progpath, 'paste-buffer', '-d'])
 
     elif prog == "screen":
         cmd = clean(cmd) + "\n"
