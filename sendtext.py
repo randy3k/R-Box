@@ -67,6 +67,7 @@ def sendtext(cmd):
         subprocess.Popen(args)
 
     elif prog == "tmux":
+        cmd = clean(cmd) + "\n"
         progpath = RBoxSettings("tmux", "tmux")
         # `tmux set-buffer` fails if more than 16352 characters are
         # passed to it. Send in chunks to avoid the problem.
