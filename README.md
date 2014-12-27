@@ -38,6 +38,15 @@ In the following, `C` is `ctrl` for Windows/Linux, `cmd` for Mac.
 
 See `Preference -> Package Settings -> R-Box`
 
+### SublimeLinter settings
+
+To enable [SublimeLinter](http://www.sublimelinter.com/) via [SublimeLinter-contrib-R](https://github.com/jimhester/SublimeLinter-contrib-R) and  [lintr](https://github.com/jimhester/lintr), please add the following in the SublimeLinter user settings file:
+
+```
+    "syntax_map": {
+        "r extended": "r"
+    }
+```
 
 ### License
 
