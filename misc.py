@@ -1,11 +1,10 @@
-import sublime, sublime_plugin
+import sublime
 import os
-import re
 import sys
+
 
 # get setting key
 def RBoxSettings(key, default=None):
-    plat = sublime.platform()
     settings = sublime.load_settings('R-Box.sublime-settings')
     return settings.get(key, default)
 
@@ -32,7 +31,7 @@ if sys.platform == "win32":
         else:
             return
 
-        if targetinfo == None or targetinfo.st_mtime < pkginfo.st_mtime:
+        if targetinfo is None or targetinfo.st_mtime < pkginfo.st_mtime:
             data = sublime.load_binary_resource(respath)
             print("* Updating " + targetpath)
             with open(targetpath, 'wb') as binfile:

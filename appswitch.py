@@ -1,6 +1,7 @@
 import sublime
 import sublime_plugin
 
+
 class RBoxAppSwitch(sublime_plugin.WindowCommand):
 
     def show_quick_panel(self, options, done):
@@ -23,7 +24,8 @@ class RBoxAppSwitch(sublime_plugin.WindowCommand):
         self.show_quick_panel([list(z) for z in zip(self.app_list, pop_string)], self.on_done)
 
     def on_done(self, action):
-        if action==-1: return
+        if action == -1:
+            return
         settings = sublime.load_settings('R-Box.sublime-settings')
         settings.set('App', self.app_list[action])
         sublime.save_settings('R-Box.sublime-settings')

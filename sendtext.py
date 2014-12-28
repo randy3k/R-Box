@@ -3,10 +3,9 @@ import sublime_plugin
 import os
 import subprocess
 import re
-import time
-import sys
 import tempfile
 from .misc import RBoxSettings
+
 
 def clean(cmd):
     cmd = cmd.expandtabs(4)
@@ -15,10 +14,12 @@ def clean(cmd):
         cmd = cmd.lstrip()
     return cmd
 
+
 def escape_dq(cmd):
     cmd = cmd.replace('\\', '\\\\')
     cmd = cmd.replace('"', '\\"')
     return cmd
+
 
 def sendtext(cmd):
     if cmd.strip() == "":
@@ -46,11 +47,13 @@ def sendtext(cmd):
             cmd += '\n'
         try:
             # iterm <2.9
-            args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal to tell current session to write text "' + cmd +'"']
+            args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal " \
+                    "to tell current session to write text "' + cmd + '"']
             subprocess.check_call(args)
         except:
             # iterm >=2.9
-            args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal window to tell current session to write text "' + cmd +'"']
+            args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal window " \
+                    "to tell current session to write text "' + cmd + '"']
             subprocess.check_call(args)
 
     elif plat == "osx" and re.match('R[0-9]*$', prog):
@@ -63,12 +66,12 @@ def sendtext(cmd):
     elif plat == "windows" and re.match('R[0-9]*$', prog):
         cmd = clean(cmd)
         progpath = RBoxSettings(prog, str(1) if prog == "R64" else str(0))
-        ahk_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin','AutoHotkeyU32')
-        ahk_script_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin','Rgui.ahk')
+        ahk_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', 'AutoHotkeyU32')
+        ahk_script_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', 'Rgui.ahk')
         # manually add "\n" to keep the indentation of first line of block code,
         # "\n" is later removed in AutoHotkey script
         cmd = "\n"+cmd
-        args = [ahk_path, ahk_script_path, progpath, cmd ]
+        args = [ahk_path, ahk_script_path, progpath, cmd]
         subprocess.Popen(args)
 
     elif prog == "tmux":
@@ -85,7 +88,7 @@ def sendtext(cmd):
     elif prog == "screen":
         cmd = clean(cmd) + "\n"
         progpath = RBoxSettings("screen", "screen")
-        if len(cmd)<2000:
+        if len(cmd) < 2000:
             subprocess.call([progpath, '-X', 'stuff', cmd])
         else:
             with tempfile.NamedTemporaryFile() as tmp:
@@ -100,12 +103,14 @@ def sendtext(cmd):
         sublime.active_window().run_command("repl_send", {"external_id": external_id, "text": cmd})
         return
 
+
 class RBoxSendSelectionCommand(sublime_plugin.TextCommand):
 
     # expand selection to {...} when being triggered
     def expand_sel(self, sel):
-        esel = self.view.find(r"""^(?:.*(\{(?:(["\'])(?:[^\\]|\\.)*?\2|#.*$|[^\{\}]|(?1))*\})[^\{\}\n]*)+"""
-            , self.view.line(sel).begin())
+        esel = self.view.find(
+            r"""^(?:.*(\{(?:(["\'])(?:[^\\]|\\.)*?\2|#.*$|[^\{\}]|(?1))*\})[^\{\}\n]*)+""",
+            self.view.line(sel).begin())
         if self.view.line(sel).begin() == esel.begin():
             return esel
 
@@ -124,16 +129,17 @@ class RBoxSendSelectionCommand(sublime_plugin.TextCommand):
                         line = view.rowcol(esel.end())[0]
                 if RBoxSettings("auto_advance", False):
                     view.sel().subtract(sel)
-                    pt = view.text_point(line+1,0)
-                    view.sel().add(sublime.Region(pt,pt))
+                    pt = view.text_point(line+1, 0)
+                    view.sel().add(sublime.Region(pt, pt))
             else:
                 thiscmd = view.substr(sel)
-            cmd += thiscmd +'\n'
+            cmd += thiscmd + '\n'
 
         sendtext(cmd)
 
         if RBoxSettings("auto_advance", False):
             view.show(view.sel())
+
 
 class RBoxChangeDirCommand(sublime_plugin.TextCommand):
     def run(self, edit):
@@ -145,11 +151,12 @@ class RBoxChangeDirCommand(sublime_plugin.TextCommand):
         cmd = "setwd(\"" + escape_dq(dirname) + "\")"
         sendtext(cmd)
 
+
 class RBoxSourceCodeCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         fname = self.view.file_name()
         if not fname:
             sublime.error_message("Save the file!")
             return
-        cmd = "source(\"" +  escape_dq(fname) + "\")"
+        cmd = "source(\"" + escape_dq(fname) + "\")"
         sendtext(cmd)
