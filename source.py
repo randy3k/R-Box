@@ -4,8 +4,8 @@ import os
 import re
 
 
-# List a directory using quick panel
 def listdir(view, dir, base, ext, on_done):
+    """List a directory using quick panel"""
     if not os.path.isdir(dir):
         sublime.status_message("Directory %s does not exist." % dir)
         return
