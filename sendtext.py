@@ -3,7 +3,6 @@ import sublime_plugin
 import os
 import subprocess
 import re
-import tempfile
 from .misc import RBoxSettings
 
 
@@ -77,10 +76,7 @@ def sendtext(cmd):
     elif prog == "tmux":
         cmd = clean(cmd) + "\n"
         progpath = RBoxSettings("tmux", "tmux")
-        # `tmux set-buffer` fails if more than 16352 characters are
-        # passed to it. Send in chunks to avoid the problem.
-        n = 15000
-        chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
+        chunks = [cmd[i:i+n] for i in range(0, len(cmd), 200)]
         for chunk in chunks:
             subprocess.call([progpath, 'set-buffer', chunk])
             subprocess.call([progpath, 'paste-buffer', '-d'])
@@ -88,15 +84,12 @@ def sendtext(cmd):
     elif prog == "screen":
         cmd = clean(cmd) + "\n"
         progpath = RBoxSettings("screen", "screen")
-        if len(cmd) < 2000:
+        chunks = [cmd[i:i+n] for i in range(0, len(cmd), 200)]
+        for chunk in chunks:
             if plat == "linux":
-                cmd = cmd.replace("$", r"\$")
-            subprocess.call([progpath, '-X', 'stuff', cmd])
-        else:
-            with tempfile.NamedTemporaryFile() as tmp:
-                with open(tmp.name, 'w') as f:
-                    f.write(cmd)
-                    subprocess.call([progpath, '-X', 'stuff', ". %s\n" % (f.name)])
+                chunk = chunk.replace("\\", r"\\")
+                chunk = chunk.replace("$", r"\$")
+            subprocess.call([progpath, '-X', 'stuff', chunk])
 
     elif prog == "SublimeREPL":
         cmd = clean(cmd)
