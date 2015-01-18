@@ -76,7 +76,8 @@ def sendtext(cmd):
     elif prog == "tmux":
         cmd = clean(cmd) + "\n"
         progpath = RBoxSettings("tmux", "tmux")
-        chunks = [cmd[i:i+n] for i in range(0, len(cmd), 200)]
+        n = 200
+        chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
         for chunk in chunks:
             subprocess.call([progpath, 'set-buffer', chunk])
             subprocess.call([progpath, 'paste-buffer', '-d'])
@@ -84,7 +85,8 @@ def sendtext(cmd):
     elif prog == "screen":
         cmd = clean(cmd) + "\n"
         progpath = RBoxSettings("screen", "screen")
-        chunks = [cmd[i:i+n] for i in range(0, len(cmd), 200)]
+        n = 200
+        chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
         for chunk in chunks:
             if plat == "linux":
                 chunk = chunk.replace("\\", r"\\")
