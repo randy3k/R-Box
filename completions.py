@@ -35,4 +35,4 @@ class RBoxCompletions(sublime_plugin.EventListener):
                                if len(item) > 3 and valid(item)]
 
         r = list(set(completions+default_completions))
-        return (r,  0)
+        return (r, sublime.INHIBIT_WORD_COMPLETIONS)
