@@ -358,7 +358,7 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>^(#')\s*</string>
+					<string>^(#&apos;)\s*</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>1</key>
@@ -391,24 +391,6 @@
 							<key>name</key>
 							<string>keyword.other.r</string>
 						</dict>
-						<dict>
-							<key>include</key>
-							<string>text.tex.latex</string>
-						</dict>
-						<dict>
-							<key>captures</key>
-							<dict>
-								<key>1</key>
-								<dict>
-									<key>name</key>
-									<string>text.plain.r</string>
-								</dict>
-							</dict>
-							<key>match</key>
-							<string>\b([a-zA-z]+)\b</string>
-							<key>name</key>
-							<string>comment.line.r</string>
-						</dict>
 					</array>
 				</dict>
 			</array>
@@ -431,7 +413,7 @@
 			<array>
 				<dict>
 					<key>begin</key>
-					<string>'</string>
+					<string>&apos;</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>0</key>
@@ -441,7 +423,7 @@
 						</dict>
 					</dict>
 					<key>end</key>
-					<string>'</string>
+					<string>&apos;</string>
 					<key>endCaptures</key>
 					<dict>
 						<key>0</key>
@@ -464,7 +446,7 @@
 				</dict>
 				<dict>
 					<key>begin</key>
-					<string>"</string>
+					<string>&quot;</string>
 					<key>beginCaptures</key>
 					<dict>
 						<key>0</key>
@@ -474,7 +456,7 @@
 						</dict>
 					</dict>
 					<key>end</key>
-					<string>"</string>
+					<string>&quot;</string>
 					<key>endCaptures</key>
 					<dict>
 						<key>0</key>
