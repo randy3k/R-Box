@@ -7,7 +7,7 @@
 	<key>keyEquivalent</key>
 	<string>^~R</string>
 	<key>name</key>
-	<string>R Console Extended</string>
+	<string>R Console</string>
 	<key>patterns</key>
 	<array>
 		<dict>

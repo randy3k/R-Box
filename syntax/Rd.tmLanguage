@@ -13,7 +13,7 @@
 	<key>keyEquivalent</key>
 	<string>^~R</string>
 	<key>name</key>
-	<string>Rd Extended</string>
+	<string>Rd</string>
 	<key>patterns</key>
 	<array>
 		<dict>
