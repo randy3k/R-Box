@@ -10,9 +10,7 @@ Features:
   5. Support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
   6. [knitr](https://github.com/yihui/knitr) build command for R markdown and Rnw files.
 
-This package contains an extended version of the R syntax
-definition, so you can safely disable the default `R` package.
-If you are only interested in the syntax files, check [R-Extended](https://github.com/randy3k/R-Extended).
+If you are only interested in the syntax files, checkout [R-Extended](https://github.com/randy3k/R-Extended).
 
 If you like it, you could send me some tips via [![](http://img.shields.io/gittip/randy3k.svg)](https://www.gittip.com/randy3k).
 
