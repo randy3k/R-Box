@@ -20,17 +20,17 @@ class RBoxCompletions(sublime_plugin.EventListener):
     completions = None
 
     def on_query_completions(self, view, prefix, locations):
-        if not view.match_selector(locations[0], "source.r"):
+        if not view.match_selector(locations[0], "source.r, source.r-console"):
             return None
         if not RBoxSettings("auto_completions"):
             return None
 
-        if True or not self.completions:
+        if not self.completions:
             j = dict(load_jsonfile())
             self.completions = list(chain.from_iterable(j.values()))
             self.completions = [item for item in self.completions if type(item) == str]
 
-        completions = [(item,) for item in self.completions if item[0] is prefix]
+        completions = [(item,) for item in self.completions if prefix in item]
         default_completions = [(item, ) for item in view.extract_completions(prefix)
                                if len(item) > 3 and valid(item)]
 
