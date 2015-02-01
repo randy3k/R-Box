@@ -57,7 +57,7 @@ def sendtext(cmd):
         ver = iTerm_version()
         while k < len(line_len):
             for j in range(k + 1, len(line_len) + 1):
-                if sum(line_len[k:j]) > 500:
+                if sum(line_len[k:(j+1)]) > 1000:
                     break
             chunk = "\n".join(cmd[k:j])
             if ver == 2.0:
