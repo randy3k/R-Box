@@ -20,6 +20,16 @@ def escape_dq(cmd):
     return cmd
 
 
+def iTerm_version():
+    try:
+        args = ['osascript', '-e',
+                'tell app "iTerm" to tell the first terminal to set foo to true']
+        subprocess.Popen(args)
+        return 2.9
+    except:
+        return 2.0
+
+
 def sendtext(cmd):
     if cmd.strip() == "":
         return
@@ -47,21 +57,20 @@ def sendtext(cmd):
         cmd = cmd.split("\n")
         line_len = [len(c) for c in cmd]
         k = 0
+        ver = iTerm_version()
         while k < len(line_len):
             for j in range(k + 1, len(line_len) + 1):
                 if sum(line_len[k:j]) > 500:
                     break
             chunk = "\n".join(cmd[k:j])
-            try:
-                # iterm <2.9
+            if ver == 2.0:
                 args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal '
                         'to tell current session to write text "' + chunk + '"']
-                subprocess.check_call(args)
-            except:
-                # iterm >=2.9
+            else:
                 args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal window '
                         'to tell current session to write text "' + chunk + '"']
-                subprocess.check_call(args)
+
+            subprocess.check_call(args)
             k = j
 
     elif plat == "osx" and re.match('R[0-9]*$', prog):
@@ -69,17 +78,6 @@ def sendtext(cmd):
         cmd = escape_dq(cmd)
         args = ['osascript']
         args.extend(['-e', 'tell app "' + prog + '" to cmd "' + cmd + '"'])
-        subprocess.Popen(args)
-
-    elif plat == "windows" and re.match('R[0-9]*$', prog):
-        cmd = clean(cmd)
-        progpath = RBoxSettings(prog, str(1) if prog == "R64" else str(0))
-        ahk_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', 'AutoHotkeyU32')
-        ahk_script_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', 'Rgui.ahk')
-        # manually add "\n" to keep the indentation of first line of block code,
-        # "\n" is later removed in AutoHotkey script
-        cmd = "\n"+cmd
-        args = [ahk_path, ahk_script_path, progpath, cmd]
         subprocess.Popen(args)
 
     elif prog == "tmux":
@@ -109,31 +107,41 @@ def sendtext(cmd):
         sublime.active_window().run_command("repl_send", {"external_id": external_id, "text": cmd})
         return
 
+    elif plat == "windows" and re.match('R[0-9]*$', prog):
+        cmd = clean(cmd)
+        progpath = RBoxSettings(prog, str(1) if prog == "R64" else str(0))
+        ahk_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', 'AutoHotkeyU32')
+        ahk_script_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', 'Rgui.ahk')
+        # manually add "\n" to keep the indentation of first line of block code,
+        # "\n" is later removed in AutoHotkey script
+        cmd = "\n"+cmd
+        args = [ahk_path, ahk_script_path, progpath, cmd]
+        subprocess.Popen(args)
+
+
+def expand_block(view, sel):
+    # expand selection to {...}
+    thiscmd = view.substr(view.line(sel))
+    if re.match(r".*\{\s*$", thiscmd):
+        esel = view.find(
+            r"""^(?:.*(\{(?:(["\'])(?:[^\\]|\\.)*?\2|#.*$|[^\{\}]|(?1))*\})[^\{\}\n]*)+""",
+            view.line(sel).begin()
+        )
+        if view.line(sel).begin() == esel.begin():
+            sel = esel
+    return sel
+
 
 class RBoxSendSelectionCommand(sublime_plugin.TextCommand):
-
-    # expand selection to {...} when being triggered
-    def expand_sel(self, sel):
-        esel = self.view.find(
-            r"""^(?:.*(\{(?:(["\'])(?:[^\\]|\\.)*?\2|#.*$|[^\{\}]|(?1))*\})[^\{\}\n]*)+""",
-            self.view.line(sel).begin())
-        if self.view.line(sel).begin() == esel.begin():
-            return esel
-
     def run(self, edit):
         view = self.view
         cmd = ''
         moved = False
         for sel in [s for s in view.sel()]:
             if sel.empty():
-                thiscmd = view.substr(view.line(sel))
-                line = view.rowcol(sel.end())[0]
-                # if the line ends with {, expand to {...}
-                if re.match(r".*\{\s*$", thiscmd):
-                    esel = self.expand_sel(sel)
-                    if esel:
-                        thiscmd = view.substr(esel)
-                        line = view.rowcol(esel.end())[0]
+                esel = expand_block(view, sel)
+                thiscmd = view.substr(view.line(esel))
+                line = view.rowcol(esel.end())[0]
                 if RBoxSettings("auto_advance", False):
                     view.sel().subtract(sel)
                     pt = view.text_point(line+1, 0)
