@@ -67,17 +67,16 @@ def sendtext(cmd):
                 args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal window '
                         'to tell current session to write text "' + chunk + '"']
 
-            subprocess.check_call(args)
-
-            # when cmd ends in a space, iterm does not execute.
+            # when chunk ends in a space, iterm does not execute.
             if (chunk[-1:] == ' '):
                 if ver == 2.0:
-                    args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal '
-                            'to tell current session to write text ""']
+                    args += ['-e', 'tell app "iTerm" to tell the first terminal '
+                             'to tell current session to write text ""']
                 else:
-                    args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal window '
-                            'to tell current session to write text ""']
-                subprocess.check_call(args)
+                    args += ['-e', 'tell app "iTerm" to tell the first terminal window '
+                             'to tell current session to write text ""']
+
+            subprocess.check_call(args)
 
             k = j
 
