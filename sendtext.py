@@ -20,14 +20,14 @@ def escape_dq(cmd):
     return cmd
 
 
-def iTerm_version():
+def iterm_version():
     try:
         args = ['osascript', '-e',
                 'tell app "iTerm" to tell the first terminal to set foo to true']
-        subprocess.Popen(args)
-        return 2.9
-    except:
+        subprocess.check_call(args)
         return 2.0
+    except:
+        return 2.9
 
 
 def sendtext(cmd):
@@ -54,7 +54,7 @@ def sendtext(cmd):
         cmd = cmd.split("\n")
         line_len = [len(c)+1 for c in cmd]
         k = 0
-        ver = iTerm_version()
+        ver = iterm_version()
         while k < len(line_len):
             for j in range(k + 1, len(line_len) + 1):
                 if sum(line_len[k:(j+1)]) > 1000:
