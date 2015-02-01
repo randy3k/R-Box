@@ -20,6 +20,14 @@ def escape_dq(cmd):
     return cmd
 
 
+def sendtext_terminal(cmd):
+    cmd = clean(cmd)
+    cmd = escape_dq(cmd)
+    args = ['osascript']
+    args.extend(['-e', 'tell app "Terminal" to do script "' + cmd + '" in front window'])
+    subprocess.Popen(args)
+
+
 def iterm_version():
     try:
         args = ['osascript', '-e',
@@ -30,7 +38,61 @@ def iterm_version():
         return 2.9
 
 
-def sendtext(cmd):
+def sendtext_iterm(cmd):
+    cmd = clean(cmd)
+    cmd = escape_dq(cmd)
+    cmd = cmd.split("\n")
+    line_len = [len(c)+1 for c in cmd]
+    k = 0
+    ver = iterm_version()
+    while k < len(line_len):
+        for j in range(k + 1, len(line_len) + 1):
+            if sum(line_len[k:(j+1)]) > 1000:
+                break
+        chunk = "\n".join(cmd[k:j])
+        if ver == 2.0:
+            args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal '
+                    'to tell current session to write text "' + chunk + '"']
+        else:
+            args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal window '
+                    'to tell current session to write text "' + chunk + '"']
+
+        # when chunk ends in a space, iterm does not execute.
+        if (chunk[-1:] == ' '):
+            if ver == 2.0:
+                args += ['-e', 'tell app "iTerm" to tell the first terminal '
+                         'to tell current session to write text ""']
+            else:
+                args += ['-e', 'tell app "iTerm" to tell the first terminal window '
+                         'to tell current session to write text ""']
+
+        subprocess.check_call(args)
+
+        k = j
+
+
+def sendtext_tmux(cmd, tmux="tmux"):
+    cmd = clean(cmd) + "\n"
+    n = 200
+    chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
+    for chunk in chunks:
+        subprocess.call([tmux, 'set-buffer', chunk])
+        subprocess.call([tmux, 'paste-buffer', '-d'])
+
+
+def sendtext_screen(cmd, screen="screen"):
+    plat = sublime.platform()
+    cmd = clean(cmd) + "\n"
+    n = 200
+    chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
+    for chunk in chunks:
+        if plat == "linux":
+            chunk = chunk.replace("\\", r"\\")
+            chunk = chunk.replace("$", r"\$")
+        subprocess.call([screen, '-X', 'stuff', chunk])
+
+
+def sendtext(view, cmd):
     if cmd.strip() == "":
         return
     plat = sublime.platform()
@@ -41,44 +103,11 @@ def sendtext(cmd):
     if plat == "linux":
         prog = RBoxSettings("App", "tmux")
 
-    if re.match('Terminal', prog):
-        cmd = clean(cmd)
-        cmd = escape_dq(cmd)
-        args = ['osascript']
-        args.extend(['-e', 'tell app "Terminal" to do script "' + cmd + '" in front window\n'])
-        subprocess.Popen(args)
+    if prog == 'Terminal':
+        sendtext_terminal(cmd)
 
-    elif re.match('iTerm', prog):
-        cmd = clean(cmd)
-        cmd = escape_dq(cmd)
-        cmd = cmd.split("\n")
-        line_len = [len(c)+1 for c in cmd]
-        k = 0
-        ver = iterm_version()
-        while k < len(line_len):
-            for j in range(k + 1, len(line_len) + 1):
-                if sum(line_len[k:(j+1)]) > 1000:
-                    break
-            chunk = "\n".join(cmd[k:j])
-            if ver == 2.0:
-                args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal '
-                        'to tell current session to write text "' + chunk + '"']
-            else:
-                args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal window '
-                        'to tell current session to write text "' + chunk + '"']
-
-            # when chunk ends in a space, iterm does not execute.
-            if (chunk[-1:] == ' '):
-                if ver == 2.0:
-                    args += ['-e', 'tell app "iTerm" to tell the first terminal '
-                             'to tell current session to write text ""']
-                else:
-                    args += ['-e', 'tell app "iTerm" to tell the first terminal window '
-                             'to tell current session to write text ""']
-
-            subprocess.check_call(args)
-
-            k = j
+    elif prog == 'iTerm':
+        sendtext_iterm(cmd)
 
     elif plat == "osx" and re.match('R[0-9]*$', prog):
         cmd = clean(cmd)
@@ -88,28 +117,13 @@ def sendtext(cmd):
         subprocess.Popen(args)
 
     elif prog == "tmux":
-        cmd = clean(cmd) + "\n"
-        progpath = RBoxSettings("tmux", "tmux")
-        n = 200
-        chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
-        for chunk in chunks:
-            subprocess.call([progpath, 'set-buffer', chunk])
-            subprocess.call([progpath, 'paste-buffer', '-d'])
+        sendtext_tmux(cmd, RBoxSettings.get("tmux", "tmux"))
 
     elif prog == "screen":
-        cmd = clean(cmd) + "\n"
-        progpath = RBoxSettings("screen", "screen")
-        n = 200
-        chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
-        for chunk in chunks:
-            if plat == "linux":
-                chunk = chunk.replace("\\", r"\\")
-                chunk = chunk.replace("$", r"\$")
-            subprocess.call([progpath, '-X', 'stuff', chunk])
+        sendtext_screen(cmd, RBoxSettings.get("screen", "screen"))
 
     elif prog == "SublimeREPL":
         cmd = clean(cmd)
-        view = sublime.active_window().active_view()
         external_id = view.scope_name(0).split(" ")[0].split(".", 1)[1]
         sublime.active_window().run_command("repl_send", {"external_id": external_id, "text": cmd})
         return
@@ -158,7 +172,7 @@ class RBoxSendSelectionCommand(sublime_plugin.TextCommand):
                 thiscmd = view.substr(sel)
             cmd += thiscmd + '\n'
 
-        sendtext(cmd)
+        sendtext(view, cmd)
 
         if moved:
             view.show(view.sel())
@@ -166,20 +180,22 @@ class RBoxSendSelectionCommand(sublime_plugin.TextCommand):
 
 class RBoxChangeDirCommand(sublime_plugin.TextCommand):
     def run(self, edit):
-        fname = self.view.file_name()
+        view = self.view
+        fname = view.file_name()
         if not fname:
             sublime.error_message("Save the file!")
             return
         dirname = os.path.dirname(fname)
         cmd = "setwd(\"" + escape_dq(dirname) + "\")"
-        sendtext(cmd)
+        sendtext(view, cmd)
 
 
 class RBoxSourceCodeCommand(sublime_plugin.TextCommand):
     def run(self, edit):
-        fname = self.view.file_name()
+        view = self.view
+        fname = view.file_name()
         if not fname:
             sublime.error_message("Save the file!")
             return
         cmd = "source(\"" + escape_dq(fname) + "\")"
-        sendtext(cmd)
+        sendtext(view, cmd)
