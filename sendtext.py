@@ -92,6 +92,17 @@ def sendtext_screen(cmd, screen="screen"):
         subprocess.call([screen, '-X', 'stuff', chunk])
 
 
+def sendtext_ahk(cmd, progpath="", script="Rgui.ahk"):
+    cmd = clean(cmd)
+    ahk_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', 'AutoHotkeyU32')
+    ahk_script_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', script)
+    # manually add "\n" to keep the indentation of first line of block code,
+    # "\n" is later removed in AutoHotkey script
+    cmd = "\n"+cmd
+    args = [ahk_path, ahk_script_path, progpath, cmd]
+    subprocess.Popen(args)
+
+
 def sendtext(view, cmd):
     if cmd.strip() == "":
         return
@@ -129,15 +140,14 @@ def sendtext(view, cmd):
         return
 
     elif plat == "windows" and re.match('R[0-9]*$', prog):
-        cmd = clean(cmd)
-        progpath = RBoxSettings(prog, str(1) if prog == "R64" else str(0))
-        ahk_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', 'AutoHotkeyU32')
-        ahk_script_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', 'Rgui.ahk')
-        # manually add "\n" to keep the indentation of first line of block code,
-        # "\n" is later removed in AutoHotkey script
-        cmd = "\n"+cmd
-        args = [ahk_path, ahk_script_path, progpath, cmd]
-        subprocess.Popen(args)
+        progpath = RBoxSettings(prog, "1" if prog == "R64" else "0")
+        sendtext_ahk(cmd, progpath, "Rgui.ahk")
+
+    elif prog == "Cygwin":
+        sendtext_ahk(cmd, "", "Cygwin.ahk")
+
+    elif prog == "Cmd":
+        sendtext_ahk(cmd, "", "Cmd.ahk")
 
 
 def expand_block(view, sel):

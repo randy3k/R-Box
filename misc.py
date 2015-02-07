@@ -44,3 +44,5 @@ if sys.platform == "win32":
     def plugin_loaded():
         update_resource("AutoHotkeyU32.exe")
         update_resource("Rgui.ahk")
+        update_resource("Cmd.ahk")
+        update_resource("Cygwin.ahk")

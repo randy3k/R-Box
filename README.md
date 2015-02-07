@@ -4,7 +4,11 @@ R package for Sublime Text
 Features:
 
   1. Multi platform support (windows/mac/linux)
-  2. Send commands to various applicaionts (R gui, Terminal, iTerm 2, screen, tmux, SublimeREPL..)
+  2. Send commands to various applicaionts. 
+    - Mac: R gui, Terminal, iTerm 2; 
+    - Unix: screen, tmux; 
+    - Windows: R gui, Cygwin, Cmd/Powershell; 
+    - SublimeREPL
   3. Function hints in status bar
   4. Autocompletions for base R commands
   5. Support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
