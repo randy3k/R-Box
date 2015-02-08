@@ -1,13 +1,10 @@
-; save current window ID to return here later
-WinGet stID, ID, A
-
-; Get Cygwin window
-WinGet, cmd_id, ID, ahk_class ConsoleWindowClass
+; Get Cmder window
+WinGet, cmder_id, ID, ahk_class VirtualConsoleClass
 
 ; if not found, open cygwin
-if (cmd_id != "")
+if (cmder_id != "")
 {
-    Outputdebug % dstring . "id=" . cmd_id
+    Outputdebug % dstring . "id=" . cmder_id
 
     oldclipboard = %clipboard%
     if 0=2
@@ -22,8 +19,6 @@ if (cmd_id != "")
         clipboard = proc.time()`n
     }
 
-    WinActivate ahk_id %cmd_id%
-    SendInput {Raw}%clipboard%
-    WinActivate ahk_id %stID%
+    ControlSend, VirtualConsoleClass1 ,+{Insert}, ahk_id %cmder_id%
     clipboard := oldclipboard
 }

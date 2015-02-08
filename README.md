@@ -7,7 +7,7 @@ Features:
   2. Send commands to various applicaionts. 
     - Mac: R gui, Terminal, iTerm 2; 
     - Unix: screen, tmux; 
-    - Windows: R gui, Cygwin, Cmd/Powershell; 
+    - Windows: R gui, Cygwin, [Cmder](http://bliker.github.io/cmder/); 
     - SublimeREPL
   3. Function hints in status bar
   4. Autocompletions for base R commands

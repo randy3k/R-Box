@@ -146,8 +146,8 @@ def sendtext(view, cmd):
     elif prog == "Cygwin":
         sendtext_ahk(cmd, "", "Cygwin.ahk")
 
-    elif prog == "Cmd":
-        sendtext_ahk(cmd, "", "Cmd.ahk")
+    elif prog == "Cmder":
+        sendtext_ahk(cmd, "", "Cmder.ahk")
 
 
 def expand_block(view, sel):
