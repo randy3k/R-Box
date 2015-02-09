@@ -3,7 +3,6 @@ import sublime_plugin
 import json
 import re
 from itertools import chain
-from .misc import RBoxSettings
 
 
 def load_jsonfile():
@@ -20,9 +19,10 @@ class RBoxCompletions(sublime_plugin.EventListener):
     completions = None
 
     def on_query_completions(self, view, prefix, locations):
+        settings = sublime.load_settings('R-Box.sublime-settings')
         if not view.match_selector(locations[0], "source.r, source.r-console"):
             return None
-        if not RBoxSettings("auto_completions"):
+        if not settings.get("auto_completions"):
             return None
 
         if not self.completions:

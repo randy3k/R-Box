@@ -3,7 +3,6 @@ import sublime_plugin
 import os
 import subprocess
 import re
-from .misc import RBoxSettings
 
 
 def clean(cmd):
@@ -107,12 +106,13 @@ def sendtext(view, cmd):
     if cmd.strip() == "":
         return
     plat = sublime.platform()
+    settings = sublime.load_settings('R-Box.sublime-settings')
     if plat == "osx":
-        prog = RBoxSettings("App", "R")
+        prog = settings.get("App", "R")
     if plat == "windows":
-        prog = RBoxSettings("App", "R64")
+        prog = settings.get("App", "R64")
     if plat == "linux":
-        prog = RBoxSettings("App", "tmux")
+        prog = settings.get("App", "tmux")
 
     if prog == 'Terminal':
         sendtext_terminal(cmd)
@@ -128,10 +128,10 @@ def sendtext(view, cmd):
         subprocess.Popen(args)
 
     elif prog == "tmux":
-        sendtext_tmux(cmd, RBoxSettings.get("tmux", "tmux"))
+        sendtext_tmux(cmd, settings.get("tmux", "tmux"))
 
     elif prog == "screen":
-        sendtext_screen(cmd, RBoxSettings.get("screen", "screen"))
+        sendtext_screen(cmd, settings.get("screen", "screen"))
 
     elif prog == "SublimeREPL":
         cmd = clean(cmd)
@@ -140,7 +140,7 @@ def sendtext(view, cmd):
         return
 
     elif plat == "windows" and re.match('R[0-9]*$', prog):
-        progpath = RBoxSettings(prog, "1" if prog == "R64" else "0")
+        progpath = settings.get(prog, "1" if prog == "R64" else "0")
         sendtext_ahk(cmd, progpath, "Rgui.ahk")
 
     elif prog == "Cygwin":
@@ -166,6 +166,7 @@ def expand_block(view, sel):
 class RBoxSendSelectionCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         view = self.view
+        settings = sublime.load_settings('R-Box.sublime-settings')
         cmd = ''
         moved = False
         for sel in [s for s in view.sel()]:
@@ -173,7 +174,7 @@ class RBoxSendSelectionCommand(sublime_plugin.TextCommand):
                 esel = expand_block(view, sel)
                 thiscmd = view.substr(view.line(esel))
                 line = view.rowcol(esel.end())[0]
-                if RBoxSettings("auto_advance", False):
+                if settings.get("auto_advance", False):
                     view.sel().subtract(sel)
                     pt = view.text_point(line+1, 0)
                     view.sel().add(sublime.Region(pt, pt))

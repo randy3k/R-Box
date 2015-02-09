@@ -3,11 +3,6 @@ import os
 import sys
 
 
-# get setting key
-def RBoxSettings(key, default=None):
-    settings = sublime.load_settings('R-Box.sublime-settings')
-    return settings.get(key, default)
-
 if sys.platform == "win32":
     def update_resource(binname):
         # from https://github.com/weslly/ColorPicker/blob/master/sublimecp.py=
