@@ -18,7 +18,7 @@ if (RprocID == "")
         RegRead, Rhome, HKEY_LOCAL_MACHINE,SOFTWARE\R-core\R, InstallPath
         Rguiexe := Rhome . "\bin\i386\Rgui.exe"
     }
-    else if (0=0)
+    else if 0=0
     {
         ; debug
         RegRead, Rhome, HKEY_LOCAL_MACHINE,SOFTWARE\R-core\R, InstallPath
