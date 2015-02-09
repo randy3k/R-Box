@@ -5,7 +5,7 @@ import json
 
 
 def load_jsonfile():
-    jsonFilepath = "/".join(['Packages', 'R-Box', 'hint.json'])
+    jsonFilepath = "/".join(['Packages', 'R-Box', 'support', 'hint.json'])
     data = json.loads(sublime.load_resource(jsonFilepath))
     return data
 
