@@ -10,21 +10,23 @@ if (RprocID == "")
 if (RprocID == "")
 {
     Rguiexe = %1%
-    if (Rguiexe = 1) {
+    if (Rguiexe == "1") {
+        SetRegView 64
         RegRead, Rhome, HKEY_LOCAL_MACHINE,SOFTWARE\R-core\R, InstallPath
         Rguiexe := Rhome . "\bin\x64\Rgui.exe"
     }
-    else if (Rguiexe = 0){
+    else if (Rguiexe == "0"){
+        SetRegView 32
         RegRead, Rhome, HKEY_LOCAL_MACHINE,SOFTWARE\R-core\R, InstallPath
         Rguiexe := Rhome . "\bin\i386\Rgui.exe"
     }
     else if 0=0
     {
         ; debug
-        RegRead, Rhome, HKEY_LOCAL_MACHINE,SOFTWARE\R-core\R, InstallPath
-        Rguiexe := Rhome . "\bin\i386\Rgui.exe"
+        RegRead, Rhome, HKEY_LOCAL_MACHINE,SOFTWARE\R-core\R64, InstallPath
+        Rguiexe := Rhome . "\bin\x64\Rgui.exe"
     }
-    OutputDebug Rhome from registry is %Rhome%
+    OutputDebug Rgui is %Rguiexe%
     Outputdebug % dstring . "R not found"
 
     run %Rguiexe% --sdi
