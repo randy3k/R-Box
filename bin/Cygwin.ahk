@@ -19,6 +19,6 @@ if (cygwin_id != "")
         clipboard = proc.time()`n
     }
 
-    ControlSend, ,{Shift down}{Insert}{Shift Up}, ahk_id %cygwin_id%
+    ControlSend, ,{Blind}{Shift down}{Insert}{Shift Up}, ahk_id %cygwin_id%
     clipboard := oldclipboard
 }
