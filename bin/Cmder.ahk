@@ -19,6 +19,6 @@ if (cmder_id != "")
         clipboard = proc.time()`n
     }
 
-    ControlSend, VirtualConsoleClass1 ,+{Insert}, ahk_id %cmder_id%
+    ControlSend, VirtualConsoleClass1 ,{Blind}^+v, ahk_id %cmder_id%
     clipboard := oldclipboard
 }
