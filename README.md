@@ -18,7 +18,7 @@ If you are only interested in the syntax files, checkout [R-Extended](https://gi
 
 If you like it, you could send me some tips via [![](http://img.shields.io/gittip/randy3k.svg)](https://www.gittip.com/randy3k).
 
-![](https://raw.githubusercontent.com/randy3k/R-Box/master/screenshots/terminal.png)
+![](https://raw.githubusercontent.com/randy3k/R-Box/screenshots/terminal.png)
 
 ### Getting start
 
