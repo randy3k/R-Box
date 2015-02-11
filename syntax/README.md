@@ -22,4 +22,4 @@ Note: The dollor sign `$` is treated as a special char, to display the original 
 
 Screen shot for Roxygen support:
 
-![](https://raw.githubusercontent.com/randy3k/R-Extended/master/screenshots/roxygen.png)
+![](https://raw.githubusercontent.com/randy3k/R-Extended/screenshots/roxygen.png)
