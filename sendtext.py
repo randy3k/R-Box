@@ -3,6 +3,7 @@ import sublime_plugin
 import os
 import subprocess
 import re
+import sys
 
 
 def clean(cmd):
@@ -50,19 +51,19 @@ def sendtext_iterm(cmd):
                 break
         chunk = "\n".join(cmd[k:j])
         if ver == 2.0:
-            args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal '
+            args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal ' +
                     'to tell current session to write text "' + chunk + '"']
         else:
-            args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal window '
+            args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal window ' +
                     'to tell current session to write text "' + chunk + '"']
 
         # when chunk ends in a space, iterm does not execute.
         if (chunk[-1:] == ' '):
             if ver == 2.0:
-                args += ['-e', 'tell app "iTerm" to tell the first terminal '
+                args += ['-e', 'tell app "iTerm" to tell the first terminal ' +
                          'to tell current session to write text ""']
             else:
-                args += ['-e', 'tell app "iTerm" to tell the first terminal window '
+                args += ['-e', 'tell app "iTerm" to tell the first terminal window ' +
                          'to tell current session to write text ""']
 
         subprocess.check_call(args)
@@ -80,12 +81,12 @@ def sendtext_tmux(cmd, tmux="tmux"):
 
 
 def sendtext_screen(cmd, screen="screen"):
-    plat = sublime.platform()
+    plat = sys.platform
     cmd = clean(cmd) + "\n"
     n = 200
     chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
     for chunk in chunks:
-        if plat == "linux":
+        if plat.startswith("linux"):
             chunk = chunk.replace("\\", r"\\")
             chunk = chunk.replace("$", r"\$")
         subprocess.call([screen, '-X', 'stuff', chunk])
