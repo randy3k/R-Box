@@ -1,7 +1,23 @@
+SetTitleMatchMode, 2
+
 ; save current window ID to return here later
 WinGet stID, ID, A
 
-WinGet, RprocID, ID, ahk_class Rgui
+WinGet, RprocID, ID, R Console
+
+WinGetClass, Rclass, ahk_id %RprocID%
+
+if (Rclass != "Rgui")
+{
+    RprocID := ""
+
+}
+
+if (RprocID == "")
+{
+    WinGet, RprocID, ID, ahk_class Rgui
+}
+
 if (RprocID == "")
 {
     WinGet, RprocID, ID, ahk_class Rgui Workspace
