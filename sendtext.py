@@ -41,34 +41,14 @@ def iterm_version():
 def sendtext_iterm(cmd):
     cmd = clean(cmd)
     cmd = escape_dq(cmd)
-    cmd = cmd.split("\n")
-    line_len = [len(c)+1 for c in cmd]
-    k = 0
     ver = iterm_version()
-    while k < len(line_len):
-        for j in range(k + 1, len(line_len) + 1):
-            if sum(line_len[k:(j+1)]) > 1000:
-                break
-        chunk = "\n".join(cmd[k:j])
-        if ver == 2.0:
-            args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal ' +
-                    'to tell current session to write text "' + chunk + '"']
-        else:
-            args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal window ' +
-                    'to tell current session to write text "' + chunk + '"']
-
-        # when chunk ends in a space, iterm does not execute.
-        if (chunk[-1:] == ' '):
-            if ver == 2.0:
-                args += ['-e', 'tell app "iTerm" to tell the first terminal ' +
-                         'to tell current session to write text ""']
-            else:
-                args += ['-e', 'tell app "iTerm" to tell the first terminal window ' +
-                         'to tell current session to write text ""']
-
-        subprocess.check_call(args)
-
-        k = j
+    if ver == 2.0:
+        args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal ' +
+                'to tell current session to write text "' + cmd + '"']
+    else:
+        args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal window ' +
+                'to tell current session to write text "' + cmd + '"']
+    subprocess.check_call(args)
 
 
 def sendtext_tmux(cmd, tmux="tmux"):
