@@ -6,6 +6,16 @@
     ]
   },
   {
+    "keys": ["super+enter"],
+    "command": "r_box_send_selection", "context": [
+      {
+        "key": "selector",
+        "operator": "equal",
+        "operand": "text.html.markdown.academicmarkdown markup.raw.block.fenced.markdown"
+      }
+    ]
+  },
+  {
     "keys": ["super+\\"],
     "command": "r_box_change_dir",
     "context": [
