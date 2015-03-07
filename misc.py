@@ -1,11 +1,11 @@
 import sublime
 import os
-import sys
+import shutil
 
 
-if sys.platform == "win32":
+if sublime.platform() == "windows":
     def update_resource(binname):
-        # from https://github.com/weslly/ColorPicker/blob/master/sublimecp.py=
+        # from https://github.com/weslly/ColorPicker/blob/master/sublimecp.py
         targetdir = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin')
         targetpath = os.path.join(targetdir, binname)
         respath = 'Packages/R-Box/bin/' + binname
@@ -27,11 +27,14 @@ if sys.platform == "win32":
             return
 
         if targetinfo is None or targetinfo.st_mtime < pkginfo.st_mtime:
-            data = sublime.load_binary_resource(respath)
             print("* Updating " + targetpath)
-            with open(targetpath, 'wb') as binfile:
-                binfile.write(data)
-                binfile.close()
+            if sublime.version() < '3000':
+                shutil.copy2(unpkgpath, targetpath)
+            else:
+                data = sublime.load_binary_resource(respath)
+                with open(targetpath, 'wb') as binfile:
+                    binfile.write(data)
+                    binfile.close()
 
         if not os.access(targetpath, os.X_OK):
             os.chmod(targetpath, 0o755)
@@ -41,3 +44,6 @@ if sys.platform == "win32":
         update_resource("Rgui.ahk")
         update_resource("Cmder.ahk")
         update_resource("Cygwin.ahk")
+
+    if sublime.version() < '3000':
+        plugin_loaded()
