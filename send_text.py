@@ -20,7 +20,7 @@ def escape_dq(cmd):
     return cmd
 
 
-def sendtext_terminal(cmd):
+def send_text_terminal(cmd):
     cmd = clean(cmd)
     cmd = escape_dq(cmd)
     args = ['osascript']
@@ -38,7 +38,7 @@ def iterm_version():
         return 2.9
 
 
-def sendtext_iterm(cmd):
+def send_text_iterm(cmd):
     cmd = clean(cmd)
     cmd = escape_dq(cmd)
     ver = iterm_version()
@@ -51,7 +51,7 @@ def sendtext_iterm(cmd):
     subprocess.check_call(args)
 
 
-def sendtext_tmux(cmd, tmux="tmux"):
+def send_text_tmux(cmd, tmux="tmux"):
     cmd = clean(cmd) + "\n"
     n = 200
     chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
@@ -60,7 +60,7 @@ def sendtext_tmux(cmd, tmux="tmux"):
         subprocess.call([tmux, 'paste-buffer', '-d'])
 
 
-def sendtext_screen(cmd, screen="screen"):
+def send_text_screen(cmd, screen="screen"):
     plat = sys.platform
     cmd = clean(cmd) + "\n"
     n = 200
@@ -72,7 +72,7 @@ def sendtext_screen(cmd, screen="screen"):
         subprocess.call([screen, '-X', 'stuff', chunk])
 
 
-def sendtext_ahk(cmd, progpath="", script="Rgui.ahk"):
+def send_text_ahk(cmd, progpath="", script="Rgui.ahk"):
     cmd = clean(cmd)
     ahk_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', 'AutoHotkeyU32')
     ahk_script_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', script)
@@ -83,7 +83,7 @@ def sendtext_ahk(cmd, progpath="", script="Rgui.ahk"):
     subprocess.Popen(args)
 
 
-def sendtext(view, cmd):
+def send_text(view, cmd):
     if cmd.strip() == "":
         return
     plat = sublime.platform()
@@ -96,10 +96,10 @@ def sendtext(view, cmd):
         prog = settings.get("App", "tmux")
 
     if prog == 'Terminal':
-        sendtext_terminal(cmd)
+        send_text_terminal(cmd)
 
     elif prog == 'iTerm':
-        sendtext_iterm(cmd)
+        send_text_iterm(cmd)
 
     elif plat == "osx" and re.match('R[0-9]*$', prog):
         cmd = clean(cmd)
@@ -109,10 +109,10 @@ def sendtext(view, cmd):
         subprocess.Popen(args)
 
     elif prog == "tmux":
-        sendtext_tmux(cmd, settings.get("tmux", "tmux"))
+        send_text_tmux(cmd, settings.get("tmux", "tmux"))
 
     elif prog == "screen":
-        sendtext_screen(cmd, settings.get("screen", "screen"))
+        send_text_screen(cmd, settings.get("screen", "screen"))
 
     elif prog == "SublimeREPL":
         cmd = clean(cmd)
@@ -122,13 +122,13 @@ def sendtext(view, cmd):
 
     elif plat == "windows" and re.match('R[0-9]*$', prog):
         progpath = settings.get(prog, "1" if prog == "R64" else "0")
-        sendtext_ahk(cmd, progpath, "Rgui.ahk")
+        send_text_ahk(cmd, progpath, "Rgui.ahk")
 
     elif prog == "Cygwin":
-        sendtext_ahk(cmd, "", "Cygwin.ahk")
+        send_text_ahk(cmd, "", "Cygwin.ahk")
 
     elif prog == "Cmder":
-        sendtext_ahk(cmd, "", "Cmder.ahk")
+        send_text_ahk(cmd, "", "Cmder.ahk")
 
 
 def expand_block(view, sel):
@@ -164,7 +164,7 @@ class RBoxSendSelectionCommand(sublime_plugin.TextCommand):
                 thiscmd = view.substr(sel)
             cmd += thiscmd + '\n'
 
-        sendtext(view, cmd)
+        send_text(view, cmd)
 
         if moved:
             view.show(view.sel())
@@ -179,7 +179,7 @@ class RBoxChangeDirCommand(sublime_plugin.TextCommand):
             return
         dirname = os.path.dirname(fname)
         cmd = "setwd(\"" + escape_dq(dirname) + "\")"
-        sendtext(view, cmd)
+        send_text(view, cmd)
 
 
 class RBoxSourceCodeCommand(sublime_plugin.TextCommand):
@@ -190,7 +190,7 @@ class RBoxSourceCodeCommand(sublime_plugin.TextCommand):
             sublime.error_message("Save the file!")
             return
         cmd = "source(\"" + escape_dq(fname) + "\")"
-        sendtext(view, cmd)
+        send_text(view, cmd)
 
 
 # old send text class of Enhanced-R
