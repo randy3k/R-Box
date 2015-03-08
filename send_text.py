@@ -78,7 +78,7 @@ def send_text_ahk(cmd, progpath="", script="Rgui.ahk"):
     ahk_script_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', script)
     # manually add "\n" to keep the indentation of first line of block code,
     # "\n" is later removed in AutoHotkey script
-    cmd = "\n"+cmd
+    cmd = "\n" + cmd
     args = [ahk_path, ahk_script_path, progpath, cmd]
     subprocess.Popen(args)
 
