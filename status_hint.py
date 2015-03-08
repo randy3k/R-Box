@@ -74,33 +74,28 @@ class RBoxStatusListener(sublime_plugin.EventListener):
                 self.cache.update({m.group(1): m.group(1)+m.group(2)})
 
     def on_selection_modified(self, view):
-        if not self.check(view):
-            return
-        point = view.sel()[0].end() if len(view.sel()) > 0 else 0
-        this_row = view.rowcol(point)[0]
-        if this_row != self.last_row:
-            view.set_status("r_box", "")
-            view.settings().set("r_box_status", False)
+        if self.check(view):
+            point = view.sel()[0].end() if len(view.sel()) > 0 else 0
+            this_row = view.rowcol(point)[0]
+            if this_row != self.last_row:
+                view.set_status("r_box", "")
+                view.settings().set("r_box_status", False)
 
     def on_modified(self, view):
-        if not self.check(view):
-            return
-        set_timeout(lambda: self.update_status(view), 1)
+        if self.check(view):
+            set_timeout(lambda: self.update_status(view), 1)
 
     def on_post_save(self, view):
-        if not self.check(view):
-            return
-        set_timeout(lambda: self.capture_functions(view), 1)
+        if self.check(view):
+            set_timeout(lambda: self.capture_functions(view), 1)
 
     def on_load(self, view):
-        if not self.check(view):
-            return
-        set_timeout(lambda: self.capture_functions(view), 1)
+        if self.check(view):
+            set_timeout(lambda: self.capture_functions(view), 1)
 
     def on_activated(self, view):
-        if not self.check(view):
-            return
-        set_timeout(lambda: self.capture_functions(view), 1)
+        if self.check(view):
+            set_timeout(lambda: self.capture_functions(view), 1)
 
 
 class RBoxCleanStatus(sublime_plugin.TextCommand):
