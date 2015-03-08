@@ -191,3 +191,9 @@ class RBoxSourceCodeCommand(sublime_plugin.TextCommand):
             return
         cmd = "source(\"" + escape_dq(fname) + "\")"
         sendtext(view, cmd)
+
+
+# old send text class of Enhanced-R
+class RSendSelectCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        self.run_command("r_box_send_selection")
