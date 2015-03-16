@@ -30,9 +30,18 @@ class RBoxStatusListener(sublime_plugin.EventListener):
     def check(self, view):
         if view.is_scratch() or view.settings().get('is_widget'):
             return False
-        point = view.sel()[0].end() if len(view.sel()) > 0 else 0
+
+        sel = view.sel()
+        if len(sel) != 1:
+            return
+
+        if sel[0].begin() != sel[0].end():
+            return
+
+        point = sel[0].end() if len(sel) > 0 else 0
         if not view.score_selector(point, "source.r"):
             return False
+
         settings = sublime.load_settings('R-Box.sublime-settings')
         return settings.get("status_bar_hint", True)
 
@@ -45,11 +54,6 @@ class RBoxStatusListener(sublime_plugin.EventListener):
 
         point = view.sel()[0].end() if len(view.sel()) > 0 else 0
         this_row = view.rowcol(point)[0]
-        sel = view.sel()
-        if len(sel) != 1:
-            return
-        if sel[0].begin() != sel[0].end():
-            return
         contentb = view.substr(sublime.Region(view.line(point).begin(), point))
         m = re.match(r".*?([a-zA-Z0-9.]+)\($", contentb)
         if not m:
@@ -83,19 +87,19 @@ class RBoxStatusListener(sublime_plugin.EventListener):
 
     def on_modified(self, view):
         if self.check(view):
-            set_timeout(lambda: self.update_status(view), 1)
+            set_timeout(lambda: self.update_status(view), 100)
 
     def on_post_save(self, view):
         if self.check(view):
-            set_timeout(lambda: self.capture_functions(view), 1)
+            set_timeout(lambda: self.capture_functions(view), 100)
 
     def on_load(self, view):
         if self.check(view):
-            set_timeout(lambda: self.capture_functions(view), 1)
+            set_timeout(lambda: self.capture_functions(view), 100)
 
     def on_activated(self, view):
         if self.check(view):
-            set_timeout(lambda: self.capture_functions(view), 1)
+            set_timeout(lambda: self.capture_functions(view), 100)
 
 
 class RBoxCleanStatus(sublime_plugin.TextCommand):
