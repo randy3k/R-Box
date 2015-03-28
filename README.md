@@ -61,4 +61,4 @@ To enable [SublimeLinter](http://www.sublimelinter.com/) via [SublimeLinter-cont
 
 ### License
 
-R-Box is licensed under the MIT License. Files under `bin` are included with their own licenses.
+R-Box is licensed under the MIT License. `AutoHotkeyU32.exe` under `bin` is included with its own licenses.
