@@ -3,16 +3,15 @@ R package for Sublime Text
 
 Features:
 
-  1. Multi platform support (windows/mac/linux)
-  2. Send commands to various applicaionts. 
+  1. Send commands to various applicaionts. 
     - Mac: R gui, Terminal, iTerm 2; 
     - Unix: screen, tmux; 
-    - Windows: R gui, Cygwin, [Cmder](http://bliker.github.io/cmder/) (see below); 
+    - Windows: R gui, Cygwin, [Cmder](http://bliker.github.io/cmder/) (see below for configuring Cmder); 
     - SublimeREPL
-  3. Function hints in status bar
-  4. Autocompletions for base R commands
-  5. Support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
-  6. [knitr](https://github.com/yihui/knitr) build command for R markdown and Rnw files.
+  2. Function hints in status bar
+  3. Autocompletions for base R commands
+  4. Support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
+  5.. [knitr](https://github.com/yihui/knitr) build command for R markdown and Rnw files.
 
 If you are only interested in the syntax files, checkout [R-Extended](https://github.com/randy3k/R-Extended).
 
@@ -61,4 +60,4 @@ To enable [SublimeLinter](http://www.sublimelinter.com/) via [SublimeLinter-cont
 
 ### License
 
-R-Box is licensed under the MIT License. `AutoHotkeyU32.exe` under `bin` is included with its own licenses.
+R-Box is licensed under the MIT License. `AutoHotkeyU32.exe` under `bin` is included with its own license.
