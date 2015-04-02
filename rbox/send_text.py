@@ -6,7 +6,7 @@ import re
 import sys
 
 
-class SencTextMixins:
+class SendTextMixins:
 
     @staticmethod
     def clean(cmd):
@@ -146,7 +146,7 @@ class ExpandBlockMixins:
         return sel
 
 
-class RBoxSendSelectionCommand(sublime_plugin.TextCommand, SencTextMixins, ExpandBlockMixins):
+class RBoxSendSelectionCommand(sublime_plugin.TextCommand, SendTextMixins, ExpandBlockMixins):
     def run(self, edit):
         view = self.view
         settings = sublime.load_settings('R-Box.sublime-settings')
@@ -172,7 +172,7 @@ class RBoxSendSelectionCommand(sublime_plugin.TextCommand, SencTextMixins, Expan
             view.show(view.sel())
 
 
-class RBoxChangeDirCommand(sublime_plugin.TextCommand, SencTextMixins):
+class RBoxChangeDirCommand(sublime_plugin.TextCommand, SendTextMixins):
     def run(self, edit):
         view = self.view
         fname = view.file_name()
@@ -184,7 +184,7 @@ class RBoxChangeDirCommand(sublime_plugin.TextCommand, SencTextMixins):
         self.send_text(cmd)
 
 
-class RBoxSourceCodeCommand(sublime_plugin.TextCommand, SencTextMixins):
+class RBoxSourceCodeCommand(sublime_plugin.TextCommand, SendTextMixins):
     def run(self, edit):
         view = self.view
         fname = view.file_name()
