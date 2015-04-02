@@ -2,16 +2,8 @@
     {
         "keys": ["super+enter"],
         "command": "r_box_send_selection",
-        "context": [{"key": "selector", "operator": "equal", "operand": "source.r"}
-        ]
-    },
-    {
-        "keys": ["super+enter"], "command": "r_box_send_selection",
-        "context": [
-            {
-                "key": "selector", "operator": "equal",
-                "operand": "text.html.markdown.academicmarkdown markup.raw.block.fenced.markdown"
-            }
+        "context": [{"key": "selector", "operator": "equal",
+        "operand": "source.r, text.html.markdown.academicmarkdown markup.raw.block.fenced.markdown"}
         ]
     },
     {
@@ -21,15 +13,6 @@
             {
                 "key": "selector", "operator": "equal", "operand": "source.r"
             }
-        ]
-    },
-    {
-        "keys": ["super+b"],
-        "command": "r_box_source_code",
-        "context": [
-            {"key": "selector", "operator": "equal", "operand": "source.r"},
-            {"key": "selector", "operator": "not_equal", "operand": "text.tex.latex.rsweave"},
-            {"key": "selector", "operator": "not_equal", "operand": "text.html.markdown.rmarkdown"}
         ]
     }
 ]

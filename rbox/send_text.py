@@ -195,6 +195,12 @@ class RBoxSourceCodeCommand(sublime_plugin.TextCommand, SendTextMixin):
         self.send_text(cmd)
 
 
+class RBoxBuildCommand(sublime_plugin.WindowCommand):
+
+    def run(self):
+        self.window.active_view().run_command("r_box_source_code")
+
+
 # old send text class of Enhanced-R
 class RSendSelectCommand(sublime_plugin.TextCommand):
     def run(self, edit):
