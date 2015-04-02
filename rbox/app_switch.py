@@ -2,7 +2,7 @@ import sublime
 import sublime_plugin
 
 
-class RBoxAppSwitch(sublime_plugin.WindowCommand):
+class RBoxAppSwitchCommand(sublime_plugin.WindowCommand):
 
     def show_quick_panel(self, options, done):
         sublime.set_timeout(lambda: self.window.show_quick_panel(options, done), 10)
