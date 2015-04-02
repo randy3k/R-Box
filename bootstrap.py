@@ -7,7 +7,7 @@ if version >= "3000":
         RBoxCompletions,
         RBoxSendSelectionCommand, RBoxChangeDirCommand,
         RBoxSourceCodeCommand, RSendSelectCommand,
-        RBoxAppSwitchCommand,
+        RBoxChooseProgramCommand,
         RBoxSourcePromptCommand,
         RBoxStatusListener, RBoxCleanStatus,
         update_resources
@@ -17,7 +17,7 @@ else:
         RBoxCompletions,
         RBoxSendSelectionCommand, RBoxChangeDirCommand,
         RBoxSourceCodeCommand, RSendSelectCommand,
-        RBoxAppSwitchCommand,
+        RBoxChooseProgramCommand,
         RBoxSourcePromptCommand,
         RBoxStatusListener, RBoxCleanStatus,
         update_resources

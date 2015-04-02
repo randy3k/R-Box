@@ -3,7 +3,7 @@ R package for Sublime Text
 
 Features:
 
-  1. Send commands to various applicaionts. 
+  1. Send commands to various programs. 
     - Mac: R gui, Terminal, iTerm 2; 
     - Unix: screen, tmux; 
     - Windows: R gui, Cygwin, [Cmder](http://bliker.github.io/cmder/) (see below for configuring Cmder); 
@@ -30,7 +30,7 @@ If you like it, you could send me some tips via [![](http://img.shields.io/gitti
 
 In the following, `C` is `ctrl` for Windows/Linux, `cmd` for Mac.
 
-- `C + enter` to send code to gui/terminal. R.app is the default for mac, R64.exe is default for windows and tmux is the default for linux. To change the application, do `C + shift + p` -> `R-Box Application`.
+- `C + enter` to send code to gui/terminal. R.app is the default for mac, R64.exe is default for windows and tmux is the default for linux. To change the application, do `C + shift + p` -> `R-Box: Choose Program`.
 - `C + \` to change working dir
 - `C + b` to source the current R file, or to run [knitr](https://github.com/yihui/knitr) for Rnw or R markdown files.
 

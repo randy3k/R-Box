@@ -1,6 +1,6 @@
 [
     {
-        "caption": "R-Box Application",
-        "command": "r_box_app_switch"
+        "caption": "R-Box: Choose Program",
+        "command": "r_box_choose_program"
     }
 ]
