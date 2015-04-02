@@ -32,14 +32,14 @@ class SencTextMixins:
         except:
             return 2.9
 
-    def send_text_terminal(self, cmd):
+    def _send_text_terminal(self, cmd):
         cmd = self.clean(cmd)
         cmd = self.escape_dq(cmd)
         args = ['osascript']
         args.extend(['-e', 'tell app "Terminal" to do script "' + cmd + '" in front window'])
         subprocess.Popen(args)
 
-    def send_text_iterm(self, cmd):
+    def _send_text_iterm(self, cmd):
         cmd = self.clean(cmd)
         cmd = self.escape_dq(cmd)
         ver = self.iterm_version()
@@ -51,7 +51,7 @@ class SencTextMixins:
                     'to tell current session to write text "' + cmd + '"']
         subprocess.check_call(args)
 
-    def send_text_tmux(self, cmd, tmux="tmux"):
+    def _send_text_tmux(self, cmd, tmux="tmux"):
         cmd = self.clean(cmd) + "\n"
         n = 200
         chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
@@ -59,7 +59,7 @@ class SencTextMixins:
             subprocess.call([tmux, 'set-buffer', chunk])
             subprocess.call([tmux, 'paste-buffer', '-d'])
 
-    def send_text_screen(self, cmd, screen="screen"):
+    def _send_text_screen(self, cmd, screen="screen"):
         plat = sys.platform
         cmd = self.clean(cmd) + "\n"
         n = 200
@@ -70,7 +70,7 @@ class SencTextMixins:
                 chunk = chunk.replace("$", r"\$")
             subprocess.call([screen, '-X', 'stuff', chunk])
 
-    def send_text_ahk(self, cmd, progpath="", script="Rgui.ahk"):
+    def _send_text_ahk(self, cmd, progpath="", script="Rgui.ahk"):
         cmd = self.clean(cmd)
         ahk_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', 'AutoHotkeyU32')
         ahk_script_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', script)
@@ -94,10 +94,10 @@ class SencTextMixins:
             prog = settings.get("App", "tmux")
 
         if prog == 'Terminal':
-            self.send_text_terminal(cmd)
+            self._send_text_terminal(cmd)
 
         elif prog == 'iTerm':
-            self.send_text_iterm(cmd)
+            self._send_text_iterm(cmd)
 
         elif plat == "osx" and re.match('R[0-9]*$', prog):
             cmd = self.clean(cmd)
@@ -107,10 +107,10 @@ class SencTextMixins:
             subprocess.Popen(args)
 
         elif prog == "tmux":
-            self.send_text_tmux(cmd, settings.get("tmux", "tmux"))
+            self._send_text_tmux(cmd, settings.get("tmux", "tmux"))
 
         elif prog == "screen":
-            self.send_text_screen(cmd, settings.get("screen", "screen"))
+            self._send_text_screen(cmd, settings.get("screen", "screen"))
 
         elif prog == "SublimeREPL":
             cmd = self.clean(cmd)
@@ -121,13 +121,13 @@ class SencTextMixins:
 
         elif plat == "windows" and re.match('R[0-9]*$', prog):
             progpath = settings.get(prog, "1" if prog == "R64" else "0")
-            self.send_text_ahk(cmd, progpath, "Rgui.ahk")
+            self._send_text_ahk(cmd, progpath, "Rgui.ahk")
 
         elif prog == "Cygwin":
-            self.send_text_ahk(cmd, "", "Cygwin.ahk")
+            self._send_text_ahk(cmd, "", "Cygwin.ahk")
 
         elif prog == "Cmder":
-            self.send_text_ahk(cmd, "", "Cmder.ahk")
+            self._send_text_ahk(cmd, "", "Cmder.ahk")
 
 
 class ExpandBlockMixins:
