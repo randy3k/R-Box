@@ -6,145 +6,147 @@ import re
 import sys
 
 
-def clean(cmd):
-    cmd = cmd.expandtabs(4)
-    cmd = cmd.rstrip('\n')
-    if len(re.findall("\n", cmd)) == 0:
-        cmd = cmd.lstrip()
-    return cmd
+class SencTextMixins:
 
+    @staticmethod
+    def clean(cmd):
+        cmd = cmd.expandtabs(4)
+        cmd = cmd.rstrip('\n')
+        if len(re.findall("\n", cmd)) == 0:
+            cmd = cmd.lstrip()
+        return cmd
 
-def escape_dq(cmd):
-    cmd = cmd.replace('\\', '\\\\')
-    cmd = cmd.replace('"', '\\"')
-    return cmd
+    @staticmethod
+    def escape_dq(cmd):
+        cmd = cmd.replace('\\', '\\\\')
+        cmd = cmd.replace('"', '\\"')
+        return cmd
 
+    @staticmethod
+    def iterm_version():
+        try:
+            args = ['osascript', '-e',
+                    'tell app "iTerm" to tell the first terminal to set foo to true']
+            subprocess.check_call(args)
+            return 2.0
+        except:
+            return 2.9
 
-def send_text_terminal(cmd):
-    cmd = clean(cmd)
-    cmd = escape_dq(cmd)
-    args = ['osascript']
-    args.extend(['-e', 'tell app "Terminal" to do script "' + cmd + '" in front window'])
-    subprocess.Popen(args)
-
-
-def iterm_version():
-    try:
-        args = ['osascript', '-e',
-                'tell app "iTerm" to tell the first terminal to set foo to true']
-        subprocess.check_call(args)
-        return 2.0
-    except:
-        return 2.9
-
-
-def send_text_iterm(cmd):
-    cmd = clean(cmd)
-    cmd = escape_dq(cmd)
-    ver = iterm_version()
-    if ver == 2.0:
-        args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal ' +
-                'to tell current session to write text "' + cmd + '"']
-    else:
-        args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal window ' +
-                'to tell current session to write text "' + cmd + '"']
-    subprocess.check_call(args)
-
-
-def send_text_tmux(cmd, tmux="tmux"):
-    cmd = clean(cmd) + "\n"
-    n = 200
-    chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
-    for chunk in chunks:
-        subprocess.call([tmux, 'set-buffer', chunk])
-        subprocess.call([tmux, 'paste-buffer', '-d'])
-
-
-def send_text_screen(cmd, screen="screen"):
-    plat = sys.platform
-    cmd = clean(cmd) + "\n"
-    n = 200
-    chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
-    for chunk in chunks:
-        if plat.startswith("linux"):
-            chunk = chunk.replace("\\", r"\\")
-            chunk = chunk.replace("$", r"\$")
-        subprocess.call([screen, '-X', 'stuff', chunk])
-
-
-def send_text_ahk(cmd, progpath="", script="Rgui.ahk"):
-    cmd = clean(cmd)
-    ahk_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', 'AutoHotkeyU32')
-    ahk_script_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', script)
-    # manually add "\n" to keep the indentation of first line of block code,
-    # "\n" is later removed in AutoHotkey script
-    cmd = "\n" + cmd
-    args = [ahk_path, ahk_script_path, progpath, cmd]
-    subprocess.Popen(args)
-
-
-def send_text(view, cmd):
-    if cmd.strip() == "":
-        return
-    plat = sublime.platform()
-    settings = sublime.load_settings('R-Box.sublime-settings')
-    if plat == "osx":
-        prog = settings.get("App", "R")
-    if plat == "windows":
-        prog = settings.get("App", "R64")
-    if plat == "linux":
-        prog = settings.get("App", "tmux")
-
-    if prog == 'Terminal':
-        send_text_terminal(cmd)
-
-    elif prog == 'iTerm':
-        send_text_iterm(cmd)
-
-    elif plat == "osx" and re.match('R[0-9]*$', prog):
-        cmd = clean(cmd)
-        cmd = escape_dq(cmd)
+    def send_text_terminal(self, cmd):
+        cmd = self.clean(cmd)
+        cmd = self.escape_dq(cmd)
         args = ['osascript']
-        args.extend(['-e', 'tell app "' + prog + '" to cmd "' + cmd + '"'])
+        args.extend(['-e', 'tell app "Terminal" to do script "' + cmd + '" in front window'])
         subprocess.Popen(args)
 
-    elif prog == "tmux":
-        send_text_tmux(cmd, settings.get("tmux", "tmux"))
+    def send_text_iterm(self, cmd):
+        cmd = self.clean(cmd)
+        cmd = self.escape_dq(cmd)
+        ver = self.iterm_version()
+        if ver == 2.0:
+            args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal ' +
+                    'to tell current session to write text "' + cmd + '"']
+        else:
+            args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal window ' +
+                    'to tell current session to write text "' + cmd + '"']
+        subprocess.check_call(args)
 
-    elif prog == "screen":
-        send_text_screen(cmd, settings.get("screen", "screen"))
+    def send_text_tmux(self, cmd, tmux="tmux"):
+        cmd = self.clean(cmd) + "\n"
+        n = 200
+        chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
+        for chunk in chunks:
+            subprocess.call([tmux, 'set-buffer', chunk])
+            subprocess.call([tmux, 'paste-buffer', '-d'])
 
-    elif prog == "SublimeREPL":
-        cmd = clean(cmd)
-        external_id = view.scope_name(0).split(" ")[0].split(".", 1)[1]
-        sublime.active_window().run_command("repl_send", {"external_id": external_id, "text": cmd})
-        return
+    def send_text_screen(self, cmd, screen="screen"):
+        plat = sys.platform
+        cmd = self.clean(cmd) + "\n"
+        n = 200
+        chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
+        for chunk in chunks:
+            if plat.startswith("linux"):
+                chunk = chunk.replace("\\", r"\\")
+                chunk = chunk.replace("$", r"\$")
+            subprocess.call([screen, '-X', 'stuff', chunk])
 
-    elif plat == "windows" and re.match('R[0-9]*$', prog):
-        progpath = settings.get(prog, "1" if prog == "R64" else "0")
-        send_text_ahk(cmd, progpath, "Rgui.ahk")
+    def send_text_ahk(self, cmd, progpath="", script="Rgui.ahk"):
+        cmd = self.clean(cmd)
+        ahk_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', 'AutoHotkeyU32')
+        ahk_script_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', script)
+        # manually add "\n" to keep the indentation of first line of block code,
+        # "\n" is later removed in AutoHotkey script
+        cmd = "\n" + cmd
+        args = [ahk_path, ahk_script_path, progpath, cmd]
+        subprocess.Popen(args)
 
-    elif prog == "Cygwin":
-        send_text_ahk(cmd, "", "Cygwin.ahk")
+    def send_text(self, cmd):
+        view = self.view
+        if cmd.strip() == "":
+            return
+        plat = sublime.platform()
+        settings = sublime.load_settings('R-Box.sublime-settings')
+        if plat == "osx":
+            prog = settings.get("App", "R")
+        if plat == "windows":
+            prog = settings.get("App", "R64")
+        if plat == "linux":
+            prog = settings.get("App", "tmux")
 
-    elif prog == "Cmder":
-        send_text_ahk(cmd, "", "Cmder.ahk")
+        if prog == 'Terminal':
+            self.send_text_terminal(cmd)
+
+        elif prog == 'iTerm':
+            self.send_text_iterm(cmd)
+
+        elif plat == "osx" and re.match('R[0-9]*$', prog):
+            cmd = self.clean(cmd)
+            cmd = self.escape_dq(cmd)
+            args = ['osascript']
+            args.extend(['-e', 'tell app "' + prog + '" to cmd "' + cmd + '"'])
+            subprocess.Popen(args)
+
+        elif prog == "tmux":
+            self.send_text_tmux(cmd, settings.get("tmux", "tmux"))
+
+        elif prog == "screen":
+            self.send_text_screen(cmd, settings.get("screen", "screen"))
+
+        elif prog == "SublimeREPL":
+            cmd = self.clean(cmd)
+            external_id = view.scope_name(0).split(" ")[0].split(".", 1)[1]
+            sublime.active_window().run_command(
+                "repl_send", {"external_id": external_id, "text": cmd})
+            return
+
+        elif plat == "windows" and re.match('R[0-9]*$', prog):
+            progpath = settings.get(prog, "1" if prog == "R64" else "0")
+            self.send_text_ahk(cmd, progpath, "Rgui.ahk")
+
+        elif prog == "Cygwin":
+            self.send_text_ahk(cmd, "", "Cygwin.ahk")
+
+        elif prog == "Cmder":
+            self.send_text_ahk(cmd, "", "Cmder.ahk")
 
 
-def expand_block(view, sel):
-    # expand selection to {...}
-    thiscmd = view.substr(view.line(sel))
-    if re.match(r".*\{\s*$", thiscmd):
-        esel = view.find(
-            r"""^(?:.*(\{(?:(["\'])(?:[^\\]|\\.)*?\2|#.*$|[^\{\}]|(?1))*\})[^\{\}\n]*)+""",
-            view.line(sel).begin()
-        )
-        if view.line(sel).begin() == esel.begin():
-            sel = esel
-    return sel
+class ExpandBlockMixins:
+
+    def expand_block(self, sel):
+        # expand selection to {...}
+        view = self.view
+        thiscmd = view.substr(view.line(sel))
+        if re.match(r".*\{\s*$", thiscmd):
+            esel = view.find(
+                r"""^(?:.*(\{(?:(["\'])(?:[^\\]|\\.)*?\2|#.*$|[^\{\}]|(?1))*\})[^\{\}\n]*)+""",
+                view.line(sel).begin()
+            )
+            if view.line(sel).begin() == esel.begin():
+                sel = esel
+        return sel
 
 
-class RBoxSendSelectionCommand(sublime_plugin.TextCommand):
+class RBoxSendSelectionCommand(sublime_plugin.TextCommand, SencTextMixins, ExpandBlockMixins):
     def run(self, edit):
         view = self.view
         settings = sublime.load_settings('R-Box.sublime-settings')
@@ -152,7 +154,7 @@ class RBoxSendSelectionCommand(sublime_plugin.TextCommand):
         moved = False
         for sel in [s for s in view.sel()]:
             if sel.empty():
-                esel = expand_block(view, sel)
+                esel = self.expand_block(sel)
                 thiscmd = view.substr(view.line(esel))
                 line = view.rowcol(esel.end())[0]
                 if settings.get("auto_advance", False):
@@ -164,13 +166,13 @@ class RBoxSendSelectionCommand(sublime_plugin.TextCommand):
                 thiscmd = view.substr(sel)
             cmd += thiscmd + '\n'
 
-        send_text(view, cmd)
+        self.send_text(cmd)
 
         if moved:
             view.show(view.sel())
 
 
-class RBoxChangeDirCommand(sublime_plugin.TextCommand):
+class RBoxChangeDirCommand(sublime_plugin.TextCommand, SencTextMixins):
     def run(self, edit):
         view = self.view
         fname = view.file_name()
@@ -178,22 +180,51 @@ class RBoxChangeDirCommand(sublime_plugin.TextCommand):
             sublime.error_message("Save the file!")
             return
         dirname = os.path.dirname(fname)
-        cmd = "setwd(\"" + escape_dq(dirname) + "\")"
-        send_text(view, cmd)
+        cmd = "setwd(\"" + self.escape_dq(dirname) + "\")"
+        self.send_text(cmd)
 
 
-class RBoxSourceCodeCommand(sublime_plugin.TextCommand):
+class RBoxSourceCodeCommand(sublime_plugin.TextCommand, SencTextMixins):
     def run(self, edit):
         view = self.view
         fname = view.file_name()
         if not fname:
             sublime.error_message("Save the file!")
             return
-        cmd = "source(\"" + escape_dq(fname) + "\")"
-        send_text(view, cmd)
+        cmd = "source(\"" + self.escape_dq(fname) + "\")"
+        self.send_text(cmd)
 
 
 # old send text class of Enhanced-R
 class RSendSelectCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         self.run_command("r_box_send_selection")
+
+
+class RBoxAppSwitchCommand(sublime_plugin.WindowCommand):
+
+    def show_quick_panel(self, options, done):
+        sublime.set_timeout(lambda: self.window.show_quick_panel(options, done), 10)
+
+    def run(self):
+        plat = sublime.platform()
+        if plat == 'osx':
+            self.app_list = ["R", "Terminal", "iTerm", "tmux", "screen", "SublimeREPL"]
+            pop_string = ["", "Terminal", "iTerm 2", "tmux", "screen", "SublimeREPL"]
+        elif plat == "windows":
+            self.app_list = ["R32", "R64", "Cmder", "Cygwin", "SublimeREPL"]
+            pop_string = ["R i386", "R x64", "Cmder", "Cygwin", "SublimeREPL"]
+        elif plat == "linux":
+            self.app_list = ["tmux", "screen", "SublimeREPL"]
+            pop_string = ["tmux", "screen", "SublimeREPL"]
+        else:
+            sublime.error_message("Platform not supported!")
+
+        self.show_quick_panel([list(z) for z in zip(self.app_list, pop_string)], self.on_done)
+
+    def on_done(self, action):
+        if action == -1:
+            return
+        settings = sublime.load_settings('R-Box.sublime-settings')
+        settings.set('App', self.app_list[action])
+        sublime.save_settings('R-Box.sublime-settings')

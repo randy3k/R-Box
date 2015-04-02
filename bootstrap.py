@@ -4,20 +4,20 @@ version = sublime.version()
 
 if version >= "3000":
     from .rbox import (
-        RBoxAppSwitchCommand,
         RBoxCompletions,
         RBoxSendSelectionCommand, RBoxChangeDirCommand,
         RBoxSourceCodeCommand, RSendSelectCommand,
+        RBoxAppSwitchCommand,
         RBoxSourcePromptCommand,
         RBoxStatusListener, RBoxCleanStatus,
         update_resources
     )
 else:
     from rbox import (
-        RBoxAppSwitchCommand,
         RBoxCompletions,
         RBoxSendSelectionCommand, RBoxChangeDirCommand,
         RBoxSourceCodeCommand, RSendSelectCommand,
+        RBoxAppSwitchCommand,
         RBoxSourcePromptCommand,
         RBoxStatusListener, RBoxCleanStatus,
         update_resources
