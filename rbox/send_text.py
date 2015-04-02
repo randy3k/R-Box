@@ -6,10 +6,10 @@ import re
 import sys
 
 
-class SendTextMixins:
+class SendTextMixin:
 
     @staticmethod
-    def clean(cmd):
+    def clean_cmd(cmd):
         cmd = cmd.expandtabs(4)
         cmd = cmd.rstrip('\n')
         if len(re.findall("\n", cmd)) == 0:
@@ -17,7 +17,7 @@ class SendTextMixins:
         return cmd
 
     @staticmethod
-    def escape_dq(cmd):
+    def escape_dquote(cmd):
         cmd = cmd.replace('\\', '\\\\')
         cmd = cmd.replace('"', '\\"')
         return cmd
@@ -33,15 +33,15 @@ class SendTextMixins:
             return 2.9
 
     def _send_text_terminal(self, cmd):
-        cmd = self.clean(cmd)
-        cmd = self.escape_dq(cmd)
+        cmd = self.clean_cmd(cmd)
+        cmd = self.escape_dquote(cmd)
         args = ['osascript']
         args.extend(['-e', 'tell app "Terminal" to do script "' + cmd + '" in front window'])
         subprocess.Popen(args)
 
     def _send_text_iterm(self, cmd):
-        cmd = self.clean(cmd)
-        cmd = self.escape_dq(cmd)
+        cmd = self.clean_cmd(cmd)
+        cmd = self.escape_dquote(cmd)
         ver = self.iterm_version()
         if ver == 2.0:
             args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal ' +
@@ -52,7 +52,7 @@ class SendTextMixins:
         subprocess.check_call(args)
 
     def _send_text_tmux(self, cmd, tmux="tmux"):
-        cmd = self.clean(cmd) + "\n"
+        cmd = self.clean_cmd(cmd) + "\n"
         n = 200
         chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
         for chunk in chunks:
@@ -61,7 +61,7 @@ class SendTextMixins:
 
     def _send_text_screen(self, cmd, screen="screen"):
         plat = sys.platform
-        cmd = self.clean(cmd) + "\n"
+        cmd = self.clean_cmd(cmd) + "\n"
         n = 200
         chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
         for chunk in chunks:
@@ -71,7 +71,7 @@ class SendTextMixins:
             subprocess.call([screen, '-X', 'stuff', chunk])
 
     def _send_text_ahk(self, cmd, progpath="", script="Rgui.ahk"):
-        cmd = self.clean(cmd)
+        cmd = self.clean_cmd(cmd)
         ahk_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', 'AutoHotkeyU32')
         ahk_script_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', script)
         # manually add "\n" to keep the indentation of first line of block code,
@@ -100,8 +100,8 @@ class SendTextMixins:
             self._send_text_iterm(cmd)
 
         elif plat == "osx" and re.match('R[0-9]*$', prog):
-            cmd = self.clean(cmd)
-            cmd = self.escape_dq(cmd)
+            cmd = self.clean_cmd(cmd)
+            cmd = self.escape_dquote(cmd)
             args = ['osascript']
             args.extend(['-e', 'tell app "' + prog + '" to cmd "' + cmd + '"'])
             subprocess.Popen(args)
@@ -113,7 +113,7 @@ class SendTextMixins:
             self._send_text_screen(cmd, settings.get("screen", "screen"))
 
         elif prog == "SublimeREPL":
-            cmd = self.clean(cmd)
+            cmd = self.clean_cmd(cmd)
             external_id = view.scope_name(0).split(" ")[0].split(".", 1)[1]
             sublime.active_window().run_command(
                 "repl_send", {"external_id": external_id, "text": cmd})
@@ -130,7 +130,7 @@ class SendTextMixins:
             self._send_text_ahk(cmd, "", "Cmder.ahk")
 
 
-class ExpandBlockMixins:
+class ExpandBlockMixin:
 
     def expand_block(self, sel):
         # expand selection to {...}
@@ -146,7 +146,7 @@ class ExpandBlockMixins:
         return sel
 
 
-class RBoxSendSelectionCommand(sublime_plugin.TextCommand, SendTextMixins, ExpandBlockMixins):
+class RBoxSendSelectionCommand(sublime_plugin.TextCommand, SendTextMixin, ExpandBlockMixin):
     def run(self, edit):
         view = self.view
         settings = sublime.load_settings('R-Box.sublime-settings')
@@ -172,7 +172,7 @@ class RBoxSendSelectionCommand(sublime_plugin.TextCommand, SendTextMixins, Expan
             view.show(view.sel())
 
 
-class RBoxChangeDirCommand(sublime_plugin.TextCommand, SendTextMixins):
+class RBoxChangeDirCommand(sublime_plugin.TextCommand, SendTextMixin):
     def run(self, edit):
         view = self.view
         fname = view.file_name()
@@ -180,18 +180,18 @@ class RBoxChangeDirCommand(sublime_plugin.TextCommand, SendTextMixins):
             sublime.error_message("Save the file!")
             return
         dirname = os.path.dirname(fname)
-        cmd = "setwd(\"" + self.escape_dq(dirname) + "\")"
+        cmd = "setwd(\"" + self.escape_dquote(dirname) + "\")"
         self.send_text(cmd)
 
 
-class RBoxSourceCodeCommand(sublime_plugin.TextCommand, SendTextMixins):
+class RBoxSourceCodeCommand(sublime_plugin.TextCommand, SendTextMixin):
     def run(self, edit):
         view = self.view
         fname = view.file_name()
         if not fname:
             sublime.error_message("Save the file!")
             return
-        cmd = "source(\"" + self.escape_dq(fname) + "\")"
+        cmd = "source(\"" + self.escape_dquote(fname) + "\")"
         self.send_text(cmd)
 
 
