@@ -3,15 +3,15 @@ R package for Sublime Text
 
 Features:
 
-  1. Send commands to various programs. 
+  - Send commands to various programs. 
     - Mac: R gui, Terminal, iTerm 2; 
     - Unix: screen, tmux; 
     - Windows: R gui, Cygwin, [Cmder](http://bliker.github.io/cmder/) (see below for configuring Cmder); 
     - SublimeREPL
-  2. Function hints in status bar
-  3. Autocompletions for base R commands
-  4. Support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
-  5.. [knitr](https://github.com/yihui/knitr) build command for R markdown and Rnw files.
+  - Function hints in status bar
+  - Autocompletions for base R commands
+  - Support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
+  - [knitr](https://github.com/yihui/knitr) build command for R markdown and Rnw files.
 
 If you are only interested in the syntax files, checkout [R-Extended](https://github.com/randy3k/R-Extended).
 
