@@ -15,7 +15,7 @@ Features:
 
 If you are only interested in the syntax files, checkout [R-Extended](https://github.com/randy3k/R-Extended).
 
-If you like it, you could send me some tips via [![](http://img.shields.io/gittip/randy3k.svg)](https://www.gittip.com/randy3k).
+If you like it, you could send me some tips via [![](http://img.shields.io/gratipay/randy3k.svg)](https://gratipay.com/randy3k/).
 
 ![](https://raw.githubusercontent.com/randy3k/R-Box/screenshots/terminal.png)
 
