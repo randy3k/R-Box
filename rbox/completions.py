@@ -19,10 +19,6 @@ def load_jsonfile():
     return data
 
 
-def valid(str):
-    return re.match('^[\w._]+$', str) is not None
-
-
 class RBoxCompletions(sublime_plugin.EventListener):
     completions = None
 
@@ -38,8 +34,6 @@ class RBoxCompletions(sublime_plugin.EventListener):
             self.completions = list(chain.from_iterable(j.values()))
 
         completions = [(item, item) for item in self.completions if prefix in item]
-        default_completions = [(item, ) for item in view.extract_completions(prefix)
-                               if len(item) > 3 and valid(item)]
 
-        r = list(set(completions+default_completions))
-        return (r, sublime.INHIBIT_WORD_COMPLETIONS)
+        r = list(set(completions))
+        return (r, )
