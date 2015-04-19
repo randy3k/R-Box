@@ -36,4 +36,4 @@ class RBoxCompletions(sublime_plugin.EventListener):
         completions = [(item, item) for item in self.completions if prefix in item]
 
         r = list(set(completions))
-        return (r, )
+        return r
