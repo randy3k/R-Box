@@ -2,16 +2,22 @@
 library(RJSONIO)
 library(data.table)
 library(ggplot2)
+library(foreach)
+library(pryr)
 
 getobjs <- function(pkg){
     l <- ls(pattern="*", paste0("package:",pkg))
     ind <- grep("^[a-zA-Z\\._]+$", l)
     l <- l[ind]
-    l[nchar(l) > 3]
+    l <- l[nchar(l) >= 3]
+    l <- l[sapply(l, function(x) {
+        obj <- get(x, envir = as.environment(paste0("package:", pkg)))
+        !is.function(obj) || !is_s3_method(x)
+    })]
 }
 
 packages <- c("base", "stats", "methods", "utils",
-    "graphics", "grDevices", "data.table", "ggplot2")
+    "graphics", "grDevices", "data.table", "ggplot2", "foreach")
 
 completions <- lapply(packages, getobjs)
 names(completions) <- packages
