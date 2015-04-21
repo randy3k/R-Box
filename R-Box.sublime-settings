@@ -19,11 +19,11 @@
 
     // auto completions for the following packages
     // "base", "stats", "methods", "utils", "graphics",
-    // "grDevices", "data.table", "ggplot2"
+    // "grDevices", "data.table", "ggplot2", "foreach"
     "auto_completions": true,
 
     // status bar hint for the following packages
     // "base", "stats", "methods", "utils", "graphics",
-    // "grDevices", "data.table", "ggplot2"
+    // "grDevices", "data.table", "ggplot2", "foreach"
     "status_bar_hint": true
 }
