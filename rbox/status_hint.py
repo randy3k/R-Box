@@ -3,8 +3,6 @@ import sublime_plugin
 import re
 import json
 import os
-from itertools import chain
-
 
 if sublime.version() < '3000':
     set_timeout = sublime.set_timeout
