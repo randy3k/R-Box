@@ -1,7 +1,6 @@
 import sublime
 import sublime_plugin
 import json
-import re
 import os
 from itertools import chain
 

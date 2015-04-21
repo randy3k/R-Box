@@ -1,56 +1,73 @@
-# completions.json
 library(RJSONIO)
+library(pryr)
+library(stringr)
+
 library(data.table)
 library(ggplot2)
 library(foreach)
-library(pryr)
 
-getobjs <- function(pkg){
+ls_package <- function(pkg){
     l <- ls(pattern="*", paste0("package:",pkg))
     ind <- grep("^[a-zA-Z\\._]+$", l)
     l <- l[ind]
-    l <- l[nchar(l) >= 3]
-    l <- l[sapply(l, function(x) {
+    l[nchar(l) >= 3]
+}
+
+
+omit_s3 <- function(pkg, l){
+    l[sapply(l, function(x) {
         obj <- get(x, envir = as.environment(paste0("package:", pkg)))
         !is.function(obj) || !is_s3_method(x)
     })]
 }
 
-packages <- c("base", "stats", "methods", "utils",
-    "graphics", "grDevices", "data.table", "ggplot2", "foreach")
+get_functions <- function(pkg, l){
+    l[sapply(l, function(x) {
+        obj <- get(x, envir = as.environment(paste0("package:", pkg)))
+        is.function(obj)
+    })]
+}
 
-completions <- lapply(packages, getobjs)
+get_body <- function(pkg, l){
+    out <- list()
+    for(x in l){
+        obj <- get(x, envir = as.environment(paste0("package:", pkg)))
+        if (is.function(obj)){
+            body <- capture.output(args(obj))[1]
+            if (body == "NULL") next
+            body <- gsub("function ", x, body)
+            out[[x]] <- body
+        }
+    }
+    out
+}
+
+packages <- c(
+    "base",
+    "stats",
+    "methods",
+    "utils",
+    "graphics",
+    "grDevices",
+    "data.table",
+    "ggplot2",
+    "foreach"
+)
+
+# completions.json
+objs <- lapply(packages, ls_package)
+completions <- lapply(1:length(packages), function(i) omit_s3(packages[i], objs[[i]]))
 names(completions) <- packages
-
 cat(toJSON(completions, pretty=TRUE), file="support/completions.json")
 
 # hint.json
 
-l <- list()
-for (pname in packages){
-    pkg <- completions[[pname]]
-    for (objn in pkg){
-        obj <- get(objn, envir = as.environment(paste0("package:", pname)))
-        if (is.function(obj)){
-            body <- capture.output(args(obj))[1]
-            if (body == "NULL") next
-            body <- gsub("function ", objn, body)
-            l[[objn]] <- body
-        }
-    }
-}
-
-cat(toJSON(l, pretty = TRUE), file ="support/hint.json")
+funcs <- lapply(1:length(packages), function(i) get_functions(packages[i], objs[[i]]))
+funcs_body <- lapply(1:length(packages), function(i) get_body(packages[i], funcs[[i]]))
+names(funcs_body) <- packages
+cat(toJSON(funcs_body, pretty = TRUE), file ="support/hint.json")
 
 # R Extended.tmLanguage
-
-library(stringr)
-
-f <- "syntax/R Extended.tmLanguage"
-str <- readChar(f, file.info(f)$size)
-dict_begin <- str_locate(str,
-    "<key>support_function</key>\\s*<dict>\\s*<key>patterns</key>\\s*<array>\\s*\n")[2]
-dict_end <- str_locate(str, "\n\\s*</array>\\s*</dict>\\s*</dict>\\s*<key>scopeName</key>")[1]
 
 template <-
 "\t\t\t\t<dict>
@@ -95,31 +112,21 @@ template <-
 \t\t\t\t</dict>
 "
 
-getfuns <- function(pkg){
-    l <- ls(pattern="*", paste0("package:",pkg))
-    ind <- grep("^[a-zA-Z\\._]+$", l)
-    l <- l[ind]
-    l <- l[nchar(l) > 3]
-    ind <- rep(TRUE, length(l))
-    for (i in seq_along(l)){
-        obj <- get(l[i], envir = as.environment(paste0("package:", pkg)))
-        ind[i] <- is.function(obj)
-    }
-    l[ind]
-}
-getregexp <- function(pkg){
-    content <- paste0(sub("\\.","\\\\\\\\.", getfuns(pkg)),collapse="|")
+get_block <- function(pkg){
+    content <- paste0(sub("\\.","\\\\\\\\.", get_functions(pkg, ls_package(pkg))), collapse="|")
     str_replace(template, "foo", content)
 }
 
-library(data.table)
-library(ggplot2)
-
-packages <- c("base", "stats", "methods", "utils", "graphics", "grDevices", "data.table", "ggplot2")
-
 dict <- ""
 for (pkg in packages){
-    dict <- paste0(dict, getregexp(pkg))
+    dict <- paste0(dict, get_block(pkg))
 }
-str_sub(str, dict_begin + 1, dict_end) <- dict
-cat(str, file="syntax/R Extended.tmLanguage")
+
+syntax_file <- "syntax/R Extended.tmLanguage"
+content <- readChar(syntax_file, file.info(syntax_file)$size)
+dict_begin <- str_locate(content,
+    "<key>support_function</key>\\s*<dict>\\s*<key>patterns</key>\\s*<array>\\s*\n")[2]
+dict_end <- str_locate(content, "\n\\s*</array>\\s*</dict>\\s*</dict>\\s*<key>scopeName</key>")[1]
+
+str_sub(content, dict_begin + 1, dict_end) <- dict
+cat(content, file=syntax_file)

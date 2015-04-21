@@ -3,6 +3,8 @@ import sublime_plugin
 import re
 import json
 import os
+from itertools import chain
+
 
 if sublime.version() < '3000':
     set_timeout = sublime.set_timeout
@@ -50,7 +52,8 @@ class RBoxStatusListener(sublime_plugin.EventListener):
             return
 
         if not self.cache:
-            self.cache = dict(load_jsonfile())
+            j = dict(load_jsonfile())
+            self.cache = dict(subitem for item in j.values() for subitem in item.items())
 
         point = view.sel()[0].end() if len(view.sel()) > 0 else 0
         this_row = view.rowcol(point)[0]
@@ -69,7 +72,9 @@ class RBoxStatusListener(sublime_plugin.EventListener):
 
     def capture_functions(self, view):
         if not self.cache:
-            self.cache = dict(load_jsonfile())
+            j = dict(load_jsonfile())
+            self.cache = dict(subitem for item in j.values() for subitem in item.items())
+
         funcsel = view.find_all(r"""\b(?:[a-zA-Z0-9._:]*)\s*(?:<-|=)\s*function\s*"""
                                 r"""(\((?:(["\'])(?:[^\\]|\\.)*?\2|#.*$|[^()]|(?1))*\))""")
         for s in funcsel:
