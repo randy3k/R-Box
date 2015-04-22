@@ -6,7 +6,7 @@ Features:
   - Send commands to various programs. 
     - Mac: R gui, Terminal, iTerm 2; 
     - Unix: screen, tmux; 
-    - Windows: R gui, Cygwin, [Cmder](http://bliker.github.io/cmder/) (see below for configuring Cmder); 
+    - Windows: R gui, Cygwin, [Cmder](http://bliker.github.io/cmder/) (see below to configure Cmder); 
     - SublimeREPL
   - Function hints in status bar
   - Autocompletions for base R commands
@@ -52,6 +52,8 @@ To enable [SublimeLinter](http://www.sublimelinter.com/) via [SublimeLinter-cont
 ```
 
 #### Cmder settings
+
+There are two things that you need to do:
 
 1. Due to this [bug!?](http://www.autohotkey.com/board/topic/92360-controlsend-messes-up-modifiers/), you have to change the paste shortcut of Cmder from `shift+insert` to `ctrl+shift+v` in Cmder settings.
 
