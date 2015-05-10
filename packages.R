@@ -1,6 +1,7 @@
 library(RJSONIO)
 library(pryr)
 library(stringr)
+library(methods)
 
 ls_package <- function(pkg){
     l <- ls(pattern="*", paste0("package:",pkg))
@@ -45,16 +46,21 @@ packages <- c(
     "utils",
     "graphics",
     "grDevices",
+    "MASS",
+    "Matrix",
+    "devtools",
+    "doParallel",
+    "foreach",
+    "dplyr",
+    "plyr",
+    "httr",
+    "reshape2",
     "data.table",
-    "ggplot2",
-    "foreach"
+    "ggplot2"
 )
 
-library(data.table)
-library(ggplot2)
-library(foreach)
-
 for (pkg in packages){
+    library(pkg, character.only=TRUE)
     objects = ls_package(pkg)
     objects_omit_s3 <- omit_s3(pkg, objects)
     functions <- get_functions(pkg, objects)

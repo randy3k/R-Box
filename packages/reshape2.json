@@ -1,0 +1,21 @@
+{
+	"objects" : [
+		"acast",
+		"add_margins",
+		"colsplit",
+		"dcast",
+		"french_fries",
+		"melt",
+		"recast",
+		"smiths",
+		"tips"
+	],
+	"methods" : {
+		"acast" : "acast(data, formula, fun.aggregate = NULL, ..., margins = NULL, ",
+		"add_margins" : "add_margins(df, vars, margins = TRUE) ",
+		"colsplit" : "colsplit(string, pattern, names) ",
+		"dcast" : "dcast(data, formula, fun.aggregate = NULL, ..., margins = NULL, ",
+		"melt" : "melt(data, ..., na.rm = FALSE, value.name = \"value\") ",
+		"recast" : "recast(data, formula, ..., id.var, measure.var) "
+	}
+}

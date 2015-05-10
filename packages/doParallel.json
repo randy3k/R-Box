@@ -1,0 +1,10 @@
+{
+	"objects" : [
+		"registerDoParallel",
+		"stopImplicitCluster"
+	],
+	"methods" : {
+		"registerDoParallel" : "registerDoParallel(cl, cores = NULL, ...) ",
+		"stopImplicitCluster" : "stopImplicitCluster() "
+	}
+}

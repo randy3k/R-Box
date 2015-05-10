@@ -1,6 +1,7 @@
 library(RJSONIO)
 library(pryr)
 library(stringr)
+library(methods)
 
 ls_package <- function(pkg){
     l <- ls(pattern="*", paste0("package:",pkg))
@@ -100,8 +101,7 @@ packages <- c(
     "graphics",
     "grDevices",
     "data.table",
-    "ggplot2",
-    "foreach"
+    "ggplot2"
 )
 
 dict <- ""

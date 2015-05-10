@@ -803,46 +803,6 @@
 						</dict>
 					</array>
 				</dict>
-				<dict>
-					<key>begin</key>
-					<string>\b(accumulate|foreach|getDoParName|getDoParRegistered|getDoParVersion|getDoParWorkers|getDoSeqName|getDoSeqRegistered|getDoSeqVersion|getDoSeqWorkers|getErrorIndex|getErrorValue|getexports|getResult|makeAccum|registerDoSEQ|setDoPar|setDoSeq|times|when)\s*(\()</string>
-					<key>beginCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>support.function.r</string>
-						</dict>
-						<key>2</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.definition.parameters.r</string>
-						</dict>
-					</dict>
-					<key>comment</key>
-					<string>base</string>
-					<key>contentName</key>
-					<string>meta.function-call.arguments.r</string>
-					<key>end</key>
-					<string>(\))</string>
-					<key>endCaptures</key>
-					<dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.definition.parameters.r</string>
-						</dict>
-					</dict>
-					<key>name</key>
-					<string>meta.function-call.r</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>$self</string>
-						</dict>
-					</array>
-				</dict>
 			</array>
 		</dict>
 	</dict>
