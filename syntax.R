@@ -2,10 +2,6 @@ library(RJSONIO)
 library(pryr)
 library(stringr)
 
-library(data.table)
-library(ggplot2)
-library(foreach)
-
 ls_package <- function(pkg){
     l <- ls(pattern="*", paste0("package:",pkg))
     ind <- grep("^[a-zA-Z\\._]+$", l)
@@ -30,7 +26,7 @@ get_functions <- function(pkg, l){
 
 get_body <- function(pkg, l){
     out <- list()
-    for(x in l){
+    for (x in l) {
         obj <- get(x, envir = as.environment(paste0("package:", pkg)))
         if (is.function(obj)){
             body <- capture.output(args(obj))[1]
@@ -42,32 +38,6 @@ get_body <- function(pkg, l){
     out
 }
 
-packages <- c(
-    "base",
-    "stats",
-    "methods",
-    "utils",
-    "graphics",
-    "grDevices",
-    "data.table",
-    "ggplot2",
-    "foreach"
-)
-
-# completions.json
-objs <- lapply(packages, ls_package)
-completions <- lapply(1:length(packages), function(i) omit_s3(packages[i], objs[[i]]))
-names(completions) <- packages
-cat(toJSON(completions, pretty=TRUE), file="support/completions.json")
-
-# hint.json
-
-funcs <- lapply(1:length(packages), function(i) get_functions(packages[i], objs[[i]]))
-funcs_body <- lapply(1:length(packages), function(i) get_body(packages[i], funcs[[i]]))
-names(funcs_body) <- packages
-cat(toJSON(funcs_body, pretty = TRUE), file ="support/hint.json")
-
-# R Extended.tmLanguage
 
 template <-
 "\t\t\t\t<dict>
@@ -116,6 +86,23 @@ get_block <- function(pkg){
     content <- paste0(sub("\\.","\\\\\\\\.", get_functions(pkg, ls_package(pkg))), collapse="|")
     str_replace(template, "foo", content)
 }
+
+
+library(data.table)
+library(ggplot2)
+library(foreach)
+
+packages <- c(
+    "base",
+    "stats",
+    "methods",
+    "utils",
+    "graphics",
+    "grDevices",
+    "data.table",
+    "ggplot2",
+    "foreach"
+)
 
 dict <- ""
 for (pkg in packages){

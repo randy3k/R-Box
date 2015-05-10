@@ -2,37 +2,91 @@ import sublime
 import sublime_plugin
 import json
 import os
-from itertools import chain
+import re
+
+if sublime.version() < '3000':
+    set_timeout = sublime.set_timeout
+else:
+    set_timeout = sublime.set_timeout_async
 
 
-def load_jsonfile():
-    if sublime.version() < '3000':
-        jsonFilepath = os.path.join(sublime.packages_path(),
-                                    'R-Box', 'support', 'completions.json')
+def load_jsonfile(pkg):
+    try:
+        if sublime.version() < '3000':
+            jsonFilepath = os.path.join(sublime.packages_path(),
+                                        'R-Box', 'packages', '%s.json' % pkg)
+            data = None
+            with open(jsonFilepath, "r") as f:
+                data = json.load(f)
+        else:
+            jsonFilepath = "/".join(['Packages', 'R-Box', 'packages', '%s.json' % pkg])
+            data = json.loads(sublime.load_resource(jsonFilepath))
+    except IOError:
         data = None
-        with open(jsonFilepath, "r") as f:
-            data = json.load(f)
-    else:
-        jsonFilepath = "/".join(['Packages', 'R-Box', 'support', 'completions.json'])
-        data = json.loads(sublime.load_resource(jsonFilepath))
+
     return data
 
 
 class RBoxCompletions(sublime_plugin.EventListener):
-    completions = None
+    completions = {}
+
+    def check(self, view):
+        if view.is_scratch() or view.settings().get('is_widget'):
+            return False
+
+        point = view.sel()[0].end() if len(view.sel()) > 0 else 0
+        if not view.match_selector(point, "source.r, source.r-console"):
+            return False
+
+        settings = sublime.load_settings('R-Box.sublime-settings')
+        return settings.get("auto_completions", True)
 
     def on_query_completions(self, view, prefix, locations):
-        settings = sublime.load_settings('R-Box.sublime-settings')
-        if not view.match_selector(locations[0], "source.r, source.r-console"):
-            return None
-        if not settings.get("auto_completions"):
-            return None
+        if not self.check(view):
+            return
 
-        if not self.completions:
-            j = dict(load_jsonfile())
-            self.completions = list(chain.from_iterable(j.values()))
+        vid = view.id()
+        if vid not in self.completions:
+            set_timeout(lambda: self.loaded_libraries(view), 100)
+            return
 
-        completions = [(item, item) for item in self.completions if prefix in item]
+        completions = [(item, item) for item in self.completions[vid] if prefix in item]
 
         r = list(set(completions))
         return r
+
+    def loaded_libraries(self, view):
+        packages = [
+            "base",
+            "stats",
+            "methods",
+            "utils",
+            "graphics",
+            "grDevices"
+        ]
+        for s in [view.substr(s) for s in view.find_all("(?:library|require)\(([^)]*?)\)")]:
+            m = re.search(r"""\((?:"|')?(.*?)(?:"|')?\)""", s)
+            if m:
+                packages.append(m.group(1))
+
+        packages = list(set(packages))
+        objects = []
+        for pkg in packages:
+            j = load_jsonfile(pkg)
+            if j:
+                objects = objects + j.get("objects")
+
+        vid = view.id()
+        self.completions[vid] = objects
+
+    def on_post_save(self, view):
+        if self.check(view):
+            set_timeout(lambda: self.loaded_libraries(view), 100)
+
+    def on_load(self, view):
+        if self.check(view):
+            set_timeout(lambda: self.loaded_libraries(view), 100)
+
+    def on_activated(self, view):
+        if self.check(view):
+            set_timeout(lambda: self.loaded_libraries(view), 100)

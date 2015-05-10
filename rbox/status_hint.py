@@ -10,16 +10,20 @@ else:
     set_timeout = sublime.set_timeout_async
 
 
-def load_jsonfile():
-    if sublime.version() < '3000':
-        jsonFilepath = os.path.join(sublime.packages_path(),
-                                    'R-Box', 'support', 'hint.json')
+def load_jsonfile(pkg):
+    try:
+        if sublime.version() < '3000':
+            jsonFilepath = os.path.join(sublime.packages_path(),
+                                        'R-Box', 'packages', '%s.json' % pkg)
+            data = None
+            with open(jsonFilepath, "r") as f:
+                data = json.load(f)
+        else:
+            jsonFilepath = "/".join(['Packages', 'R-Box', 'packages', '%s.json' % pkg])
+            data = json.loads(sublime.load_resource(jsonFilepath))
+    except IOError:
         data = None
-        with open(jsonFilepath, "r") as f:
-            data = json.load(f)
-    else:
-        jsonFilepath = "/".join(['Packages', 'R-Box', 'support', 'hint.json'])
-        data = json.loads(sublime.load_resource(jsonFilepath))
+
     return data
 
 
@@ -45,13 +49,21 @@ class RBoxStatusListener(sublime_plugin.EventListener):
         settings = sublime.load_settings('R-Box.sublime-settings')
         return settings.get("status_bar_hint", True)
 
-    def update_status(self, view):
+    def on_selection_modified(self, view):
+        if self.check(view):
+            point = view.sel()[0].end() if len(view.sel()) > 0 else 0
+            this_row = view.rowcol(point)[0]
+            if this_row != self.last_row:
+                view.set_status("r_box", "")
+                view.settings().set("r_box_status", False)
+
+    def on_modified(self, view):
         if not self.check(view):
             return
 
-        if not self.cache:
-            j = dict(load_jsonfile())
-            self.cache = dict(subitem for item in j.values() for subitem in item.items())
+        vid = view.id()
+        if vid not in self.cache:
+            return
 
         point = view.sel()[0].end() if len(view.sel()) > 0 else 0
         this_row = view.rowcol(point)[0]
@@ -62,47 +74,54 @@ class RBoxStatusListener(sublime_plugin.EventListener):
         view.set_status("r_box", "")
         func = m.group(1)
 
-        if func in self.cache:
-            call = self.cache[func]
+        if func in self.cache[vid]:
+            call = self.cache[vid][func]
             self.last_row = this_row
             view.set_status("r_box", call)
             view.settings().set("r_box_status", True)
 
-    def capture_functions(self, view):
-        if not self.cache:
-            j = dict(load_jsonfile())
-            self.cache = dict(subitem for item in j.values() for subitem in item.items())
+    def loaded_libraries(self, view):
+        packages = [
+            "base",
+            "stats",
+            "methods",
+            "utils",
+            "graphics",
+            "grDevices"
+        ]
+        for s in [view.substr(s) for s in view.find_all("(?:library|require)\(([^)]*?)\)")]:
+            m = re.search(r"""\((?:"|')?(.*?)(?:"|')?\)""", s)
+            if m:
+                packages.append(m.group(1))
 
-        funcsel = view.find_all(r"""\b(?:[a-zA-Z0-9._:]*)\s*(?:<-|=)\s*function\s*"""
+        packages = list(set(packages))
+        methods = {}
+        for pkg in packages:
+            j = load_jsonfile(pkg)
+            if j:
+                methods.update(j.get("methods"))
+
+        results = view.find_all(r"""\b(?:[a-zA-Z0-9._:]*)\s*(?:<-|=)\s*function\s*"""
                                 r"""(\((?:(["\'])(?:[^\\]|\\.)*?\2|#.*$|[^()]|(?1))*\))""")
-        for s in funcsel:
+        for s in results:
             m = re.match(r"^([^ ]+)\s*(?:<-|=)\s*(?:function)\s*(.+)$", view.substr(s))
             if m:
-                self.cache.update({m.group(1): m.group(1)+m.group(2)})
+                methods.update({m.group(1): m.group(1)+m.group(2)})
 
-    def on_selection_modified(self, view):
-        if self.check(view):
-            point = view.sel()[0].end() if len(view.sel()) > 0 else 0
-            this_row = view.rowcol(point)[0]
-            if this_row != self.last_row:
-                view.set_status("r_box", "")
-                view.settings().set("r_box_status", False)
-
-    def on_modified(self, view):
-        if self.check(view):
-            set_timeout(lambda: self.update_status(view), 100)
+        vid = view.id()
+        self.cache[vid] = methods
 
     def on_post_save(self, view):
         if self.check(view):
-            set_timeout(lambda: self.capture_functions(view), 100)
+            set_timeout(lambda: self.loaded_libraries(view), 100)
 
     def on_load(self, view):
         if self.check(view):
-            set_timeout(lambda: self.capture_functions(view), 100)
+            set_timeout(lambda: self.loaded_libraries(view), 100)
 
     def on_activated(self, view):
         if self.check(view):
-            set_timeout(lambda: self.capture_functions(view), 100)
+            set_timeout(lambda: self.loaded_libraries(view), 100)
 
 
 class RBoxCleanStatus(sublime_plugin.TextCommand):

@@ -8,8 +8,8 @@ Features:
     - Unix: screen, tmux; 
     - Windows: R gui, Cygwin, [Cmder](http://bliker.github.io/cmder/) (see below to configure Cmder); 
     - SublimeREPL
-  - Function hints in status bar
-  - Autocompletions for base R commands
+  - Autocompletions for various packages.
+  - Function hints in status bar for various packages.
   - Support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
   - [knitr](https://github.com/yihui/knitr) build command for R markdown and Rnw files.
 
@@ -38,6 +38,11 @@ In the following, `C` is `ctrl` for Windows/Linux, `cmd` for Mac.
 ### Settings
 
 See `Preference -> Package Settings -> R-Box`
+
+
+### Autocompletions and status bar hints
+
+Auto completions and status bar hints only support limited number of packages now. The package support files are under the `packages` directory.  If your favorite packages are not in there, you can create the corresponding files by running `packages.R` and submit a pull request here.
 
 ### FAQ
 

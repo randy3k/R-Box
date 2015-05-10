@@ -17,13 +17,9 @@
     // auto advance lines after sending command
     "auto_advance": true,
 
-    // auto completions for the following packages
-    // "base", "stats", "methods", "utils", "graphics",
-    // "grDevices", "data.table", "ggplot2", "foreach"
+    // enable auto completions
     "auto_completions": true,
 
-    // status bar hint for the following packages
-    // "base", "stats", "methods", "utils", "graphics",
-    // "grDevices", "data.table", "ggplot2", "foreach"
+    // enable status bar hint
     "status_bar_hint": true
 }
