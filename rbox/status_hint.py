@@ -58,13 +58,13 @@ class RBoxStatusListener(sublime_plugin.EventListener):
                 view.settings().set("r_box_status", False)
 
     def on_modified(self, view):
-        if not self.check(view):
-            return
+        if self.check(view):
+            set_timeout(lambda: self.update_status(view), 100)
 
+    def update_status(self, view):
         vid = view.id()
         if vid not in self.cache:
             return
-
         point = view.sel()[0].end() if len(view.sel()) > 0 else 0
         this_row = view.rowcol(point)[0]
         contentb = view.substr(sublime.Region(view.line(point).begin(), point))
