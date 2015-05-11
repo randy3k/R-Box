@@ -45,21 +45,9 @@ if (length(args)>0){
 }else{
     packages <- c(
         "base",
-        "data.table",
-        "devtools",
-        "doParallel",
-        "dplyr",
-        "foreach",
-        "ggplot2",
         "graphics",
         "grDevices",
-        "httr",
-        "knitr",
-        "MASS",
-        "Matrix",
         "methods",
-        "plyr",
-        "reshape2",
         "stats",
         "utils"
     )
