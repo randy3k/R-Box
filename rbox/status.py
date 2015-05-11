@@ -11,18 +11,28 @@ else:
 
 
 def load_jsonfile(pkg):
-    try:
-        if sublime.version() < '3000':
-            jsonFilepath = os.path.join(sublime.packages_path(),
-                                        'R-Box', 'packages', '%s.json' % pkg)
-            data = None
+    data = None
+    if sublime.version() < '3000':
+        jsonFilepath = os.path.join(sublime.packages_path(),
+                                    'R-Box', 'packages', '%s.json' % pkg)
+        if os.path.exists(jsonFilepath):
             with open(jsonFilepath, "r") as f:
                 data = json.load(f)
-        else:
-            jsonFilepath = "/".join(['Packages', 'R-Box', 'packages', '%s.json' % pkg])
+    else:
+        jsonFilepath = "/".join(['Packages', 'R-Box', 'packages', '%s.json' % pkg])
+        try:
             data = json.loads(sublime.load_resource(jsonFilepath))
-    except IOError:
-        data = None
+        except IOError:
+            pass
+
+    if data:
+        return data
+
+    jsonFilepath = os.path.join(sublime.packages_path(), "User",
+                                'R-Box', 'packages', '%s.json' % pkg)
+    if os.path.exists(jsonFilepath):
+        with open(jsonFilepath, "r") as f:
+            data = json.load(f)
 
     return data
 
@@ -68,7 +78,7 @@ class RBoxStatusListener(sublime_plugin.EventListener):
         point = view.sel()[0].end() if len(view.sel()) > 0 else 0
         this_row = view.rowcol(point)[0]
         contentb = view.substr(sublime.Region(view.line(point).begin(), point))
-        m = re.match(r".*?([a-zA-Z0-9.]+)\($", contentb)
+        m = re.match(r".*?([a-zA-Z0-9._]+)\($", contentb)
         if not m:
             return
         view.set_status("r_box", "")

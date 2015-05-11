@@ -38,30 +38,36 @@ get_body <- function(pkg, l){
     out
 }
 
+args <- commandArgs(TRUE)
 
-packages <- c(
-    "base",
-    "stats",
-    "methods",
-    "utils",
-    "graphics",
-    "grDevices",
-    "MASS",
-    "Matrix",
-    "devtools",
-    "doParallel",
-    "foreach",
-    "dplyr",
-    "plyr",
-    "httr",
-    "reshape2",
-    "data.table",
-    "ggplot2"
-)
+if (length(args)>0){
+    packages <- args
+}else{
+    packages <- c(
+        "base",
+        "data.table",
+        "devtools",
+        "doParallel",
+        "dplyr",
+        "foreach",
+        "ggplot2",
+        "graphics",
+        "grDevices",
+        "httr",
+        "knitr",
+        "MASS",
+        "Matrix",
+        "methods",
+        "plyr",
+        "reshape2",
+        "stats",
+        "utils"
+    )
+}
 
 for (pkg in packages){
     library(pkg, character.only=TRUE)
-    objects = ls_package(pkg)
+    objects <- ls_package(pkg)
     objects_omit_s3 <- omit_s3(pkg, objects)
     functions <- get_functions(pkg, objects)
     bodies <- get_body(pkg, functions)

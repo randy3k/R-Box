@@ -13,5 +13,5 @@ from .send_text import RBoxSendSelectionCommand, RBoxChangeDirCommand, \
     RBoxSourceCodeCommand, RBoxBuildCommand, RSendSelectCommand, \
     RBoxChooseProgramCommand
 from .source_prompt import RBoxSourcePromptCommand
-from .status_hint import RBoxStatusListener, RBoxCleanStatus
+from .status import RBoxStatusListener, RBoxCleanStatus
 from .update_resources import update_resources

@@ -10,7 +10,6 @@ ls_package <- function(pkg){
     l[nchar(l) >= 3]
 }
 
-
 omit_s3 <- function(pkg, l){
     l[sapply(l, function(x) {
         obj <- get(x, envir = as.environment(paste0("package:", pkg)))

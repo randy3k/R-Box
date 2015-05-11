@@ -11,18 +11,28 @@ else:
 
 
 def load_jsonfile(pkg):
-    try:
-        if sublime.version() < '3000':
-            jsonFilepath = os.path.join(sublime.packages_path(),
-                                        'R-Box', 'packages', '%s.json' % pkg)
-            data = None
+    data = None
+    if sublime.version() < '3000':
+        jsonFilepath = os.path.join(sublime.packages_path(),
+                                    'R-Box', 'packages', '%s.json' % pkg)
+        if os.path.exists(jsonFilepath):
             with open(jsonFilepath, "r") as f:
                 data = json.load(f)
-        else:
-            jsonFilepath = "/".join(['Packages', 'R-Box', 'packages', '%s.json' % pkg])
+    else:
+        jsonFilepath = "/".join(['Packages', 'R-Box', 'packages', '%s.json' % pkg])
+        try:
             data = json.loads(sublime.load_resource(jsonFilepath))
-    except IOError:
-        data = None
+        except IOError:
+            pass
+
+    if data:
+        return data
+
+    jsonFilepath = os.path.join(sublime.packages_path(), "User",
+                                'R-Box', 'packages', '%s.json' % pkg)
+    if os.path.exists(jsonFilepath):
+        with open(jsonFilepath, "r") as f:
+            data = json.load(f)
 
     return data
 
