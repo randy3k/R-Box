@@ -229,7 +229,7 @@
 				</dict>
 				<dict>
 					<key>match</key>
-					<string>(\-|\+|\*|\/|%\/%|%%|%\*%|%in%|%o%|%x%|\^|:=|%between%|%chin%|%like%|%\+%|%\+replace%|%:%|%do%|%dopar%)</string>
+					<string>(\-|\+|\*|\/|%\/%|%%|%\*%|%in%|%o%|%x%|\^|:=|%between%|%chin%|%like%|%\+%|%\+replace%|%:%|%do%|%dopar%|%\>%|%\<\>%|%T\>%|%\$%)</string>
 					<key>name</key>
 					<string>keyword.operator.arithmetic.r</string>
 				</dict>
