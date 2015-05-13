@@ -28,11 +28,11 @@ If you like it, you could send me some tips via [![](http://img.shields.io/grati
 
 ### Usage
 
-In the following, `C` is `ctrl` for Windows/Linux, `cmd` for Mac.
+In the following, <kbd>C</kbd> is <kbd>ctrl</kbd> for Windows/Linux, <kbd>cmd</kbd> for Mac.
 
-- `C + enter` to send code to gui/terminal. R.app is the default for mac, R64.exe is default for windows and tmux is the default for linux. To change the application, do `C + shift + p` -> `R-Box: Choose Program`.
-- `C + \` to change working dir
-- `C + b` to source the current R file, or to run [knitr](https://github.com/yihui/knitr) for Rnw or R markdown files.
+- <kbd>C</kbd> + <kbd>enter</kbd> to send code to gui/terminal. R.app is the default for mac, R64.exe is default for windows and tmux is the default for linux. To change the application, do <kbd>C</kbd> + <kbd>shift</kbd> + <kbd>p</kbd> -> `R-Box: Choose Program`.
+- <kbd>C</kbd> + <kbd>\\</kbd> to change working dir
+- <kbd>C</kbd> + <kbd>b</kbd> to source the current R file, or to run [knitr](https://github.com/yihui/knitr) for Rnw or R markdown files.
 
 
 ### Settings
