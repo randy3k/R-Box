@@ -40,46 +40,46 @@ get_body <- function(pkg, l){
 
 
 template <-
-"\t\t\t\t<dict>
-\t\t\t\t\t<key>begin</key>
-\t\t\t\t\t<string>\\b(foo)\\s*(\\()</string>
-\t\t\t\t\t<key>beginCaptures</key>
-\t\t\t\t\t<dict>
-\t\t\t\t\t\t<key>1</key>
-\t\t\t\t\t\t<dict>
-\t\t\t\t\t\t\t<key>name</key>
-\t\t\t\t\t\t\t<string>support.function.r</string>
-\t\t\t\t\t\t</dict>
-\t\t\t\t\t\t<key>2</key>
-\t\t\t\t\t\t<dict>
-\t\t\t\t\t\t\t<key>name</key>
-\t\t\t\t\t\t\t<string>punctuation.definition.parameters.r</string>
-\t\t\t\t\t\t</dict>
-\t\t\t\t\t</dict>
-\t\t\t\t\t<key>comment</key>
-\t\t\t\t\t<string>base</string>
-\t\t\t\t\t<key>contentName</key>
-\t\t\t\t\t<string>meta.function-call.arguments.r</string>
-\t\t\t\t\t<key>end</key>
-\t\t\t\t\t<string>(\\))</string>
-\t\t\t\t\t<key>endCaptures</key>
-\t\t\t\t\t<dict>
-\t\t\t\t\t\t<key>1</key>
-\t\t\t\t\t\t<dict>
-\t\t\t\t\t\t\t<key>name</key>
-\t\t\t\t\t\t\t<string>punctuation.definition.parameters.r</string>
-\t\t\t\t\t\t</dict>
-\t\t\t\t\t</dict>
+"\t\t<dict>
+\t\t\t<key>begin</key>
+\t\t\t<string>\\b(foo)\\s*(\\()</string>
+\t\t\t<key>beginCaptures</key>
+\t\t\t<dict>
+\t\t\t\t<key>1</key>
+\t\t\t\t<dict>
 \t\t\t\t\t<key>name</key>
-\t\t\t\t\t<string>meta.function-call.r</string>
-\t\t\t\t\t<key>patterns</key>
-\t\t\t\t\t<array>
-\t\t\t\t\t\t<dict>
-\t\t\t\t\t\t\t<key>include</key>
-\t\t\t\t\t\t\t<string>$self</string>
-\t\t\t\t\t\t</dict>
-\t\t\t\t\t</array>
+\t\t\t\t\t<string>support.function.r</string>
 \t\t\t\t</dict>
+\t\t\t\t<key>2</key>
+\t\t\t\t<dict>
+\t\t\t\t\t<key>name</key>
+\t\t\t\t\t<string>punctuation.definition.parameters.r</string>
+\t\t\t\t</dict>
+\t\t\t</dict>
+\t\t\t<key>comment</key>
+\t\t\t<string>base</string>
+\t\t\t<key>contentName</key>
+\t\t\t<string>meta.function-call.arguments.r</string>
+\t\t\t<key>end</key>
+\t\t\t<string>(\\))</string>
+\t\t\t<key>endCaptures</key>
+\t\t\t<dict>
+\t\t\t\t<key>1</key>
+\t\t\t\t<dict>
+\t\t\t\t\t<key>name</key>
+\t\t\t\t\t<string>punctuation.definition.parameters.r</string>
+\t\t\t\t</dict>
+\t\t\t</dict>
+\t\t\t<key>name</key>
+\t\t\t<string>meta.function-call.r</string>
+\t\t\t<key>patterns</key>
+\t\t\t<array>
+\t\t\t\t<dict>
+\t\t\t\t\t<key>include</key>
+\t\t\t\t\t<string>$self</string>
+\t\t\t\t</dict>
+\t\t\t</array>
+\t\t</dict>
 "
 
 get_block <- function(pkg){
@@ -87,10 +87,6 @@ get_block <- function(pkg){
     str_replace(template, "foo", content)
 }
 
-
-library(data.table)
-library(ggplot2)
-library(foreach)
 
 packages <- c(
     "base",
@@ -100,19 +96,23 @@ packages <- c(
     "graphics",
     "grDevices",
     "data.table",
-    "ggplot2"
+    "ggplot2",
+    "plyr",
+    "dplyr",
+    "reshape2"
 )
 
 dict <- ""
 for (pkg in packages){
+    library(pkg, character.only=TRUE)
     dict <- paste0(dict, get_block(pkg))
 }
 
-syntax_file <- "syntax/R Extended.tmLanguage"
+syntax_file <- "syntax/R Functions.tmLanguage"
 content <- readChar(syntax_file, file.info(syntax_file)$size)
 dict_begin <- str_locate(content,
-    "<key>support_function</key>\\s*<dict>\\s*<key>patterns</key>\\s*<array>\\s*\n")[2]
-dict_end <- str_locate(content, "\n\\s*</array>\\s*</dict>\\s*</dict>\\s*<key>scopeName</key>")[1]
+    "<key>patterns</key>\\s*<array>\\s*\n")[2]
+dict_end <- str_locate(content, "\n\\s*</array>\\s*<key>scopeName</key>")[1]
 
 str_sub(content, dict_begin + 1, dict_end) <- dict
 cat(content, file=syntax_file)
