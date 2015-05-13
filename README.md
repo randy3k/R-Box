@@ -42,7 +42,9 @@ See `Preference -> Package Settings -> R-Box`
 
 ### Autocompletions and status bar hints
 
-Auto completions and status bar hints only support limited number of packages now. The package support files are under the `packages` directory.  If your favorite packages are not in there, you can create the corresponding files by running `Rscript packages.R <package name>`. The json files would be placed under `packages` directory. You could then submit a pull request for the packages. Alternatively, you could place the json files under your user directory `.../Users/R-Box/packages/`.
+Auto completions and status bar hints only support limited number of packages. R-Box will search for `library` or `require` statements in order to load the corresponding package support files. The support files are under the `packages` directory.  If your favorite packages are not listed there, you can generate the corresponding files by running `Rscript packages.R <package name>`. It would create json files under `packages` directory. 
+
+You could submit a pull request for the package support files. Alternatively, you could place the json files under your user directory `.../Users/R-Box/packages/`.
 
 ### FAQ
 
