@@ -26,23 +26,26 @@ ls_package <- function(pkg){
 }
 
 omit_s3 <- function(pkg, l){
+    e <- as.environment(paste0("package:", pkg))
     l[sapply(l, function(x) {
-        obj <- get(x, envir = as.environment(paste0("package:", pkg)))
+        obj <- get(x, envir = e)
         !is.function(obj) || !is_s3_method(x)
     })]
 }
 
 get_functions <- function(pkg, l){
+    e <- as.environment(paste0("package:", pkg))
     l[sapply(l, function(x) {
-        obj <- get(x, envir = as.environment(paste0("package:", pkg)))
+        obj <- get(x, envir = e)
         is.function(obj)
     })]
 }
 
 get_body <- function(pkg, l){
+    e <- as.environment(paste0("package:", pkg))
     out <- list()
     for (x in l){
-        obj <- get(x, envir = as.environment(paste0("package:", pkg)))
+        obj <- get(x, envir = e)
         if (is.function(obj)){
             body <- capture.output(args(obj))[1]
             if (body == "NULL") next
