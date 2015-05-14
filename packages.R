@@ -3,6 +3,21 @@ library(pryr)
 library(stringr)
 library(methods)
 
+args <- commandArgs(TRUE)
+
+if (length(args)>0){
+    packages <- args
+}else{
+    packages <- c(
+        "base",
+        "graphics",
+        "grDevices",
+        "methods",
+        "stats",
+        "utils"
+    )
+}
+
 ls_package <- function(pkg){
     l <- ls(pattern="*", paste0("package:",pkg))
     ind <- grep("^[a-zA-Z\\._]+$", l)
@@ -36,21 +51,6 @@ get_body <- function(pkg, l){
         }
     }
     out
-}
-
-args <- commandArgs(TRUE)
-
-if (length(args)>0){
-    packages <- args
-}else{
-    packages <- c(
-        "base",
-        "graphics",
-        "grDevices",
-        "methods",
-        "stats",
-        "utils"
-    )
 }
 
 for (pkg in packages){

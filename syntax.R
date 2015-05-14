@@ -1,7 +1,19 @@
-library(RJSONIO)
-library(pryr)
 library(stringr)
-library(methods)
+
+args <- commandArgs(TRUE)
+
+if (length(args)>0){
+    packages <- args
+}else{
+    packages <- c(
+        "base",
+        "stats",
+        "methods",
+        "utils",
+        "graphics",
+        "grDevices"
+    )
+}
 
 ls_package <- function(pkg){
     l <- ls(pattern="*", paste0("package:",pkg))
@@ -10,34 +22,12 @@ ls_package <- function(pkg){
     l[nchar(l) >= 3]
 }
 
-omit_s3 <- function(pkg, l){
-    l[sapply(l, function(x) {
-        obj <- get(x, envir = as.environment(paste0("package:", pkg)))
-        !is.function(obj) || !is_s3_method(x)
-    })]
-}
-
 get_functions <- function(pkg, l){
     l[sapply(l, function(x) {
         obj <- get(x, envir = as.environment(paste0("package:", pkg)))
         is.function(obj)
     })]
 }
-
-get_body <- function(pkg, l){
-    out <- list()
-    for (x in l) {
-        obj <- get(x, envir = as.environment(paste0("package:", pkg)))
-        if (is.function(obj)){
-            body <- capture.output(args(obj))[1]
-            if (body == "NULL") next
-            body <- gsub("function ", x, body)
-            out[[x]] <- body
-        }
-    }
-    out
-}
-
 
 template <-
 "\t\t<dict>
@@ -90,21 +80,6 @@ get_block <- function(pkg){
     content <- paste0(sub("\\.","\\\\\\\\.", get_functions(pkg, ls_package(pkg))), collapse="|")
     str_replace(template, "foo", content)
 }
-
-
-packages <- c(
-    "base",
-    "stats",
-    "methods",
-    "utils",
-    "graphics",
-    "grDevices",
-    "data.table",
-    "ggplot2",
-    "plyr",
-    "dplyr",
-    "reshape2"
-)
 
 dict <- ""
 for (pkg in packages){
