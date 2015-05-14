@@ -42,6 +42,10 @@
 			<array>
 				<dict>
 					<key>include</key>
+					<string>#function-call-parameter</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>source.r</string>
 				</dict>
 			</array>
@@ -80,6 +84,10 @@
 			<string>meta.function-call.r</string>
 			<key>patterns</key>
 			<array>
+				<dict>
+					<key>include</key>
+					<string>#function-call-parameter</string>
+				</dict>
 				<dict>
 					<key>include</key>
 					<string>source.r</string>
@@ -122,6 +130,10 @@
 			<array>
 				<dict>
 					<key>include</key>
+					<string>#function-call-parameter</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>source.r</string>
 				</dict>
 			</array>
@@ -160,6 +172,10 @@
 			<string>meta.function-call.r</string>
 			<key>patterns</key>
 			<array>
+				<dict>
+					<key>include</key>
+					<string>#function-call-parameter</string>
+				</dict>
 				<dict>
 					<key>include</key>
 					<string>source.r</string>
@@ -202,6 +218,10 @@
 			<array>
 				<dict>
 					<key>include</key>
+					<string>#function-call-parameter</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>source.r</string>
 				</dict>
 			</array>
@@ -240,6 +260,10 @@
 			<string>meta.function-call.r</string>
 			<key>patterns</key>
 			<array>
+				<dict>
+					<key>include</key>
+					<string>#function-call-parameter</string>
+				</dict>
 				<dict>
 					<key>include</key>
 					<string>source.r</string>
@@ -282,6 +306,10 @@
 			<array>
 				<dict>
 					<key>include</key>
+					<string>#function-call-parameter</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>source.r</string>
 				</dict>
 			</array>
@@ -320,6 +348,10 @@
 			<string>meta.function-call.r</string>
 			<key>patterns</key>
 			<array>
+				<dict>
+					<key>include</key>
+					<string>#function-call-parameter</string>
+				</dict>
 				<dict>
 					<key>include</key>
 					<string>source.r</string>
@@ -362,6 +394,10 @@
 			<array>
 				<dict>
 					<key>include</key>
+					<string>#function-call-parameter</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>source.r</string>
 				</dict>
 			</array>
@@ -400,6 +436,10 @@
 			<string>meta.function-call.r</string>
 			<key>patterns</key>
 			<array>
+				<dict>
+					<key>include</key>
+					<string>#function-call-parameter</string>
+				</dict>
 				<dict>
 					<key>include</key>
 					<string>source.r</string>
@@ -442,11 +482,36 @@
 			<array>
 				<dict>
 					<key>include</key>
+					<string>#function-call-parameter</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>source.r</string>
 				</dict>
 			</array>
 		</dict>
 	</array>
+	<key>repository</key>
+	<dict>
+		<key>function-call-parameter</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>variable.parameter.r</string>
+						</dict>
+					</dict>
+					<key>match</key>
+					<string>(?&lt;=\(|,|^)\s*([a-zA-Z._][a-zA-Z0-9._]*)\s*(?==[^=])</string>
+				</dict>
+			</array>
+		</dict>
+	</dict>
 	<key>scopeName</key>
 	<string>source.r.support-function</string>
 	<key>uuid</key>

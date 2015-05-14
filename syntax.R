@@ -76,6 +76,10 @@ template <-
 \t\t\t<array>
 \t\t\t\t<dict>
 \t\t\t\t\t<key>include</key>
+\t\t\t\t\t<string>#function-call-parameter</string>
+\t\t\t\t</dict>
+\t\t\t\t<dict>
+\t\t\t\t\t<key>include</key>
 \t\t\t\t\t<string>source.r</string>
 \t\t\t\t</dict>
 \t\t\t</array>
@@ -112,7 +116,7 @@ syntax_file <- "syntax/R Functions.tmLanguage"
 content <- readChar(syntax_file, file.info(syntax_file)$size)
 dict_begin <- str_locate(content,
     "<key>patterns</key>\\s*<array>\\s*\n")[2]
-dict_end <- str_locate(content, "\n\\s*</array>\\s*<key>scopeName</key>")[1]
+dict_end <- str_locate(content, "\n\\s*</array>\\s*<key>repository</key>")[1]
 
 str_sub(content, dict_begin + 1, dict_end) <- dict
 cat(content, file=syntax_file)

@@ -48,7 +48,7 @@
 		</dict>
 		<dict>
 			<key>include</key>
-			<string>#storage_type</string>
+			<string>#storage-type</string>
 		</dict>
 		<dict>
 			<key>include</key>
@@ -123,6 +123,10 @@
 			<array>
 				<dict>
 					<key>include</key>
+					<string>#function-call-parameter</string>
+				</dict>
+				<dict>
+					<key>include</key>
 					<string>$self</string>
 				</dict>
 			</array>
@@ -185,7 +189,7 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>#function_parameter</string>
+					<string>#function-parameter</string>
 				</dict>
 				<dict>
 					<key>include</key>
@@ -193,7 +197,7 @@
 				</dict>
 			</array>
 		</dict>
-		<key>function_parameter</key>
+		<key>function-parameter</key>
 		<dict>
 			<key>patterns</key>
 			<array>
@@ -207,7 +211,25 @@
 						</dict>
 					</dict>
 					<key>match</key>
-					<string>(?&lt;=\(|,|^)\s*([a-zA-Z._][a-zA-Z0-9._]*)(?=\s*(?:\)|&lt;-|=[^=]|,|\n))</string>
+					<string>(?&lt;=\(|,|^)\s*([a-zA-Z._][a-zA-Z0-9._]*)(?=\s*(?:\)|=[^=]|,|\n))</string>
+				</dict>
+			</array>
+		</dict>
+		<key>function-call-parameter</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>captures</key>
+					<dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>variable.parameter.r</string>
+						</dict>
+					</dict>
+					<key>match</key>
+					<string>(?&lt;=\(|,|^)\s*([a-zA-Z._][a-zA-Z0-9._]*)\s*(?==[^=])</string>
 				</dict>
 			</array>
 		</dict>
@@ -395,7 +417,7 @@
 				</dict>
 			</array>
 		</dict>
-		<key>storage_type</key>
+		<key>storage-type</key>
 		<dict>
 			<key>patterns</key>
 			<array>
