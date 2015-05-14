@@ -47,9 +47,16 @@ get_body <- function(pkg, l){
     for (x in l){
         obj <- get(x, envir = e)
         if (is.function(obj)){
-            body <- capture.output(args(obj))[1]
-            if (body == "NULL") next
-            body <- gsub("function ", x, body)
+            ## using deparse instead of capture.output
+            ## head(., -1) removes the "NULL" output from args()
+            body <- head(deparse(args(obj)), -1)
+            if (!length(body))
+                next
+            body[[1]] <- sub("^function ", x, body[[1]])
+            ## collapse multi-line bodies using paste, but first removing superfluous 
+            ##   spaces at start of subsequent lines
+            if (length(body) > 1)
+                body <- paste(sub("^    ", "", body), collapse="")
             out[[x]] <- body
         }
     }
