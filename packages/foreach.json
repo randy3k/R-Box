@@ -23,7 +23,7 @@
 	],
 	"methods" : {
 		"accumulate" : "accumulate(obj, result, tag, ...) ",
-		"foreach" : "foreach(..., .combine, .init, .final = NULL, .inorder = TRUE, ",
+		"foreach" : "foreach(..., .combine, .init, .final = NULL, .inorder = TRUE, .multicombine = FALSE, .maxcombine = if (.multicombine) 100 else 2, .errorhandling = c(\"stop\", \"remove\", \"pass\"), .packages = NULL, .export = NULL, .noexport = NULL, .verbose = FALSE) ",
 		"getDoParName" : "getDoParName() ",
 		"getDoParRegistered" : "getDoParRegistered() ",
 		"getDoParVersion" : "getDoParVersion() ",

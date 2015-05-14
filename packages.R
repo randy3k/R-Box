@@ -53,7 +53,7 @@ get_body <- function(pkg, l){
             if (!length(body))
                 next
             body[[1]] <- sub("^function ", x, body[[1]])
-            ## collapse multi-line bodies using paste, but first removing superfluous 
+            ## collapse multi-line bodies using paste, but first removing superfluous
             ##   spaces at start of subsequent lines
             if (length(body) > 1)
                 body <- paste(sub("^    ", "", body), collapse="")

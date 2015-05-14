@@ -11,10 +11,10 @@
 		"tips"
 	],
 	"methods" : {
-		"acast" : "acast(data, formula, fun.aggregate = NULL, ..., margins = NULL, ",
+		"acast" : "acast(data, formula, fun.aggregate = NULL, ..., margins = NULL, subset = NULL, fill = NULL, drop = TRUE, value.var = guess_value(data)) ",
 		"add_margins" : "add_margins(df, vars, margins = TRUE) ",
 		"colsplit" : "colsplit(string, pattern, names) ",
-		"dcast" : "dcast(data, formula, fun.aggregate = NULL, ..., margins = NULL, ",
+		"dcast" : "dcast(data, formula, fun.aggregate = NULL, ..., margins = NULL, subset = NULL, fill = NULL, drop = TRUE, value.var = guess_value(data)) ",
 		"melt" : "melt(data, ..., na.rm = FALSE, value.name = \"value\") ",
 		"recast" : "recast(data, formula, ..., id.var, measure.var) "
 	}
