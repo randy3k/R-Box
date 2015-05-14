@@ -76,7 +76,7 @@ template <-
 \t\t\t<array>
 \t\t\t\t<dict>
 \t\t\t\t\t<key>include</key>
-\t\t\t\t\t<string>$self</string>
+\t\t\t\t\t<string>source.r</string>
 \t\t\t\t</dict>
 \t\t\t</array>
 \t\t</dict>

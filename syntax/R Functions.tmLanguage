@@ -42,7 +42,7 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>$self</string>
+					<string>source.r</string>
 				</dict>
 			</array>
 		</dict>
@@ -82,7 +82,7 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>$self</string>
+					<string>source.r</string>
 				</dict>
 			</array>
 		</dict>
@@ -122,7 +122,7 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>$self</string>
+					<string>source.r</string>
 				</dict>
 			</array>
 		</dict>
@@ -162,7 +162,7 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>$self</string>
+					<string>source.r</string>
 				</dict>
 			</array>
 		</dict>
@@ -202,7 +202,7 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>$self</string>
+					<string>source.r</string>
 				</dict>
 			</array>
 		</dict>
@@ -242,7 +242,7 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>$self</string>
+					<string>source.r</string>
 				</dict>
 			</array>
 		</dict>
@@ -282,7 +282,7 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>$self</string>
+					<string>source.r</string>
 				</dict>
 			</array>
 		</dict>
@@ -322,7 +322,7 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>$self</string>
+					<string>source.r</string>
 				</dict>
 			</array>
 		</dict>
@@ -362,7 +362,7 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>$self</string>
+					<string>source.r</string>
 				</dict>
 			</array>
 		</dict>
@@ -402,7 +402,7 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>$self</string>
+					<string>source.r</string>
 				</dict>
 			</array>
 		</dict>
@@ -442,7 +442,7 @@
 			<array>
 				<dict>
 					<key>include</key>
-					<string>$self</string>
+					<string>source.r</string>
 				</dict>
 			</array>
 		</dict>
