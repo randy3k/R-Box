@@ -23,8 +23,9 @@ ls_package <- function(pkg){
 }
 
 get_functions <- function(pkg, l){
+    e <- as.environment(paste0("package:", pkg))
     l[sapply(l, function(x) {
-        obj <- get(x, envir = as.environment(paste0("package:", pkg)))
+        obj <- get(x, envir = e)
         is.function(obj)
     })]
 }
