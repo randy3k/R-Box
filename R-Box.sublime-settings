@@ -1,7 +1,7 @@
 {
     // mac : R / Terminal / iTerm
     // "prog" : "R",
-    // windows: R32 / R64
+    // windows: R32 / R64/ Cygwin/ Cmder
     // "prog" : "R64",
     // unix: tmux / screen
     // "prog" : "tmux",
