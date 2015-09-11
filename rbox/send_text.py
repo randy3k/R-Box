@@ -47,8 +47,8 @@ class SendTextMixin:
             args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal ' +
                     'to tell current session to write text "' + cmd + '"']
         else:
-            args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal window ' +
-                    'to tell current session to write text "' + cmd + '"']
+            args = ['osascript', '-e', 'tell app "iTerm" to tell first window to tell ' +
+                    'first tab to tell current session to write text "' + cmd + '"']
         subprocess.check_call(args)
 
     def _send_text_tmux(self, cmd, tmux="tmux"):
