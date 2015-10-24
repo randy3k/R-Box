@@ -70,13 +70,14 @@
 		"true",
 		"try_default",
 		"tryapply",
+		"tryNULL",
 		"unrowname",
 		"vaggregate"
 	],
 	"methods" : {
 		"a_ply" : "a_ply(.data, .margins, .fun = NULL, ..., .expand = TRUE, .progress = \"none\", .inform = FALSE, .print = FALSE, .parallel = FALSE, .paropts = NULL) ",
 		"aaply" : "aaply(.data, .margins, .fun = NULL, ..., .expand = TRUE, .progress = \"none\", .inform = FALSE, .drop = TRUE, .parallel = FALSE, .paropts = NULL) ",
-		"adply" : "adply(.data, .margins, .fun = NULL, ..., .expand = TRUE, .progress = \"none\", .inform = FALSE, .parallel = FALSE, .paropts = NULL) ",
+		"adply" : "adply(.data, .margins, .fun = NULL, ..., .expand = TRUE, .progress = \"none\", .inform = FALSE, .parallel = FALSE, .paropts = NULL, .id = NA) ",
 		"alply" : "alply(.data, .margins, .fun = NULL, ..., .expand = TRUE, .progress = \"none\", .inform = FALSE, .parallel = FALSE, .paropts = NULL, .dims = FALSE) ",
 		"amv_dimnames" : "amv_dimnames(x) ",
 		"arrange" : "arrange(df, ...) ",
@@ -130,7 +131,7 @@
 		"rbind.fill" : "rbind.fill(...) ",
 		"rbind.fill.matrix" : "rbind.fill.matrix(...) ",
 		"rdply" : "rdply(.n, .expr, .progress = \"none\", .id = NA) ",
-		"rename" : "rename(x, replace, warn_missing = TRUE) ",
+		"rename" : "rename(x, replace, warn_missing = TRUE, warn_duplicated = TRUE) ",
 		"revalue" : "revalue(x, replace = NULL, warn_missing = TRUE) ",
 		"rlply" : "rlply(.n, .expr, .progress = \"none\") ",
 		"round_any" : "round_any(x, accuracy, f = round) ",
@@ -144,6 +145,7 @@
 		"true" : "true(...) ",
 		"try_default" : "try_default(expr, default, quiet = FALSE) ",
 		"tryapply" : "tryapply(list, fun, ...) ",
+		"tryNULL" : "tryNULL(expr) ",
 		"unrowname" : "unrowname(x) ",
 		"vaggregate" : "vaggregate(.value, .group, .fun, ..., .default = NULL, .n = nlevels(.group)) "
 	}

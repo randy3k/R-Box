@@ -188,7 +188,7 @@
 		"qr.qy" : "qr.qy(qr, y) ",
 		"qr.R" : "qr.R(qr, complete = FALSE, ...) ",
 		"qr.resid" : "qr.resid(qr, y) ",
-		"qrR" : "qrR(qr, complete = FALSE, backPermute = TRUE) ",
+		"qrR" : "qrR(qr, complete = FALSE, backPermute = TRUE, row.names = TRUE) ",
 		"rankMatrix" : "rankMatrix(x, tol = NULL, method = c(\"tolNorm2\", \"qr.R\", \"qrLINPACK\", \"qr\", \"useGrad\", \"maybeGrad\"), sval = svd(x, 0, 0)$d, warn.t = TRUE) ",
 		"rBind" : "rBind(..., deparse.level = 1) ",
 		"rbind2" : "rbind2(x, y, ...) ",
