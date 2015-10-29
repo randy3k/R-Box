@@ -24,13 +24,9 @@ class SendTextMixin:
 
     @staticmethod
     def iterm_version():
-        try:
-            args = ['osascript', '-e',
-                    'tell app "iTerm" to tell the first terminal to set foo to true']
-            subprocess.check_call(args)
-            return 2.0
-        except:
-            return 2.9
+        args = ['osascript', '-e', 'tell application "iTerm" to get version']
+        ver = subprocess.check_output(args).decode().strip()
+        return tuple((int(i) for i in re.split(r"\.", ver)[0:2]))
 
     def _send_text_terminal(self, cmd):
         cmd = self.clean_cmd(cmd)
@@ -43,12 +39,12 @@ class SendTextMixin:
         cmd = self.clean_cmd(cmd)
         cmd = self.escape_dquote(cmd)
         ver = self.iterm_version()
-        if ver == 2.0:
-            args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal ' +
+        if ver >= (2, 9):
+            args = ['osascript', '-e', 'tell app "iTerm" to tell the first window ' +
                     'to tell current session to write text "' + cmd + '"']
         else:
-            args = ['osascript', '-e', 'tell app "iTerm" to tell first window to tell ' +
-                    'first tab to tell current session to write text "' + cmd + '"']
+            args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal ' +
+                    'to tell current session to write text "' + cmd + '"']
         subprocess.check_call(args)
 
     def _send_text_tmux(self, cmd, tmux="tmux"):
