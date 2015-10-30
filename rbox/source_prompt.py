@@ -17,7 +17,7 @@ def listdir(view, dir, base, ext, on_done):
     if base:
         fnames = [f for f in fnames if base.lower() in f.lower()]
 
-    display = ["[ Create a new file ]", "> "+os.curdir, "> "+os.pardir] + \
+    display = ["[ Create a new file ]", "> "+os.pardir] + \
         ["> "+f for f in ls if os.path.isdir(os.path.join(dir, f))] + fnames
 
     def on_action(i):
