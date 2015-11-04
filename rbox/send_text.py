@@ -171,6 +171,9 @@ class RBoxSendSelectionCommand(sublime_plugin.TextCommand, SendTextMixin, Expand
                 if settings.get("auto_advance", False):
                     view.sel().subtract(sel)
                     pt = view.text_point(line+1, 0)
+                    nextpt = view.find(r"\S", pt)
+                    if nextpt.begin() != -1:
+                        pt = view.text_point(view.rowcol(nextpt.begin())[0], 0)
                     view.sel().add(sublime.Region(pt, pt))
                     moved = True
             else:
