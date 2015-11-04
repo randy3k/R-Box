@@ -75,11 +75,7 @@ To enable [SublimeLinter](http://www.sublimelinter.com/) via [SublimeLinter-cont
 
 #### Cmder settings
 
-There are two things that you need to do:
-
-1. Due to this [bug!?](http://www.autohotkey.com/board/topic/92360-controlsend-messes-up-modifiers/), you have to change the paste shortcut of Cmder from <kbd>shift</kbd>+<kbd>insert</kbd> to <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>v</kbd> in Cmder settings.
-
-2. Go to `Paste` in the settings, uncheck, "Confirm <enter> keypress" and "Confirm pasting more than..."
+Go to `Paste` in the settings, uncheck, "Confirm <enter> keypress" and "Confirm pasting more than..."
 
 
 ### License
