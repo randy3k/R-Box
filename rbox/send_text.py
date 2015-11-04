@@ -32,20 +32,35 @@ class SendTextMixin:
         cmd = self.clean_cmd(cmd)
         cmd = self.escape_dquote(cmd)
         args = ['osascript']
-        args.extend(['-e', 'tell app "Terminal" to do script "' + cmd + '" in front window'])
+        args.extend(['-e',
+                     'tell application "Terminal" to do script "' + cmd + '" in front window'])
         subprocess.Popen(args)
 
     def _send_text_iterm(self, cmd):
         cmd = self.clean_cmd(cmd)
-        cmd = self.escape_dquote(cmd)
-        ver = self.iterm_version()
-        if ver >= (2, 9):
-            args = ['osascript', '-e', 'tell app "iTerm" to tell the first window ' +
-                    'to tell current session to write text "' + cmd + '"']
+        if self.iterm_version() >= (2, 9):
+            cmd = cmd
+            n = 1000
+            chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
+            for chunk in chunks:
+                subprocess.call([
+                    'osascript', '-e',
+                    'tell application "iTerm" to tell the first window ' +
+                    'to tell current session to write text "' +
+                    self.escape_dquote(chunk) + '" without newline'
+                ])
+            subprocess.call([
+                'osascript', '-e',
+                'tell application "iTerm" to tell the first window ' +
+                'to tell current session to write text ""'
+            ])
         else:
-            args = ['osascript', '-e', 'tell app "iTerm" to tell the first terminal ' +
-                    'to tell current session to write text "' + cmd + '"']
-        subprocess.check_call(args)
+            subprocess.call([
+                'osascript', '-e',
+                'tell application "iTerm" to tell the first terminal ' +
+                'to tell current session to write text "' +
+                self.escape_dquote(cmd) + '"'
+            ])
 
     def _send_text_tmux(self, cmd, tmux="tmux"):
         cmd = self.clean_cmd(cmd) + "\n"
