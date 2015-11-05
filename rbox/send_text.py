@@ -155,39 +155,41 @@ class TextGetter:
     def __init__(self, view):
         self.view = view
 
-    def expand_block(self, sel):
+    def expand_line(self, s):
         view = self.view
         # expand selection to {...}
-        thiscmd = view.substr(view.line(sel))
+        s = view.line(s)
+        thiscmd = view.substr(s)
         if re.match(r".*\{\s*$", thiscmd):
-            esel = view.find(
+            es = view.find(
                 r"""^(?:.*(\{(?:(["\'])(?:[^\\]|\\.)*?\2|#.*$|[^\{\}]|(?1))*\})[^\{\}\n]*)+""",
-                view.line(sel).begin()
+                view.line(s).begin()
             )
-            if view.line(sel).begin() == esel.begin():
-                sel = esel
-        return sel
+            if s.begin() == es.begin():
+                s = es
+        return s
+
+    def advance(self, s):
+        view = self.view
+        view.sel().subtract(s)
+        pt = view.text_point(view.rowcol(s.end())[0]+1, 0)
+        nextpt = view.find(r"\S", pt)
+        if nextpt.begin() != -1:
+            pt = view.text_point(view.rowcol(nextpt.begin())[0], 0)
+        view.sel().add(sublime.Region(pt, pt))
 
     def get_text(self):
         view = self.view
         cmd = ''
         moved = False
-        for sel in [s for s in view.sel()]:
-            if sel.empty():
-                esel = self.expand_block(sel)
-                thiscmd = view.substr(view.line(esel))
-                line = view.rowcol(esel.end())[0]
+        for s in [s for s in view.sel()]:
+            if s.empty():
+                s = self.expand_line(s)
                 if sget("auto_advance", True):
-                    view.sel().subtract(sel)
-                    pt = view.text_point(line+1, 0)
-                    nextpt = view.find(r"\S", pt)
-                    if nextpt.begin() != -1:
-                        pt = view.text_point(view.rowcol(nextpt.begin())[0], 0)
-                    view.sel().add(sublime.Region(pt, pt))
+                    self.advance(s)
                     moved = True
-            else:
-                thiscmd = view.substr(sel)
-            cmd += thiscmd + '\n'
+
+            cmd += view.substr(s) + '\n'
 
         if moved:
             view.show(view.sel())
