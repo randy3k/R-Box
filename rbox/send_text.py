@@ -235,12 +235,6 @@ class RBoxBuildCommand(sublime_plugin.WindowCommand):
         self.window.active_view().run_command("r_box_source_code")
 
 
-# old send text class of Enhanced-R
-class RSendSelectCommand(sublime_plugin.TextCommand):
-    def run(self, edit):
-        self.run_command("r_box_send_selection")
-
-
 class RBoxChooseProgramCommand(sublime_plugin.WindowCommand):
 
     def show_quick_panel(self, options, done):
