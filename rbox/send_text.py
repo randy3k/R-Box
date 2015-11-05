@@ -97,14 +97,14 @@ class TextSender:
         cmd = "\n" + cmd
         subprocess.Popen([ahk_path, ahk_script_path, progpath, cmd])
 
-    def _send_r_gui(self, cmd, prog):
+    def _send__text_r_gui(self, cmd, prog):
         cmd = self.clean_cmd(cmd)
         cmd = self.escape_dquote(cmd)
         args = ['osascript']
         args.extend(['-e', 'tell app "' + prog + '" to cmd "' + cmd + '"'])
         subprocess.Popen(args)
 
-    def _send_sublime_repl(self, cmd):
+    def _send_text_sublime_repl(self, cmd):
         cmd = self.clean_cmd(cmd)
         window = sublime.active_window()
         view = window.active_view()
@@ -134,7 +134,7 @@ class TextSender:
             self._send_text_screen(cmd, sget("screen", "screen"))
 
         elif prog == "SublimeREPL":
-            self._send_sublime_repl(cmd)
+            self._send_text_sublime_repl(cmd)
 
         elif prog == "Cygwin":
             self._send_text_ahk(cmd, "", "Cygwin.ahk")
@@ -143,7 +143,7 @@ class TextSender:
             self._send_text_ahk(cmd, "", "Cmder.ahk")
 
         elif plat == "osx" and re.match('R[0-9]*$', prog):
-            self._send_r_gui(cmd, prog)
+            self._send__text_r_gui(cmd, prog)
 
         elif plat == "windows" and re.match('R[0-9]*$', prog):
             progpath = sget(prog, "1" if prog == "R64" else "0")
