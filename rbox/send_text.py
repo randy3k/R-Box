@@ -6,7 +6,12 @@ import re
 import sys
 
 
-class SendTextMixin:
+def sget(key, default=None):
+    s = sublime.load_settings("R-Box.sublime-settings")
+    return s.get(key, default)
+
+
+class TextSender:
 
     @staticmethod
     def clean_cmd(cmd):
@@ -83,26 +88,38 @@ class SendTextMixin:
 
     def _send_text_ahk(self, cmd, progpath="", script="Rgui.ahk"):
         cmd = self.clean_cmd(cmd)
-        ahk_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', 'AutoHotkeyU32')
-        ahk_script_path = os.path.join(sublime.packages_path(), 'User', 'R-Box', 'bin', script)
+        ahk_path = os.path.join(sublime.packages_path(),
+                                'User', 'SendText+', 'bin', 'AutoHotkeyU32')
+        ahk_script_path = os.path.join(sublime.packages_path(),
+                                       'User', 'SendText+', 'bin', script)
         # manually add "\n" to keep the indentation of first line of block code,
         # "\n" is later removed in AutoHotkey script
         cmd = "\n" + cmd
-        args = [ahk_path, ahk_script_path, progpath, cmd]
+        subprocess.Popen([ahk_path, ahk_script_path, progpath, cmd])
+
+    def _send_r_gui(self, cmd, prog):
+        cmd = self.clean_cmd(cmd)
+        cmd = self.escape_dquote(cmd)
+        args = ['osascript']
+        args.extend(['-e', 'tell app "' + prog + '" to cmd "' + cmd + '"'])
         subprocess.Popen(args)
 
+    def _send_sublime_repl(self, cmd):
+        cmd = self.clean_cmd(cmd)
+        window = sublime.active_window()
+        view = window.active_view()
+        external_id = view.scope_name(0).split(" ")[0].split(".", 1)[1]
+        window.run_command(
+            "repl_send", {"external_id": external_id, "text": cmd})
+
     def send_text(self, cmd):
-        view = self.view
-        if cmd.strip() == "":
-            return
         plat = sublime.platform()
-        settings = sublime.load_settings('R-Box.sublime-settings')
         if plat == "osx":
-            prog = settings.get("prog", "R")
+            prog = sget("prog", "Terminal")
         if plat == "windows":
-            prog = settings.get("prog", "R64")
+            prog = sget("prog", "Cmder")
         if plat == "linux":
-            prog = settings.get("prog", "tmux")
+            prog = sget("prog", "tmux")
 
         if prog == 'Terminal':
             self._send_text_terminal(cmd)
@@ -110,29 +127,14 @@ class SendTextMixin:
         elif prog == 'iTerm':
             self._send_text_iterm(cmd)
 
-        elif plat == "osx" and re.match('R[0-9]*$', prog):
-            cmd = self.clean_cmd(cmd)
-            cmd = self.escape_dquote(cmd)
-            args = ['osascript']
-            args.extend(['-e', 'tell app "' + prog + '" to cmd "' + cmd + '"'])
-            subprocess.Popen(args)
-
         elif prog == "tmux":
-            self._send_text_tmux(cmd, settings.get("tmux", "tmux"))
+            self._send_text_tmux(cmd, sget("tmux", "tmux"))
 
         elif prog == "screen":
-            self._send_text_screen(cmd, settings.get("screen", "screen"))
+            self._send_text_screen(cmd, sget("screen", "screen"))
 
         elif prog == "SublimeREPL":
-            cmd = self.clean_cmd(cmd)
-            external_id = view.scope_name(0).split(" ")[0].split(".", 1)[1]
-            sublime.active_window().run_command(
-                "repl_send", {"external_id": external_id, "text": cmd})
-            return
-
-        elif plat == "windows" and re.match('R[0-9]*$', prog):
-            progpath = settings.get(prog, "1" if prog == "R64" else "0")
-            self._send_text_ahk(cmd, progpath, "Rgui.ahk")
+            self._send_sublime_repl(cmd)
 
         elif prog == "Cygwin":
             self._send_text_ahk(cmd, "", "Cygwin.ahk")
@@ -140,12 +142,22 @@ class SendTextMixin:
         elif prog == "Cmder":
             self._send_text_ahk(cmd, "", "Cmder.ahk")
 
+        elif plat == "osx" and re.match('R[0-9]*$', prog):
+            self._send_r_gui(cmd, prog)
 
-class ExpandBlockMixin:
+        elif plat == "windows" and re.match('R[0-9]*$', prog):
+            progpath = sget(prog, "1" if prog == "R64" else "0")
+            self._send_text_ahk(cmd, progpath, "Rgui.ahk")
+
+
+class TextGetter:
+
+    def __init__(self, view):
+        self.view = view
 
     def expand_block(self, sel):
-        # expand selection to {...}
         view = self.view
+        # expand selection to {...}
         thiscmd = view.substr(view.line(sel))
         if re.match(r".*\{\s*$", thiscmd):
             esel = view.find(
@@ -156,11 +168,8 @@ class ExpandBlockMixin:
                 sel = esel
         return sel
 
-
-class RBoxSendSelectionCommand(sublime_plugin.TextCommand, SendTextMixin, ExpandBlockMixin):
-    def run(self, edit):
+    def get_text(self):
         view = self.view
-        settings = sublime.load_settings('R-Box.sublime-settings')
         cmd = ''
         moved = False
         for sel in [s for s in view.sel()]:
@@ -168,7 +177,7 @@ class RBoxSendSelectionCommand(sublime_plugin.TextCommand, SendTextMixin, Expand
                 esel = self.expand_block(sel)
                 thiscmd = view.substr(view.line(esel))
                 line = view.rowcol(esel.end())[0]
-                if settings.get("auto_advance", False):
+                if sget("auto_advance", True):
                     view.sel().subtract(sel)
                     pt = view.text_point(line+1, 0)
                     nextpt = view.find(r"\S", pt)
@@ -180,13 +189,22 @@ class RBoxSendSelectionCommand(sublime_plugin.TextCommand, SendTextMixin, Expand
                 thiscmd = view.substr(sel)
             cmd += thiscmd + '\n'
 
-        self.send_text(cmd)
-
         if moved:
             view.show(view.sel())
 
+        return cmd
 
-class RBoxChangeDirCommand(sublime_plugin.TextCommand, SendTextMixin):
+
+class RBoxSendSelectionCommand(sublime_plugin.TextCommand):
+    def run(self, edit):
+        view = self.view
+        getter = TextGetter(view)
+        cmd = getter.get_text()
+        sender = TextSender()
+        sender.send_text(cmd)
+
+
+class RBoxChangeDirCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         view = self.view
         fname = view.file_name()
@@ -194,19 +212,21 @@ class RBoxChangeDirCommand(sublime_plugin.TextCommand, SendTextMixin):
             sublime.error_message("Save the file!")
             return
         dirname = os.path.dirname(fname)
-        cmd = "setwd(\"" + self.escape_dquote(dirname) + "\")"
-        self.send_text(cmd)
+        sender = TextSender()
+        cmd = "setwd(\"" + sender.escape_dquote(dirname) + "\")"
+        sender.send_text(cmd)
 
 
-class RBoxSourceCodeCommand(sublime_plugin.TextCommand, SendTextMixin):
+class RBoxSourceCodeCommand(sublime_plugin.TextCommand):
     def run(self, edit):
         view = self.view
         fname = view.file_name()
         if not fname:
             sublime.error_message("Save the file!")
             return
-        cmd = "source(\"" + self.escape_dquote(fname) + "\")"
-        self.send_text(cmd)
+        sender = TextSender()
+        cmd = "source(\"" + sender.escape_dquote(fname) + "\")"
+        sender.send_text(cmd)
 
 
 class RBoxBuildCommand(sublime_plugin.WindowCommand):
