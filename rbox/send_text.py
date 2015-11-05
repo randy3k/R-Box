@@ -115,9 +115,9 @@ class TextSender:
     def send_text(self, cmd):
         plat = sublime.platform()
         if plat == "osx":
-            prog = sget("prog", "Terminal")
+            prog = sget("prog", "R")
         if plat == "windows":
-            prog = sget("prog", "Cmder")
+            prog = sget("prog", "R64")
         if plat == "linux":
             prog = sget("prog", "tmux")
 
