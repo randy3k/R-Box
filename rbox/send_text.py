@@ -89,15 +89,15 @@ class TextSender:
     def _send_text_ahk(self, cmd, progpath="", script="Rgui.ahk"):
         cmd = self.clean_cmd(cmd)
         ahk_path = os.path.join(sublime.packages_path(),
-                                'User', 'SendText+', 'bin', 'AutoHotkeyU32')
+                                'User', 'R-Box', 'bin', 'AutoHotkeyU32')
         ahk_script_path = os.path.join(sublime.packages_path(),
-                                       'User', 'SendText+', 'bin', script)
+                                       'User', 'R-Box', 'bin', script)
         # manually add "\n" to keep the indentation of first line of block code,
         # "\n" is later removed in AutoHotkey script
         cmd = "\n" + cmd
         subprocess.Popen([ahk_path, ahk_script_path, progpath, cmd])
 
-    def _send__text_r_gui(self, cmd, prog):
+    def _send_text_r_gui(self, cmd, prog):
         cmd = self.clean_cmd(cmd)
         cmd = self.escape_dquote(cmd)
         args = ['osascript']
@@ -143,7 +143,7 @@ class TextSender:
             self._send_text_ahk(cmd, "", "Cmder.ahk")
 
         elif plat == "osx" and re.match('R[0-9]*$', prog):
-            self._send__text_r_gui(cmd, prog)
+            self._send_text_r_gui(cmd, prog)
 
         elif plat == "windows" and re.match('R[0-9]*$', prog):
             progpath = sget(prog, "1" if prog == "R64" else "0")
