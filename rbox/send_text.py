@@ -97,11 +97,11 @@ class TextSender:
         cmd = "\n" + cmd
         subprocess.Popen([ahk_path, ahk_script_path, progpath, cmd])
 
-    def _send_text_r_gui(self, cmd, prog):
+    def _send_text_r_ide(self, cmd, prog):
         cmd = self.clean_cmd(cmd)
         cmd = self.escape_dquote(cmd)
         args = ['osascript']
-        args.extend(['-e', 'tell app "' + prog + '" to cmd "' + cmd + '"'])
+        args.extend(['-e', 'tell application "' + prog + '" to cmd "' + cmd + '"'])
         subprocess.Popen(args)
 
     def _send_text_sublime_repl(self, cmd):
@@ -142,8 +142,8 @@ class TextSender:
         elif prog == "Cmder":
             self._send_text_ahk(cmd, "", "Cmder.ahk")
 
-        elif plat == "osx" and re.match('R[0-9]*$', prog):
-            self._send_text_r_gui(cmd, prog)
+        elif plat == "osx" and re.match('(R[0-9]*|RStudio)$', prog):
+            self._send_text_r_ide(cmd, prog)
 
         elif plat == "windows" and re.match('R[0-9]*$', prog):
             progpath = sget(prog, "1" if prog == "R64" else "0")
@@ -245,7 +245,7 @@ class RBoxChooseProgramCommand(sublime_plugin.WindowCommand):
     def run(self):
         plat = sublime.platform()
         if plat == 'osx':
-            self.app_list = ["R", "Terminal", "iTerm", "tmux", "screen", "SublimeREPL"]
+            self.app_list = ["R", "Terminal", "iTerm", "tmux", "screen", "RStudio", "SublimeREPL"]
         elif plat == "windows":
             self.app_list = ["R32", "R64", "Cmder", "Cygwin", "SublimeREPL"]
         elif plat == "linux":
