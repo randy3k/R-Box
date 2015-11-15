@@ -4,9 +4,9 @@ R package for Sublime Text
 Features:
 
   - Send commands to various programs. 
-    - Mac: R gui, Terminal, iTerm 2; 
+    - Mac: R GUI, RStudio(>v0.99.769), Terminal, iTerm 2; 
     - Unix: screen, tmux; 
-    - Windows: R gui, Cygwin, [Cmder](http://cmder.net) (see below to configure Cmder); 
+    - Windows: R GUI, Cygwin, [Cmder](http://cmder.net) (see below to configure Cmder); 
     - SublimeREPL
   - Autocompletions for various packages.
   - Function hints in status bar for various packages.
