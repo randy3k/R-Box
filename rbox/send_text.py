@@ -149,6 +149,9 @@ class TextSender:
             progpath = sget(prog, "1" if prog == "R64" else "0")
             self._send_text_ahk(cmd, progpath, "Rgui.ahk")
 
+        elif plat == "windows" and prog == "RStudio":
+            self._send_text_ahk(cmd, "", "RStudio.ahk")
+
 
 class TextGetter:
 

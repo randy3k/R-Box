@@ -6,7 +6,7 @@ Features:
   - Send commands to various programs. 
     - Mac: R GUI, RStudio(>v0.99.769), Terminal, iTerm 2; 
     - Unix: screen, tmux; 
-    - Windows: R GUI, Cygwin, [Cmder](http://cmder.net) (see below to configure Cmder); 
+    - Windows: R GUI, RStudio, Cygwin, [Cmder](http://cmder.net) (see below to configure Cmder); 
     - SublimeREPL
   - Autocompletions for various packages.
   - Function hints in status bar for various packages.
@@ -30,7 +30,7 @@ If you like it, you could send me some tips via [paypal](https://www.paypal.com/
 
 In the following, <kbd>C</kbd> is <kbd>ctrl</kbd> for Windows/Linux, <kbd>cmd</kbd> for Mac.
 
-- <kbd>C</kbd> + <kbd>enter</kbd> to send code to gui/terminal. R.app is the default for mac, R64.exe is default for windows and tmux is the default for linux. To change the application, do <kbd>C</kbd> + <kbd>shift</kbd> + <kbd>p</kbd> -> `R-Box: Choose Program`.
+- <kbd>C</kbd> + <kbd>enter</kbd> to send code to gui/terminal. `R` is the default for mac, `R64` is default for windows and `tmux` is the default for linux. To change the default program, do <kbd>C</kbd> + <kbd>shift</kbd> + <kbd>p</kbd> -> `R-Box: Choose Program`.
 - <kbd>C</kbd> + <kbd>\\</kbd> to change working dir
 - <kbd>C</kbd> + <kbd>b</kbd> to source the current R file, or to run [knitr](https://github.com/yihui/knitr) for Rnw or R markdown files.
 

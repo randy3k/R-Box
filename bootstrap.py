@@ -28,6 +28,7 @@ def plugin_loaded():
     if sublime.platform() == "windows":
         update_resources("AutoHotkeyU32.exe")
         update_resources("Rgui.ahk")
+        update_resources("RStudio.ahk")
         update_resources("Cmder.ahk")
         update_resources("Cygwin.ahk")
 
