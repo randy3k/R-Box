@@ -67,6 +67,13 @@ class TextSender:
                 self.escape_dquote(cmd) + '"'
             ])
 
+    def _send_text_r_osx(self, cmd, prog):
+        cmd = self.clean_cmd(cmd)
+        cmd = self.escape_dquote(cmd)
+        args = ['osascript']
+        args.extend(['-e', 'tell application "' + prog + '" to cmd "' + cmd + '"'])
+        subprocess.Popen(args)
+
     def _send_text_tmux(self, cmd, tmux="tmux"):
         cmd = self.clean_cmd(cmd) + "\n"
         n = 200
@@ -97,13 +104,6 @@ class TextSender:
         cmd = "\n" + cmd
         subprocess.Popen([ahk_path, ahk_script_path, progpath, cmd])
 
-    def _send_text_r_ide(self, cmd, prog):
-        cmd = self.clean_cmd(cmd)
-        cmd = self.escape_dquote(cmd)
-        args = ['osascript']
-        args.extend(['-e', 'tell application "' + prog + '" to cmd "' + cmd + '"'])
-        subprocess.Popen(args)
-
     def _send_text_sublime_repl(self, cmd):
         cmd = self.clean_cmd(cmd)
         window = sublime.active_window()
@@ -127,14 +127,14 @@ class TextSender:
         elif prog == 'iTerm':
             self._send_text_iterm(cmd)
 
+        elif plat == "osx" and re.match('(R[0-9]*|RStudio)$', prog):
+            self._send_text_r_osx(cmd, prog)
+
         elif prog == "tmux":
             self._send_text_tmux(cmd, sget("tmux", "tmux"))
 
         elif prog == "screen":
             self._send_text_screen(cmd, sget("screen", "screen"))
-
-        elif prog == "SublimeREPL":
-            self._send_text_sublime_repl(cmd)
 
         elif prog == "Cygwin":
             self._send_text_ahk(cmd, "", "Cygwin.ahk")
@@ -142,15 +142,15 @@ class TextSender:
         elif prog == "Cmder":
             self._send_text_ahk(cmd, "", "Cmder.ahk")
 
-        elif plat == "osx" and re.match('(R[0-9]*|RStudio)$', prog):
-            self._send_text_r_ide(cmd, prog)
-
         elif plat == "windows" and re.match('R[0-9]*$', prog):
             progpath = sget(prog, "1" if prog == "R64" else "0")
             self._send_text_ahk(cmd, progpath, "Rgui.ahk")
 
         elif plat == "windows" and prog == "RStudio":
             self._send_text_ahk(cmd, "", "RStudio.ahk")
+
+        elif prog == "SublimeREPL":
+            self._send_text_sublime_repl(cmd)
 
 
 class TextGetter:
