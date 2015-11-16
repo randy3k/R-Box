@@ -14,7 +14,7 @@ if (rstudio_id != "")
     {
         cmd = %2%
         cmd := RegExReplace(cmd, "^\n", "")
-        clipboard := cmd 
+        clipboard := cmd
     }
     Else
     {
@@ -35,14 +35,9 @@ if (rstudio_id != "")
     {
         Send, {Ctrl Up}{Enter}{Ctrl Down}
         ; ControlSend, , {Ctrl Up}{Enter}{Ctrl Down}, ahk_id %rstudio_id%
-
     }
     GetKeyState, state, Control
     Outputdebug % dstring . "state=" . state
     WinActivate, ahk_id %stID%
-
-
-
-
     clipboard := oldclipboard
 }

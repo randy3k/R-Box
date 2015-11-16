@@ -39,7 +39,7 @@ if (RprocID == "")
     else if 0=0
     {
         ; debug
-        RegRead, Rhome, HKEY_LOCAL_MACHINE,SOFTWARE\R-core\R64, InstallPath
+        RegRead, Rhome, HKEY_LOCAL_MACHINE,SOFTWARE\R-core\R, InstallPath
         Rguiexe := Rhome . "\bin\x64\Rgui.exe"
     }
     OutputDebug Rgui is %Rguiexe%
