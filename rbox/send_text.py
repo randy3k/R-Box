@@ -248,9 +248,9 @@ class RBoxChooseProgramCommand(sublime_plugin.WindowCommand):
     def run(self):
         plat = sublime.platform()
         if plat == 'osx':
-            self.app_list = ["R", "Terminal", "iTerm", "tmux", "screen", "RStudio", "SublimeREPL"]
+            self.app_list = ["R", "RStudio", "Terminal", "iTerm", "tmux", "screen", "SublimeREPL"]
         elif plat == "windows":
-            self.app_list = ["R32", "R64", "Cmder", "Cygwin", "SublimeREPL"]
+            self.app_list = ["R32", "R64", "RStudio", "Cmder", "Cygwin", "SublimeREPL"]
         elif plat == "linux":
             self.app_list = ["tmux", "screen", "SublimeREPL"]
         else:
