@@ -10,9 +10,9 @@ if (rstudio_id != "")
     Outputdebug % dstring . "id=" . rstudio_id
 
     oldclipboard = %clipboard%
-    if 0=2
+    if 0=1
     {
-        cmd = %2%
+        cmd = %1%
         cmd := RegExReplace(cmd, "^\n", "")
         clipboard := cmd
     }

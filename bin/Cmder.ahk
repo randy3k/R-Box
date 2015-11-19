@@ -6,9 +6,9 @@ if (cmder_id != "")
     Outputdebug % dstring . "id=" . cmder_id
 
     oldclipboard = %clipboard%
-    if 0=2
+    if 0=1
     {
-        cmd = %2%
+        cmd = %1%
         cmd := RegExReplace(cmd, "^\n", "")
         newline = `n
         clipboard := cmd . newline

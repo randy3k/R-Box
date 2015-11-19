@@ -25,7 +25,7 @@ if (RprocID == "")
 
 if (RprocID == "")
 {
-    Rguiexe = %1%
+    Rguiexe = %2%
     if (Rguiexe == "1") {
         SetRegView 64
         RegRead, Rhome, HKEY_LOCAL_MACHINE,SOFTWARE\R-core\R, InstallPath
@@ -56,7 +56,7 @@ oldclipboard = %clipboard%
 
 if 0=2
 {
-    cmd = %2%
+    cmd = %1%
     cmd := RegExReplace(cmd, "^\n", "")
     newline = `n
     clipboard := cmd . newline

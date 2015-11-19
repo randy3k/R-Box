@@ -3,7 +3,6 @@ import sublime_plugin
 import os
 import subprocess
 import re
-import sys
 
 
 def sget(key, default=None):
@@ -12,6 +11,15 @@ def sget(key, default=None):
 
 
 class TextSender:
+
+    def __init__(self):
+        plat = sublime.platform()
+        defaults = {"osx": "R", "windows": "R46", "linix": "tmux"}
+        prog = sget("prog", defaults[plat])
+        function_str = "_dispatch_" + prog.lower().replace("-", "_")
+        if getattr(self, function_str + "_" + plat, None):
+            function_str = function_str + "_" + plat
+        self.send_text = eval("self." + function_str)
 
     @staticmethod
     def clean_cmd(cmd):
@@ -27,13 +35,7 @@ class TextSender:
         cmd = cmd.replace('"', '\\"')
         return cmd
 
-    @staticmethod
-    def iterm_version():
-        args = ['osascript', '-e', 'tell application "iTerm" to get version']
-        ver = subprocess.check_output(args).decode().strip()
-        return tuple((int(i) for i in re.split(r"\.", ver)[0:2]))
-
-    def _send_text_terminal(self, cmd):
+    def _dispatch_terminal(self, cmd):
         cmd = self.clean_cmd(cmd)
         cmd = self.escape_dquote(cmd)
         args = ['osascript']
@@ -41,10 +43,15 @@ class TextSender:
                      'tell application "Terminal" to do script "' + cmd + '" in front window'])
         subprocess.Popen(args)
 
-    def _send_text_iterm(self, cmd):
+    @staticmethod
+    def iterm_version():
+        args = ['osascript', '-e', 'tell application "iTerm" to get version']
+        ver = subprocess.check_output(args).decode().strip()
+        return tuple((int(i) for i in re.split(r"\.", ver)[0:2]))
+
+    def _dispatch_iterm(self, cmd):
         cmd = self.clean_cmd(cmd)
         if self.iterm_version() >= (2, 9):
-            cmd = cmd
             n = 1000
             chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
             for chunk in chunks:
@@ -67,14 +74,26 @@ class TextSender:
                 self.escape_dquote(cmd) + '"'
             ])
 
-    def _send_text_r_osx(self, cmd, prog):
+    def _dispatch_r_osx(self, cmd, prog):
         cmd = self.clean_cmd(cmd)
         cmd = self.escape_dquote(cmd)
         args = ['osascript']
         args.extend(['-e', 'tell application "' + prog + '" to cmd "' + cmd + '"'])
         subprocess.Popen(args)
 
-    def _send_text_tmux(self, cmd, tmux="tmux"):
+    def _dispatch_rstudio_osx(self, cmd):
+        cmd = self.clean_cmd(cmd)
+        script = """
+        on run argv
+            tell application "RStudio"
+                cmd item 1 of argv
+            end tell
+        end run
+        """
+        subprocess.call(['osascript', '-e', script, cmd])
+
+    def _dispatch_tmux(self, cmd):
+        tmux = sget("tmux", "tmux")
         cmd = self.clean_cmd(cmd) + "\n"
         n = 200
         chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
@@ -82,19 +101,20 @@ class TextSender:
             subprocess.call([tmux, 'set-buffer', chunk])
             subprocess.call([tmux, 'paste-buffer', '-d'])
 
-    def _send_text_screen(self, cmd, screen="screen"):
-        plat = sys.platform
+    def _dispatch_screen(self, cmd):
+        screen = sget("screen", "screen")
+        plat = sublime.platform()
         cmd = self.clean_cmd(cmd) + "\n"
         n = 200
         chunks = [cmd[i:i+n] for i in range(0, len(cmd), n)]
         for chunk in chunks:
-            if plat.startswith("linux"):
+            if plat == "linux":
                 chunk = chunk.replace("\\", r"\\")
                 chunk = chunk.replace("$", r"\$")
             subprocess.call([screen, '-X', 'stuff', chunk])
 
-    def _send_text_ahk(self, cmd, progpath="", script="Rgui.ahk"):
-        cmd = self.clean_cmd(cmd)
+    @staticmethod
+    def execute_ahk_script(script, cmd, args=[]):
         ahk_path = os.path.join(sublime.packages_path(),
                                 'User', 'R-Box', 'bin', 'AutoHotkeyU32')
         ahk_script_path = os.path.join(sublime.packages_path(),
@@ -102,55 +122,35 @@ class TextSender:
         # manually add "\n" to keep the indentation of first line of block code,
         # "\n" is later removed in AutoHotkey script
         cmd = "\n" + cmd
-        subprocess.Popen([ahk_path, ahk_script_path, progpath, cmd])
+        subprocess.Popen([ahk_path, ahk_script_path, cmd] + args)
 
-    def _send_text_sublime_repl(self, cmd):
+    def _dispatch_r32_windows(self, cmd):
+        cmd = self.clean_cmd(cmd)
+        self.execute_ahk_script("Rgui.ahk", cmd, [0])
+
+    def _dispatch_r64_windows(self, cmd):
+        cmd = self.clean_cmd(cmd)
+        self.execute_ahk_script("Rgui.ahk", cmd, [1])
+
+    def _dispatch_rstudio_windows(self, cmd):
+        cmd = self.clean_cmd(cmd)
+        self.execute_ahk_script("RStudio.ahk", cmd)
+
+    def _dispatch_cygwin(self, cmd):
+        cmd = self.clean_cmd(cmd)
+        self.execute_ahk_script("Cygwin.ahk", cmd)
+
+    def _dispatch_cmder(self, cmd):
+        cmd = self.clean_cmd(cmd)
+        self.execute_ahk_script("Cmder.ahk", cmd)
+
+    def _dispatch_sublimerepl(self, cmd):
         cmd = self.clean_cmd(cmd)
         window = sublime.active_window()
         view = window.active_view()
         external_id = view.scope_name(0).split(" ")[0].split(".", 1)[1]
         window.run_command(
             "repl_send", {"external_id": external_id, "text": cmd})
-
-    def send_text(self, cmd):
-        plat = sublime.platform()
-        if plat == "osx":
-            prog = sget("prog", "R")
-        if plat == "windows":
-            prog = sget("prog", "R64")
-        if plat == "linux":
-            prog = sget("prog", "tmux")
-
-        if prog == 'Terminal':
-            self._send_text_terminal(cmd)
-
-        elif prog == 'iTerm':
-            self._send_text_iterm(cmd)
-
-        elif plat == "osx" and re.match('(R[0-9]*|RStudio)$', prog):
-            self._send_text_r_osx(cmd, prog)
-
-        elif prog == "tmux":
-            self._send_text_tmux(cmd, sget("tmux", "tmux"))
-
-        elif prog == "screen":
-            self._send_text_screen(cmd, sget("screen", "screen"))
-
-        elif prog == "Cygwin":
-            self._send_text_ahk(cmd, "", "Cygwin.ahk")
-
-        elif prog == "Cmder":
-            self._send_text_ahk(cmd, "", "Cmder.ahk")
-
-        elif plat == "windows" and re.match('R[0-9]*$', prog):
-            progpath = sget(prog, "1" if prog == "R64" else "0")
-            self._send_text_ahk(cmd, progpath, "Rgui.ahk")
-
-        elif plat == "windows" and prog == "RStudio":
-            self._send_text_ahk(cmd, "", "RStudio.ahk")
-
-        elif prog == "SublimeREPL":
-            self._send_text_sublime_repl(cmd)
 
 
 class TextGetter:
