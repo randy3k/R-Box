@@ -74,11 +74,11 @@ class TextSender:
                 self.escape_dquote(cmd) + '"'
             ])
 
-    def _dispatch_r_osx(self, cmd, prog):
+    def _dispatch_r_osx(self, cmd):
         cmd = self.clean_cmd(cmd)
         cmd = self.escape_dquote(cmd)
         args = ['osascript']
-        args.extend(['-e', 'tell application "' + prog + '" to cmd "' + cmd + '"'])
+        args.extend(['-e', 'tell application "R" to cmd "' + cmd + '"'])
         subprocess.Popen(args)
 
     def _dispatch_rstudio_osx(self, cmd):
