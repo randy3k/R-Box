@@ -126,11 +126,11 @@ class TextSender:
 
     def _dispatch_r32_windows(self, cmd):
         cmd = self.clean_cmd(cmd)
-        self.execute_ahk_script("Rgui.ahk", cmd, ["0"])
+        self.execute_ahk_script("Rgui.ahk", cmd, [sget("R32", "0")])
 
     def _dispatch_r64_windows(self, cmd):
         cmd = self.clean_cmd(cmd)
-        self.execute_ahk_script("Rgui.ahk", cmd, ["1"])
+        self.execute_ahk_script("Rgui.ahk", cmd, [sget("R64", "1")])
 
     def _dispatch_rstudio_windows(self, cmd):
         cmd = self.clean_cmd(cmd)
