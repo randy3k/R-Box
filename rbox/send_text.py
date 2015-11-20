@@ -176,10 +176,11 @@ class TextGetter:
         view = self.view
         view.sel().subtract(s)
         pt = view.text_point(view.rowcol(s.end())[0]+1, 0)
-        nextpt = view.find(r"\S", pt)
-        if nextpt.begin() != -1:
-            pt = view.text_point(view.rowcol(nextpt.begin())[0], 0)
-        view.sel().add(sublime.Region(pt, pt))
+        if sget("auto_advance_non_empty", True):
+            nextpt = view.find(r"\S", pt)
+            if nextpt.begin() != -1:
+                pt = view.text_point(view.rowcol(nextpt.begin())[0], 0)
+            view.sel().add(sublime.Region(pt, pt))
 
     def get_text(self):
         view = self.view

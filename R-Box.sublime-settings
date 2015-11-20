@@ -14,8 +14,11 @@
     // "tmux" : "tmux",
     // "screen" : "screen",
 
-    // auto advance lines after sending command
-    "auto_advance": true,
+    // auto advance to the next line.
+    "auto_advance" : true,
+
+    // auto advance to the next non-empty line. Override to false if "auto_advance" is false.
+    "auto_advance_non_empty": false,
 
     // enable auto completions
     "auto_completions": true,
