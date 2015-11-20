@@ -57,19 +57,19 @@ class TextSender:
             for chunk in chunks:
                 subprocess.call([
                     'osascript', '-e',
-                    'tell application "iTerm" to tell the first window ' +
+                    'tell application "iTerm" to tell the current window ' +
                     'to tell current session to write text "' +
                     self.escape_dquote(chunk) + '" without newline'
                 ])
             subprocess.call([
                 'osascript', '-e',
-                'tell application "iTerm" to tell the first window ' +
+                'tell application "iTerm" to tell the current window ' +
                 'to tell current session to write text ""'
             ])
         else:
             subprocess.call([
                 'osascript', '-e',
-                'tell application "iTerm" to tell the first terminal ' +
+                'tell application "iTerm" to tell the current terminal ' +
                 'to tell current session to write text "' +
                 self.escape_dquote(cmd) + '"'
             ])
