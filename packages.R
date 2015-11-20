@@ -63,6 +63,8 @@ get_body <- function(pkg, l){
     out
 }
 
+dir.create("packages", FALSE)
+
 for (pkg in packages){
     library(pkg, character.only=TRUE)
     objects <- ls_package(pkg)

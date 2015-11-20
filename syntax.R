@@ -95,4 +95,6 @@ dict_begin <- str_locate(content,
 dict_end <- str_locate(content, "\n\\s*</array>\\s*<key>repository</key>")[1]
 
 str_sub(content, dict_begin + 1, dict_end) <- dict
+
+dir.create("syntax", FALSE)
 cat(content, file=syntax_file)
