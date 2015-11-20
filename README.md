@@ -76,7 +76,7 @@ To enable [SublimeLinter](http://www.sublimelinter.com/) via [SublimeLinter-cont
 #### Cmder settings
 
 - Go to `Paste` in the settings, uncheck, "Confirm <enter> keypress" and "Confirm pasting more than..."
-- Change the default paste all lines command from <kbd>shift</kbd>+<kbd>insert</kbd> to <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>v</kbd>
+- Change the default paste all lines command from <kbd>shift</kbd>+<kbd>insert</kbd> to <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>v</kbd>. I actually posted an [issue](https://github.com/cmderdev/cmder/issues/710) at Cmder about the default keybind.
 
 
 ### License
