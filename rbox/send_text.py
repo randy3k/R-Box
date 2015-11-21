@@ -14,7 +14,7 @@ class TextSender:
 
     def __init__(self):
         plat = sublime.platform()
-        defaults = {"osx": "R", "windows": "R46", "linix": "tmux"}
+        defaults = {"osx": "R", "windows": "R46", "linux": "tmux"}
         prog = sget("prog", defaults[plat])
         function_str = "_dispatch_" + prog.lower().replace("-", "_")
         if getattr(self, function_str + "_" + plat, None):
