@@ -12,8 +12,7 @@ Features:
   - Function hints in status bar for various packages.
   - Support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
   - [knitr](https://github.com/yihui/knitr) build command for R markdown and Rnw files.
-
-If you are only interested in the syntax files, checkout [R-Extended](https://github.com/randy3k/R-Extended).
+  - [R-Extended syntax](https://github.com/randy3k/R-Box/tree/master/syntax).
 
 If you like it, you could send me some tips via [paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YAPVT8VB6RR9C&lc=US&item_name=tips&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted) or [gratipay](https://gratipay.com/~randy3k/).
 
