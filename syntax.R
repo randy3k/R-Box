@@ -7,26 +7,33 @@ if (length(args)>0){
 }else{
     packages <- c(
         "base",
-        "stats",
-        "methods",
-        "utils",
         "graphics",
-        "grDevices"
+        "grDevices",
+        "methods",
+        "stats",
+        "utils"
     )
 }
 
 ls_package <- function(pkg){
-    l <- ls(pattern="*", paste0("package:",pkg))
-    ind <- grep("^[a-zA-Z\\._][0-9a-zA-Z\\._]+$", l)
-    l <- l[ind]
+    members <- ls(pattern="*", paste0("package:",pkg))
+    ind <- grep("^[a-zA-Z\\._][0-9a-zA-Z\\._]+$", members)
+    out <- members[ind]
+    attr(out, "package") <- pkg
+    out
 }
 
-get_functions <- function(pkg, l){
+get_functions <- function(objs){
+    pkg <- attr(objs, "package")
     e <- as.environment(paste0("package:", pkg))
-    l[sapply(l, function(x) {
-        obj <- get(x, envir = e)
-        is.function(obj)
-    })]
+    out <- Filter(function(x) {
+            obj <- get(x, envir = e)
+            is.function(obj)
+        },
+        objs
+    )
+    attr(out, "package") <- pkg
+    out
 }
 
 template <-
@@ -76,15 +83,15 @@ template <-
 \t\t</dict>
 "
 
-get_block <- function(pkg){
-    content <- paste0(sub("\\.","\\\\\\\\.", get_functions(pkg, ls_package(pkg))), collapse="|")
+templated_block <- function(pkg){
+    content <- paste0(sub("\\.","\\\\\\\\.", get_functions(ls_package(pkg))), collapse="|")
     str_replace(template, "foo", content)
 }
 
 dict <- ""
 for (pkg in packages){
     library(pkg, character.only=TRUE)
-    dict <- paste0(dict, get_block(pkg))
+    dict <- paste0(dict, templated_block(pkg))
 }
 
 syntax_file <- "syntax/R Functions.tmLanguage"
