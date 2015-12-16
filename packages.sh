@@ -15,6 +15,7 @@ knitr
 MASS
 Matrix
 methods
+parallel
 plyr
 Rcpp
 reshape2
