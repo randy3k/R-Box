@@ -99,7 +99,7 @@
 			<string>\b([a-zA-Z._][a-zA-Z0-9._]*)\s*(\()</string>
 			<key>beginCaptures</key>
 			<dict>
-				<key>1</key>
+				<key>2</key>
 				<dict>
 					<key>name</key>
 					<string>punctuation.definition.parameters.r</string>
