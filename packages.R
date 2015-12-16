@@ -1,7 +1,4 @@
 library(RJSONIO)
-library(pryr)
-library(stringr)
-library(methods)
 
 args <- commandArgs(TRUE)
 
@@ -23,14 +20,6 @@ ls_package <- function(pkg){
     ind <- grep("^[a-zA-Z\\._][0-9a-zA-Z\\._]+$", l)
     l <- l[ind]
     l[nchar(l) >= 3]
-}
-
-omit_s3 <- function(pkg, l){
-    e <- as.environment(paste0("package:", pkg))
-    l[sapply(l, function(x) {
-        obj <- get(x, envir = e)
-        !is.function(obj) || !is_s3_method(x)
-    })]
 }
 
 get_functions <- function(pkg, l){
@@ -68,10 +57,9 @@ dir.create("packages", FALSE)
 for (pkg in packages){
     library(pkg, character.only=TRUE)
     objects <- ls_package(pkg)
-    objects_omit_s3 <- omit_s3(pkg, objects)
     functions <- get_functions(pkg, objects)
     bodies <- get_body(pkg, functions)
 
-    output <- list(objects=objects_omit_s3, methods=bodies)
+    output <- list(objects=objects, methods=bodies)
     cat(toJSON(output, pretty=TRUE), file =file.path("packages", paste0(pkg, ".json")))
 }

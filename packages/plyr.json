@@ -55,6 +55,8 @@
 		"quickdf",
 		"r_ply",
 		"raply",
+		"rbind.fill",
+		"rbind.fill.matrix",
 		"rdply",
 		"rename",
 		"revalue",
