@@ -20,6 +20,7 @@ Rcpp
 reshape2
 shiny
 stats
+stringr
 utils
 )
 
