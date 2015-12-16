@@ -16,7 +16,9 @@ MASS
 Matrix
 methods
 plyr
+Rcpp
 reshape2
+shiny
 stats
 utils
 )

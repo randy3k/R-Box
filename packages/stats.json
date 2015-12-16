@@ -588,7 +588,7 @@
 		"lm.wfit" : "lm.wfit(x, y, w, offset = NULL, method = \"qr\", tol = 1e-07, singular.ok = TRUE, ...) ",
 		"loadings" : "loadings(x, ...) ",
 		"loess" : "loess(formula, data, weights, subset, na.action, model = FALSE, span = 0.75, enp.target, degree = 2L, parametric = FALSE, drop.square = FALSE, normalize = TRUE, family = c(\"gaussian\",     \"symmetric\"), method = c(\"loess\", \"model.frame\"), control = loess.control(...), ...) ",
-		"loess.control" : "loess.control(surface = c(\"interpolate\", \"direct\"), statistics = c(\"approximate\", \"exact\"), trace.hat = c(\"exact\", \"approximate\"), cell = 0.2, iterations = 4L, ...) ",
+		"loess.control" : "loess.control(surface = c(\"interpolate\", \"direct\"), statistics = c(\"approximate\", \"exact\", \"none\"), trace.hat = c(\"exact\", \"approximate\"), cell = 0.2, iterations = 4L, iterTrace = FALSE, ...) ",
 		"loess.smooth" : "loess.smooth(x, y, span = 2/3, degree = 1, family = c(\"symmetric\", \"gaussian\"), evaluation = 50, ...) ",
 		"logLik" : "logLik(object, ...) ",
 		"loglin" : "loglin(table, margin, start = rep(1, length(table)), fit = FALSE, eps = 0.1, iter = 20L, param = FALSE, print = TRUE) ",
