@@ -49,17 +49,6 @@ Auto completions and status bar hints only support limited number of packages. R
 
 This will create a json file under `packages` directory. You could also submit a pull request for the package support files.
 
-### Customize syntax highlight packages
-
-In default, only functions from the default libraries are highlighted. To add syntax highlight for different packages, do the followings.
-
-1. `Preference: Browse Packages` and create the directory `.../Packages/Users/R-Box/` if it doesn't exist
-2. Copy the file `syntax.R` to `R-Box`
-3. Edit the `packages` variables in `syntax.R`
-4. Run `Rscript syntax.R`
-
-This will create a syntax file `R Functions.tmlanguage` under `syntax` directory.  Sublime will load the file automatically.
-
 ### FAQ
 
 #### SublimeLinter settings
