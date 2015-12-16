@@ -60,10 +60,9 @@ class RBoxCompletions(sublime_plugin.EventListener):
             set_timeout(lambda: self.loaded_libraries(view), 100)
             return
 
-        completions = [(item, item) for item in self.completions[vid] if prefix in item]
+        completions = [item for item in self.completions[vid] if prefix in item[1]]
 
-        r = list(set(completions))
-        return r
+        return completions
 
     def loaded_libraries(self, view):
         packages = [
@@ -84,7 +83,8 @@ class RBoxCompletions(sublime_plugin.EventListener):
         for pkg in packages:
             j = load_jsonfile(pkg)
             if j:
-                objects = objects + j.get("objects")
+                for obj in j.get("objects"):
+                    objects.append((obj + "\t{" + pkg + "}", obj))
 
         vid = view.id()
         self.completions[vid] = objects

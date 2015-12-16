@@ -43,11 +43,11 @@ See `Preference -> Package Settings -> R-Box`
 
 Auto completions and status bar hints only support limited number of packages. R-Box will search for `library` or `require` statements in order to load the corresponding package support files. The support files are under the `packages` directory.  If your favorite packages are not listed there, you can generate the corresponding files by running `packages.R` in the following steps.
 
-1. `Preference: Browse Packages` and create the directory `.../Packages/Users/R-Box/` if it doesn't exist
+1. `Preference: Browse Packages` and create the directory `/Users/R-Box/` if it doesn't exist
 2. Copy the file `packages.R` to `R-Box`
 3. Run `Rscript packages.R <package name>`
 
-This will create a json file under `packages` directory. You could also submit a pull request for the package support files.
+This will create a json file under `packages` directory. 
 
 ### FAQ
 
