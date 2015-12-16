@@ -19,7 +19,6 @@ ls_package <- function(pkg){
     l <- ls(pattern="*", paste0("package:",pkg))
     ind <- grep("^[a-zA-Z\\._][0-9a-zA-Z\\._]+$", l)
     l <- l[ind]
-    l[nchar(l) >= 3]
 }
 
 get_functions <- function(pkg, l){
@@ -44,8 +43,9 @@ get_body <- function(pkg, l){
             body[[1]] <- sub("^function ", x, body[[1]])
             ## collapse multi-line bodies using paste, but first removing superfluous
             ##   spaces at start of subsequent lines
-            if (length(body) > 1)
+            if (length(body) > 1){
                 body <- paste(sub("^    ", "", body), collapse="")
+            }
             out[[x]] <- body
         }
     }

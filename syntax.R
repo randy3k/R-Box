@@ -19,7 +19,6 @@ ls_package <- function(pkg){
     l <- ls(pattern="*", paste0("package:",pkg))
     ind <- grep("^[a-zA-Z\\._][0-9a-zA-Z\\._]+$", l)
     l <- l[ind]
-    l[nchar(l) >= 3]
 }
 
 get_functions <- function(pkg, l){
