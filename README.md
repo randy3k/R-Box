@@ -11,7 +11,7 @@ be exported to [SendText+](https://github.com/randy3k/SendTextPlus).
 
 Features:
 
-  - Autocompletions for various packages.
+  - Autocompletions for [various packages](packages/).
   - Function hints in status bar for various packages.
   - Support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
   - [knitr](https://github.com/yihui/knitr) build command for R markdown and Rnw files.
