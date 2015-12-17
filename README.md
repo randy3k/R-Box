@@ -15,7 +15,7 @@ Features:
   - Function hints in status bar for various packages.
   - Support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
   - [knitr](https://github.com/yihui/knitr) build command for R markdown and Rnw files.
-  - [R-Extended syntax](https://github.com/randy3k/R-Box/tree/master/syntax).
+  - [R-Extended syntax](syntax/).
 
 If you like it, you could send me some tips via [paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YAPVT8VB6RR9C&lc=US&item_name=tips&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted) or [gratipay](https://gratipay.com/~randy3k/).
 
@@ -41,16 +41,6 @@ Auto completions and status bar hints only support limited number of packages. R
 3. Run `Rscript packages.R <package name>`
 
 This will create a json file under `packages` directory. 
-
-#### SublimeLinter settings
-
-To enable [SublimeLinter](http://www.sublimelinter.com/) via [SublimeLinter-contrib-R](https://github.com/jimhester/SublimeLinter-contrib-R) and  [lintr](https://github.com/jimhester/lintr), please add the following in the SublimeLinter user settings file:
-
-```
-    "syntax_map": {
-        "r extended": "r"
-    }
-```
 
 ### License
 
