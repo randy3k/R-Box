@@ -1,22 +1,4 @@
 {
-    // mac : R / Terminal / iTerm
-    // "prog" : "R",
-    // windows: R32 / R64/ Cygwin/ Cmder
-    // "prog" : "R64",
-    // unix: tmux / screen
-    // "prog" : "tmux",
-
-    // path to Rgui.exe (for windows only)
-    // "R32" : "C:\\Program Files\\R\\R-3.1.0\\bin\\i386\\Rgui.exe",
-    // "R64" : "C:\\Program Files\\R\\R-3.1.0\\bin\\x64\\Rgui.exe",
-
-    // path to tmux / screen
-    // "tmux" : "tmux",
-    // "screen" : "screen",
-
-    // path to Rscript binary
-    // "rscript": "/usr/local/bin/rscript",
-
     // auto advance to the next line.
     "auto_advance" : true,
 
