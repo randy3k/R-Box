@@ -1,13 +1,16 @@
 R package for Sublime Text
 ------------
 
+**Important**: R-Box is now Sublime Text 3 only. The
+[st2](https://github.com/randy3k/R-Box/tree/st2) branch contains the code for
+Sublime Text 2. There is a huge change of R-Box in this Sublime Text 3 only
+version
+--- R-Box no longer ships with the "send text" functionality. R-Box will
+mainly focus on the R language development. The "send text" functionality will
+be exported to [SendText+](https://github.com/randy3k/SendTextPlus).
+
 Features:
 
-  - Send commands to various programs. 
-    - Mac: R GUI, RStudio(>v0.99.769), Terminal, iTerm 2; 
-    - Unix: screen, tmux; 
-    - Windows: R GUI, RStudio, Cygwin, [Cmder](http://cmder.net) (see below to configure Cmder); 
-    - SublimeREPL
   - Autocompletions for various packages.
   - Function hints in status bar for various packages.
   - Support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
@@ -22,16 +25,6 @@ If you like it, you could send me some tips via [paypal](https://www.paypal.com/
 
 
 - Install via [Package Control](https://sublime.wbond.net)
-
-
-
-### Usage
-
-In the following, <kbd>C</kbd> is <kbd>ctrl</kbd> for Windows/Linux, <kbd>cmd</kbd> for Mac.
-
-- <kbd>C</kbd> + <kbd>enter</kbd> to send code to gui/terminal. `R` is the default for mac, `R64` is default for windows and `tmux` is the default for linux. To change the default program, do <kbd>C</kbd> + <kbd>shift</kbd> + <kbd>p</kbd> -> `R-Box: Choose Program`.
-- <kbd>C</kbd> + <kbd>\\</kbd> to change working dir
-- <kbd>C</kbd> + <kbd>b</kbd> to source the current R file, or to run [knitr](https://github.com/yihui/knitr) for Rnw or R markdown files.
 
 
 ### Settings
@@ -49,8 +42,6 @@ Auto completions and status bar hints only support limited number of packages. R
 
 This will create a json file under `packages` directory. 
 
-### FAQ
-
 #### SublimeLinter settings
 
 To enable [SublimeLinter](http://www.sublimelinter.com/) via [SublimeLinter-contrib-R](https://github.com/jimhester/SublimeLinter-contrib-R) and  [lintr](https://github.com/jimhester/lintr), please add the following in the SublimeLinter user settings file:
@@ -60,12 +51,6 @@ To enable [SublimeLinter](http://www.sublimelinter.com/) via [SublimeLinter-cont
         "r extended": "r"
     }
 ```
-
-#### Cmder settings
-
-- Go to `Paste` in the settings, uncheck, "Confirm <enter> keypress" and "Confirm pasting more than..."
-- Change the default paste all lines command from <kbd>shift</kbd>+<kbd>insert</kbd> to <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>v</kbd>. I actually posted an [issue](https://github.com/cmderdev/cmder/issues/710) at Cmder about the default keybind.
-
 
 ### License
 
