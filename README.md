@@ -19,10 +19,7 @@ Features:
 
 If you like it, you could send me some tips via [paypal](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=YAPVT8VB6RR9C&lc=US&item_name=tips&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted) or [gratipay](https://gratipay.com/~randy3k/).
 
-![](https://raw.githubusercontent.com/randy3k/R-Box/screenshots/terminal.png)
-
 ### Getting start
-
 
 - Install via [Package Control](https://sublime.wbond.net)
 
