@@ -41,4 +41,4 @@ This will create a json file under `packages` directory.
 
 ### License
 
-R-Box is licensed under the MIT License. `AutoHotkeyU32.exe` under `bin` is included with its own license.
+R-Box is licensed under the MIT License.
