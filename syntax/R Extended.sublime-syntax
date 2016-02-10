@@ -65,11 +65,19 @@ contexts:
         - include: main
 
   functionentity:
-    - match: \b([a-zA-Z0-9._:]*)\s*(<-|=)\s*(?=(function)\s*(\())
-      scope: meta.function.r
+    - match: \b([a-zA-Z0-9._:]*)\s*(<-|=)\s*(function)\s*(\()
       captures:
         1: entity.name.function.r
         2: keyword.operator.assignment.r
+        3: keyword.control.r
+        4: punctuation.definition.parameters.r
+      push:
+        - meta_scope: meta.function.r
+        - meta_content_scope: meta.function.parameters.r
+        - include: functionpara
+        - match: \)
+          pop: true
+        - include: main
 
   functiondef:
     - match: \b(function)\s*(\()
@@ -78,9 +86,7 @@ contexts:
         2: punctuation.definition.parameters.r
       push:
         - meta_content_scope: meta.function.parameters.r
-        - match: (?<=\(|,|^)\s*([a-zA-Z._][a-zA-Z0-9._]*)(?=\s*(?:\)|=[^=]|,|\n))
-          captures:
-            1: variable.parameter.r
+        - include: functionpara
         - match: \)
           pop: true
         - include: main
@@ -92,12 +98,15 @@ contexts:
         2: punctuation.definition.parameters.r
       push:
         - meta_content_scope: meta.function-call.parameters.r
-        - match: (?<=\(|,|^)\s*([a-zA-Z._][a-zA-Z0-9._]*)(?=\s*(?:\)|=[^=]|,|\n))
-          captures:
-            1: variable.parameter.r
+        - include: functionpara
         - match: \)
           pop: true
         - include: main
+
+  functionpara:
+    - match: (?<=\(|,|^)\s*([a-zA-Z._][a-zA-Z0-9._]*)(?=\s*(?:\)|=[^=]|,|\n))
+      captures:
+        1: variable.parameter.r
 
   roxygen:
     - match: ^(#')\s*
