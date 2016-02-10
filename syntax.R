@@ -36,51 +36,20 @@ get_functions <- function(objs){
     out
 }
 
-template <-
-"\t\t<dict>
-\t\t\t<key>begin</key>
-\t\t\t<string>\\b(foo)\\s*(\\()</string>
-\t\t\t<key>beginCaptures</key>
-\t\t\t<dict>
-\t\t\t\t<key>1</key>
-\t\t\t\t<dict>
-\t\t\t\t\t<key>name</key>
-\t\t\t\t\t<string>support.function.r</string>
-\t\t\t\t</dict>
-\t\t\t\t<key>2</key>
-\t\t\t\t<dict>
-\t\t\t\t\t<key>name</key>
-\t\t\t\t\t<string>punctuation.definition.parameters.r</string>
-\t\t\t\t</dict>
-\t\t\t</dict>
-\t\t\t<key>comment</key>
-\t\t\t<string>base</string>
-\t\t\t<key>contentName</key>
-\t\t\t<string>meta.function-call.arguments.r</string>
-\t\t\t<key>end</key>
-\t\t\t<string>(\\))</string>
-\t\t\t<key>endCaptures</key>
-\t\t\t<dict>
-\t\t\t\t<key>1</key>
-\t\t\t\t<dict>
-\t\t\t\t\t<key>name</key>
-\t\t\t\t\t<string>punctuation.definition.parameters.r</string>
-\t\t\t\t</dict>
-\t\t\t</dict>
-\t\t\t<key>name</key>
-\t\t\t<string>meta.function-call.r</string>
-\t\t\t<key>patterns</key>
-\t\t\t<array>
-\t\t\t\t<dict>
-\t\t\t\t\t<key>include</key>
-\t\t\t\t\t<string>#function-call-parameter</string>
-\t\t\t\t</dict>
-\t\t\t\t<dict>
-\t\t\t\t\t<key>include</key>
-\t\t\t\t\t<string>source.r</string>
-\t\t\t\t</dict>
-\t\t\t</array>
-\t\t</dict>
+template <- "
+    - match: \\b(foo)\\s*(\\()
+      scope: meta.function-call.r
+      captures:
+        1: support.function.r
+        2: punctuation.definition.parameters.r
+      push:
+        - meta_content_scope: meta.function-call.parameters.r
+        - match: (?<=\\(|,|^)\\s*([a-zA-Z._][a-zA-Z0-9._]*)(?=\\s*(?:\\)|=[^=]|,|\\n))
+          captures:
+            1: variable.parameter.r
+        - match: \\)
+          pop: true
+        - include: \"R Extended.sublime-syntax\"
 "
 
 templated_block <- function(pkg){
@@ -94,13 +63,10 @@ for (pkg in packages){
     dict <- paste0(dict, templated_block(pkg))
 }
 
-syntax_file <- "syntax/R Functions.tmLanguage"
+syntax_file <- "syntax/R Support Function.sublime-syntax"
 content <- readChar(syntax_file, file.info(syntax_file)$size)
-dict_begin <- str_locate(content,
-    "<key>patterns</key>\\s*<array>\\s*\n")[2]
-dict_end <- str_locate(content, "\n\\s*</array>\\s*<key>repository</key>")[1]
-
-str_sub(content, dict_begin + 1, dict_end) <- dict
+begin_pt <- str_locate(content, "main:\n")[2]
+str_sub(content, begin_pt, str_length(content)) <- dict
 
 dir.create("syntax", FALSE)
 cat(content, file=syntax_file)
