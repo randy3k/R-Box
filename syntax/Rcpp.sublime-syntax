@@ -1,0 +1,15 @@
+%YAML 1.2
+---
+# http://www.sublimetext.com/docs/3/syntax.html
+name: Rcpp
+file_extensions:
+  - cpp
+  - cxx
+  - c++
+  - C
+first_line_match: .*?Rcpp.*
+scope: source.c++.rcpp
+contexts:
+  main:
+    - include: scope:source.c
+    - include: scope:source.c++

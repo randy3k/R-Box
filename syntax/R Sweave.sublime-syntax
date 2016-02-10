@@ -1,0 +1,19 @@
+%YAML 1.2
+---
+# http://www.sublimetext.com/docs/3/syntax.html
+name: R Sweave
+file_extensions:
+  - rnw
+scope: text.tex.latex.rsweave
+contexts:
+  main:
+    - match: ^\s*<<.*?>>=\s*$
+      captures:
+        1: entity.name.function.r
+        2: keyword.operator.assignment.r
+      push:
+        - meta_scope: text.tex.latex.rchunk source.r
+        - match: ^\s*@\s*$
+          pop: true
+        - include: scope:source.r
+    - include: scope:text.tex.latex
