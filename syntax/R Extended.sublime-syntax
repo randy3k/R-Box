@@ -113,10 +113,10 @@ contexts:
       captures:
         1: punctuation.definition.comment.r
       push:
+        - meta_scope: comment.line.roxygen.r
         - match: '@[a-zA-Z0-9]+'
           scope: keyword.other.r
-        - match: (?<=@param)\s*([^ ]+)
-          scope: keyword.other.r
+        - match: (?<=@param)\s*([a-zA-Z._][a-zA-Z0-9._]*)
           captures:
             1: variable.parameter.r
         - match: $\n?
@@ -132,5 +132,5 @@ contexts:
     - include: brackets
     - include: fndefs
     - include: functions
-    - include: "R Support Function.sublime-syntax"
+    - include: "R Support Functions.sublime-syntax"
     - include: fncall
