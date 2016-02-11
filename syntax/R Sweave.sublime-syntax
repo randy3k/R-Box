@@ -5,15 +5,43 @@ name: R Sweave
 file_extensions:
   - rnw
 scope: text.tex.latex.rsweave
+
 contexts:
   main:
+    - match: ""
+      with_prototype:
+        - include: sexpr
+      set:
+        - include: chunk
+        - include: "LaTeX+.sublime-syntax"
+        - include: scope:text.tex.latex
+
+  chunk:
     - match: ^\s*<<.*?>>=\s*$
       captures:
         1: entity.name.function.r
         2: keyword.operator.assignment.r
       push:
-        - meta_scope: text.tex.latex.rchunk source.r
+        - meta_scope: source.r
         - match: ^\s*@\s*$
           pop: true
-        - include: scope:source.r
-    - include: scope:text.tex.latex
+        - include: "R Extended.sublime-syntax"
+
+  sexpr:
+    - match: (\\Sexpr)\{
+      captures:
+        1: support.function.latex
+      with_prototype:
+        - include: "R Extended.sublime-syntax"
+      push:
+        - meta_scope: source.r
+        - match: \}
+          pop: true
+        - include: braces
+
+  braces:
+    - match: '\{'
+      push:
+        - match: '\}'
+          pop: true
+        - include: braces

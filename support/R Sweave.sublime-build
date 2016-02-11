@@ -1,6 +1,16 @@
 {
     "selector": "text.tex.latex.rsweave",
     "working_dir": "${project_path:${folder}}",
-    "cmd": [ "Rscript -e \"library(knitr); knit('$file', output=file.path('$file_path', '$file_base_name.tex'))\"" ],
-    "shell": true
+    "cmd": [
+        "R", "CMD", "Sweave", "$file"
+    ],
+    "variants": [
+        {
+            "name": "knitr",
+            "cmd": [
+                "Rscript", "-e",
+                "library(knitr); knit('$file', output=file.path('$file_path', '$file_base_name.tex'))"
+            ]
+        }
+    ]
 }

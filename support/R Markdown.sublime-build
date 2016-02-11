@@ -1,6 +1,20 @@
 {
     "selector": "text.html.markdown.rmarkdown",
     "working_dir": "${project_path:${folder}}",
-    "cmd": [ "Rscript -e \"library(knitr); knit('$file', output=file.path('$file_path', '$file_base_name.md'))\"" ],
-    "shell": true
+    "cmd": [
+        "Rscript", "-e",
+        "library(rmarkdown); render('$file')"
+    ],
+    "variants": [
+        {
+            "name": "knitr",
+            "cmd": [
+                "Rscript", "-e",
+                "library(knitr); knit('$file', output=file.path('$file_path', '$file_base_name.md'))"
+            ]
+        }
+    ],
+    "osx":{
+        "path": "/Library/TeX/texbin:/usr/local/bin:$PATH"
+    }
 }
