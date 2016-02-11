@@ -432,7 +432,7 @@ contexts:
             3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.python
-    - match: '(```|~~~)\s*\{?\s*(r)(?:[ \}].*$|\}?$)'
+    - match: '(```|~~~)\s*\{?\s*(r)(?:[ \},].*$|\}?$)'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -658,8 +658,7 @@ contexts:
           pop: true
         - include: scope:text.html.basic
         - include: scope:text.html.handlebars
-        - include: "LaTeX+.sublime-syntax"
-        - include: scope:text.tex.latex
+        - include: latex
     - match: '^(?=<(p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|script|noscript|form|fieldset|iframe|math|ins|del)\b)'
       comment: Same rule but for one line disables.
       push:
@@ -974,8 +973,7 @@ contexts:
     - include: image-ref
     - include: link-ref-literal
     - include: link-ref
-    - include: "LaTeX+.sublime-syntax"
-    - include: scope:text.tex.latex
+    - include: latex
   italic:
     - match: |-
         (?x)
@@ -1199,3 +1197,20 @@ contexts:
         - include: image-ref
         - include: link-ref-literal
         - include: link-ref
+  latex:
+    - match: (?=\$\$)
+      push:
+        - meta_scope: text.tex.latex
+        - match: (?<=\$\$)
+          pop: true
+        - include: "LaTeX+.sublime-syntax"
+        - include: scope:text.tex.latex
+    - match: (?=(\$(?!\$)).*?\S\$)
+      with_prototype:
+        - match: \s$
+      push:
+        - meta_scope: text.tex.latex
+        - match: (?<=\S\$|\n)
+          pop: true
+        - include: "LaTeX+.sublime-syntax"
+        - include: scope:text.tex.latex
