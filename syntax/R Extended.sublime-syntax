@@ -37,7 +37,7 @@ contexts:
     - match: \b(character|complex|double|expression|integer|list|logical|numeric|single|raw)\b(?=\s*\()
       scope: storage.type.r
 
-  string:
+  strings:
     - match: '"'
       scope: punctuation.definition.string.begin.r
       push:
@@ -128,7 +128,7 @@ contexts:
     - include: constants
     - include: keywords
     - include: storage-types
-    - include: string
+    - include: strings
     - include: brackets
     - include: fndefs
     - include: functions
