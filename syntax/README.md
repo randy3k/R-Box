@@ -15,8 +15,6 @@ a^2 + b^2 = 1
 $$
 ```
 
-Note: The dollor sign `$` is treated as a special char, to display the original dollor sign `$`, please type `\$`.
-
 
 ### Roxygen
 
