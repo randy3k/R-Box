@@ -961,6 +961,7 @@ contexts:
     - include: escape
     - include: ampersand
     - include: bracket
+    - include: rinline
     - include: raw
     - include: bold
     - include: italic
@@ -1120,7 +1121,6 @@ contexts:
           pop: true
         - include: inline
   raw:
-    - include: rinlinecode
     - match: '(`+)([^`]|(?!(?<!`)\1(?!`))`)*+(\1)'
       scope: markup.raw.inline.markdown
       captures:
@@ -1199,7 +1199,7 @@ contexts:
         - include: link-ref-literal
         - include: link-ref
 
-  rinlinecode:
+  rinline:
     - match: '(`+)r '
       scope: markup.raw.inline.markdown
       captures:
@@ -1215,7 +1215,7 @@ contexts:
   latex:
     - match: (?=\$\$)
       with_prototype:
-        - include: rinlinecode
+        - include: rinline
       push:
         - meta_scope: text.tex.latex
         - match: (?<=\$\$)
@@ -1225,7 +1225,7 @@ contexts:
     - match: (?=(\$(?!\$)).*?\S\$)
       with_prototype:
         - match: \s$
-        - include: rinlinecode
+        - include: rinline
       push:
         - meta_scope: text.tex.latex
         - match: (?<=\S\$|\n)

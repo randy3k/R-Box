@@ -63,7 +63,7 @@ for (pkg in packages){
     dict <- paste0(dict, templated_block(pkg))
 }
 
-syntax_file <- "syntax/R Support Function.sublime-syntax"
+syntax_file <- "syntax/R Support Functions.sublime-syntax"
 content <- readChar(syntax_file, file.info(syntax_file)$size)
 begin_pt <- str_locate(content, "main:\n")[2]
 str_sub(content, begin_pt, str_length(content)) <- dict
