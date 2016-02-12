@@ -1120,6 +1120,7 @@ contexts:
           pop: true
         - include: inline
   raw:
+    - include: rinlinecode
     - match: '(`+)([^`]|(?!(?<!`)\1(?!`))`)*+(\1)'
       scope: markup.raw.inline.markdown
       captures:
@@ -1197,8 +1198,24 @@ contexts:
         - include: image-ref
         - include: link-ref-literal
         - include: link-ref
+
+  rinlinecode:
+    - match: '(`+)r '
+      scope: markup.raw.inline.markdown
+      captures:
+        1: punctuation.definition.raw.markdown
+      push:
+        - meta_content_scope: source.r
+        - match: '(\1)'
+          pop: true
+          captures:
+            1: punctuation.definition.raw.markdown
+        - include: "R Extended.sublime-syntax"
+
   latex:
     - match: (?=\$\$)
+      with_prototype:
+        - include: rinlinecode
       push:
         - meta_scope: text.tex.latex
         - match: (?<=\$\$)
@@ -1208,6 +1225,7 @@ contexts:
     - match: (?=(\$(?!\$)).*?\S\$)
       with_prototype:
         - match: \s$
+        - include: rinlinecode
       push:
         - meta_scope: text.tex.latex
         - match: (?<=\S\$|\n)

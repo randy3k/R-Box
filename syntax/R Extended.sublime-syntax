@@ -6,7 +6,7 @@ scope: source.r
 
 contexts:
   comments:
-    - match: ^\s*#.*
+    - match: '#.*$'
       scope: comment.line.number-sign.r
 
   constants:
