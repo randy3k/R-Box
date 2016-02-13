@@ -29,3 +29,5 @@ for pkg in "${Packages[@]}"
 do
     Rscript packages.R $pkg
 done
+
+Rscript syntax.R
