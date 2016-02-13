@@ -3,6 +3,11 @@
 # http://www.sublimetext.com/docs/3/syntax.html
 name: R Markdown
 file_extensions:
+  - mdown
+  - markdown
+  - markdn
+  - md.hbs
+  - md
   - rmdown
   - rmarkdown
   - rmarkdn
