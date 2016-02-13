@@ -1,8 +1,6 @@
 %YAML 1.2
 ---
-name: R Support Function
-file_extensions: [R, r, S, s, Rprofile]
-scope: source.r.support-function
+scope: source.r.support-functions
 hidden: true
 
 contexts:
