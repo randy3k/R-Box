@@ -1282,29 +1282,34 @@ contexts:
   latex:
     - match: \\\$
     - match: (?=\$\$)
+      with_prototype:
+        - include: rinline
       push:
         - meta_scope: text.tex.latex
         - match: (?<=\$\$)
           pop: true
-        - include: "LaTeX+.sublime-syntax"
-        - include: scope:text.tex.latex
+        - include: "R LaTeX+.sublime-syntax"
     - match: |-
         (?x)
         (?=
           \$
           (?:
-            (?<brace> # allow $ inside nested braces
+            \\\\
+            |\\\{
+            |\\\{
+            |(?<brace> # allow $ inside nested braces
               \{
-              (?:[^\{\}]*|\g<brace>)
+              (?:[^{}]|\g<brace>)*
               \}
             )
             |[^\$\{\}]
           )*?
           (?<=\S)\$[^a-zA-Z0-9]
         )
+      with_prototype:
+        - include: rinline
       push:
         - meta_scope: text.tex.latex
+        - include: "R LaTeX+.sublime-syntax"
         - match: (?<=\S\$)(?=[^a-zA-Z0-9])
           pop: true
-        - include: "LaTeX+.sublime-syntax"
-        - include: scope:text.tex.latex

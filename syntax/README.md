@@ -6,7 +6,7 @@ R-Extended support Roxygen, Rcpp, R Sweave and R Markdown syntaxes.
 
 
 ### R Markdown
-The R Markdown syntax is derived from [Markdown Extended](https://github.com/jonschlinkert/sublime-markdown-extended). LaTeX syntax is supported in R Markdown. For example
+The R Markdown syntax is derived from [Markdown Extended](https://github.com/jonschlinkert/sublime-markdown-extended). LaTeX syntax is supported by [LaTeX+](https://github.com/randy3k/LaTeX-Plus).
 
 ```
 - $a$ and $b$ are variables such that

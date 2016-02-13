@@ -1,0 +1,241 @@
+%YAML 1.2
+---
+# http://www.sublimetext.com/docs/3/syntax.html
+name: R LaTeX
+file_extensions:
+  - tex
+  - sty
+  - cls
+scope: text.html.markdown.rmarkdown.latex
+hidden: true
+contexts:
+  main:
+    - include: comments
+    - include: specials
+    - match: '(\\(?:documentclass|usepackage))\s*(?:\[([^\]]*)\])?\{'
+      captures:
+        1: support.function.latex
+      with_prototype:
+        - include: comments
+        - include: specials
+        - include: commands
+      push:
+        - meta_scope: meta.preamble.latex
+        - match: '\}'
+          pop: true
+        - include: braces
+
+    - match: '(\\(?:re)?newcommand|\\def)\s*(?:\{\s*([^\}]*?)\s*\}|(\\[a-zA-Z]+))[^\{]*\{'
+      captures:
+        1: support.function.latex
+        2: support.function.latex
+        3: support.function.latex
+      with_prototype:
+        - include: comments
+        - include: specials
+        - include: commands
+      push:
+        - match: '\}'
+          pop: true
+        - include: braces
+
+    - match: '(\\begin)\{\s*((?:align|alignat|displaymath|displaymath|eqnarray|equation|flalign|gather|math|multline|xalignat)\*?)\s*\}'
+      captures:
+        1: support.function.latex
+        2: variable.parameter.function.latex
+      push:
+        - meta_scope: meta.function.environment.math.latex
+        - match: '(\\end)\{\s*(\2)\s*\}'
+          captures:
+            1: support.function.latex
+            2: variable.parameter.function.latex
+          pop: true
+        - include: math
+
+    - match: (\$\$|\$)
+      captures:
+        1: string.other.latex
+      push:
+        - meta_scope: meta.function.environment.math.latex
+        - match: (\1)
+          captures:
+            1: string.other.latex
+          pop: true
+        - include: math
+
+    - match: '(\\\[)'
+      captures:
+        1: string.other.latex
+      push:
+        - meta_scope: meta.function.environment.math.latex
+        - match: '(\\\])'
+          captures:
+            1: string.other.latex
+          pop: true
+        - include: math
+
+    - match: (\\\()
+      captures:
+        1: string.other.latex
+      push:
+        - meta_scope: meta.function.environment.math.latex
+        - match: (\\\))
+          captures:
+            1: string.other.latex
+          pop: true
+        - include: math
+
+    - match: '(\\begin)\{\s*((?:itemize|enumerate|list)\*?)\s*\}'
+      captures:
+        1: support.function.latex
+        2: variable.parameter.function.latex
+      push:
+        - meta_scope: meta.function.environment.list.latex
+        - match: '(\\end)\{\s*(\2)\s*\}'
+          captures:
+            1: support.function.latex
+            2: variable.parameter.function.latex
+          pop: true
+        - include: main
+
+    - match: '(\\begin)\{\s*(description)\s*\}'
+      captures:
+        1: support.function.latex
+        2: variable.parameter.function.latex
+      push:
+        - meta_scope: meta.function.environment.list.latex meta.function.environment.description.latex
+        - match: '(\\end)\{\s*(description)\s*\}'
+          captures:
+            1: support.function.latex
+            2: variable.parameter.function.latex
+          pop: true
+        - include: main
+
+    - match: '(\\begin)\{\s*((?:[vV]erbatim)\*?)\s*\}'
+      captures:
+        1: support.function.latex
+        2: variable.parameter.function.latex
+      push:
+        - meta_scope: meta.function.verbatim.latex
+        - match: '(\\end)\{\s*(\2)\s*\}'
+          captures:
+            1: support.function.latex
+            2: variable.parameter.function.latex
+          pop: true
+
+    - match: (\\verb)(\W)(.*?)\2
+      scope: meta.function.verbatim.latex
+      captures:
+        1: support.function.latex
+
+    - match: '\\((?:sub)*(?:section|chapter))(\*)?\{'
+      captures:
+        1: entity.name.function
+      push:
+        - meta_scope: meta.function.section.latex
+        - match: '\}'
+          pop: true
+        - include: main
+
+    - include: labels
+    - include: references
+    - include: commands
+    - match: '\{'
+      with_prototype:
+        - include: main
+      push:
+        - match: '\}'
+          pop: true
+        - include: braces
+
+  braces:
+    - match: '\{'
+      push:
+        - match: '\}'
+          pop: true
+        - include: braces
+
+  specials:
+    - match: '(\\\\)(?:\[\s*([0-9]*)\s*(\w*)\s*\])?'
+      captures:
+        1: variable.other.latex
+        2: constant.numeric.latex
+        3: support.function.latex
+    - match: '\\(%|\$|#|&|\{|\})'
+      scope: variable.other.latex
+    - match: "&"
+      scope: variable.other.latex
+
+
+  comments:
+    - match: '(?<!\\)%'
+      captures:
+        0: comment.line.percentage.latex
+      push:
+        - match: $
+          pop: true
+        - match: "[^$]+"
+          scope: comment.line.latex
+
+  commands:
+    - match: '(\\begin)\{\s*(\w*)\*?\s*\}'
+      captures:
+        1: support.function.latex
+        2: variable.parameter.function.latex
+    - match: '(\\end)\{\s*(\w*)\*?\s*\}'
+      captures:
+        1: support.function.latex
+        2: variable.parameter.function.latex
+    - match: '\\[a-zA-Z]+(?:\s|\n?)?'
+      scope: support.function.general.latex
+
+  math:
+    - match: '(\\(?:(?:\w+)?text(?:\w+)?|mbox|hbox))\{'
+      captures:
+        1: support.function.latex
+      with_prototype:
+        - include: main
+      push:
+        - match: '\}'
+          pop: true
+        - include: braces
+
+    - match: '(\\parbox)\{[^\}]*\}\{'
+      captures:
+        1: support.function.latex
+      with_prototype:
+        - include: main
+      push:
+        - match: '\}'
+          pop: true
+        - include: braces
+
+    - include: comments
+    - include: specials
+    - include: labels
+    - include: references
+    - include: commands
+    - match: \+|\-|=|-|\*|/|\^|_|<|>
+    - match: '\\\{|\\\}|\[|\]|\(|\)'
+    - match: "[a-zA-Z]+"
+      scope: keyword.other.latex
+    - match: "[0-9]+"
+      scope: constant.numeric.latex
+
+  references:
+    - match: '(\\(?:(?:eq|page)?ref|cite\w*\*?))(\[.*?\]){0,2}{'
+      captures:
+        1: support.function.latex
+      push:
+        - meta_scope: meta.function.reference.latex
+        - match: '\}'
+          pop: true
+        - include: main
+  labels:
+    - match: '(\\label){'
+      captures:
+        1: support.function.latex
+      push:
+        - meta_scope: meta.function.label.latex
+        - match: '\}'
+          pop: true

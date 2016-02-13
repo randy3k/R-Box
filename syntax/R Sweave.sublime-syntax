@@ -13,8 +13,7 @@ contexts:
         - include: sexpr
       set:
         - include: chunk
-        - include: "LaTeX+.sublime-syntax"
-        - include: scope:text.tex.latex
+        - include: "R LaTeX+.sublime-syntax"
 
   chunk:
     - match: ^\s*<<.*?>>=\s*$
