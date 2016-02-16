@@ -1289,6 +1289,7 @@ contexts:
         - match: (?<=\$\$)
           pop: true
         - include: "R LaTeX+.sublime-syntax"
+
     - match: |-
         (?x)
         (?=
@@ -1313,3 +1314,10 @@ contexts:
         - include: "R LaTeX+.sublime-syntax"
         - match: (?<=\S\$)(?=[^a-zA-Z0-9])
           pop: true
+
+    - match: (?i)(?<=<\!-- latex -->)|(?<=<\!--latex -->)|(?<=<\!-- latex-->)|(?<=<\!--latex-->)
+      push:
+        - meta_scope: text.tex.latex
+        - match: (?i)(?=<\!--  -->)|(?=<\!-- -->)|(?=<\!---->)
+          pop: true
+        - include: "R LaTeX+.sublime-syntax"

@@ -1,11 +1,6 @@
 %YAML 1.2
 ---
 # http://www.sublimetext.com/docs/3/syntax.html
-name: R LaTeX
-file_extensions:
-  - tex
-  - sty
-  - cls
 scope: text.html.markdown.rmarkdown.latex
 hidden: true
 contexts:
