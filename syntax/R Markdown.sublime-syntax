@@ -684,6 +684,19 @@ contexts:
             2: variable.language.fenced.markdown
             3: punctuation.definition.fenced.markdown
           pop: true
+    - match: '(```|~~~|{%\s*highlight)\{[^\}]*\}$'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+          captures:
+            1: punctuation.definition.fenced.markdown
+            2: variable.language.fenced.markdown
+            3: punctuation.definition.fenced.markdown
+          pop: true
     - match: '^[ ]{0,3}([*+-])(?=\s)'
       captures:
         1: punctuation.definition.list_item.markdown
@@ -1311,9 +1324,9 @@ contexts:
         - include: rinline
       push:
         - meta_scope: text.tex.latex
-        - include: "R LaTeX+.sublime-syntax"
         - match: (?<=\S\$)(?=[^a-zA-Z0-9])
           pop: true
+        - include: "R LaTeX+.sublime-syntax"
 
     - match: (?i)(?<=<\!-- latex -->)|(?<=<\!--latex -->)|(?<=<\!-- latex-->)|(?<=<\!--latex-->)
       push:
