@@ -4,10 +4,9 @@ R package for Sublime Text
 **Important**: R-Box is now Sublime Text 3 only. The
 [st2](https://github.com/randy3k/R-Box/tree/st2) branch contains the code for
 Sublime Text 2. There is a huge change of R-Box in this Sublime Text 3 only
-version
---- R-Box no longer ships with the "send text" functionality. R-Box will
-mainly focus on the R language development. The "send text" functionality will
-be exported to [SendText+](https://github.com/randy3k/SendTextPlus).
+version --- 
+R-Box no longer ships with the "send text" functionality. R-Box will
+mainly focus on the R language development. The "send text" functionality is exported to [SendText+](https://github.com/randy3k/SendTextPlus).
 
 Features:
 
