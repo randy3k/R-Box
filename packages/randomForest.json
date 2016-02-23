@@ -1,0 +1,42 @@
+{
+	"objects" : [
+		"classCenter",
+		"combine",
+		"getTree",
+		"grow",
+		"importance",
+		"margin",
+		"MDSplot",
+		"na.roughfix",
+		"outlier",
+		"partialPlot",
+		"randomForest",
+		"rfcv",
+		"rfImpute",
+		"rfNews",
+		"treesize",
+		"tuneRF",
+		"varImpPlot",
+		"varUsed"
+	],
+	"methods" : {
+		"classCenter" : "classCenter(x, label, prox, nNbr = min(table(label)) - 1) ",
+		"combine" : "combine(...) ",
+		"getTree" : "getTree(rfobj, k = 1, labelVar = FALSE) ",
+		"grow" : "grow(x, ...) ",
+		"importance" : "importance(x, ...) ",
+		"margin" : "margin(x, ...) ",
+		"MDSplot" : "MDSplot(rf, fac, k = 2, palette = NULL, pch = 20, ...) ",
+		"na.roughfix" : "na.roughfix(object, ...) ",
+		"outlier" : "outlier(x, ...) ",
+		"partialPlot" : "partialPlot(x, ...) ",
+		"randomForest" : "randomForest(x, ...) ",
+		"rfcv" : "rfcv(trainx, trainy, cv.fold = 5, scale = \"log\", step = 0.5, mtry = function(p) max(1, floor(sqrt(p))), recursive = FALSE, ...) ",
+		"rfImpute" : "rfImpute(x, ...) ",
+		"rfNews" : "rfNews() ",
+		"treesize" : "treesize(x, terminal = TRUE) ",
+		"tuneRF" : "tuneRF(x, y, mtryStart = if (is.factor(y)) floor(sqrt(ncol(x))) else floor(ncol(x)/3), ntreeTry = 50, stepFactor = 2, improve = 0.05, trace = TRUE, plot = TRUE, doBest = FALSE, ...) ",
+		"varImpPlot" : "varImpPlot(x, sort = TRUE, n.var = min(30, nrow(x$importance)), type = NULL, class = NULL, scale = TRUE, main = deparse(substitute(x)), ...) ",
+		"varUsed" : "varUsed(x, by.tree = FALSE, count = TRUE) "
+	}
+}

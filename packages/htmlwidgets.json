@@ -1,0 +1,20 @@
+{
+	"objects" : [
+		"createWidget",
+		"JS",
+		"saveWidget",
+		"scaffoldWidget",
+		"shinyRenderWidget",
+		"shinyWidgetOutput",
+		"sizingPolicy"
+	],
+	"methods" : {
+		"createWidget" : "createWidget(name, x, width = NULL, height = NULL, sizingPolicy = htmlwidgets::sizingPolicy(), package = name, dependencies = NULL, elementId = NULL, preRenderHook = NULL) ",
+		"JS" : "JS(...) ",
+		"saveWidget" : "saveWidget(widget, file, selfcontained = TRUE, libdir = NULL, background = \"white\") ",
+		"scaffoldWidget" : "scaffoldWidget(name, bowerPkg = NULL, edit = interactive()) ",
+		"shinyRenderWidget" : "shinyRenderWidget(expr, outputFunction, env, quoted) ",
+		"shinyWidgetOutput" : "shinyWidgetOutput(outputId, name, width, height, package = name) ",
+		"sizingPolicy" : "sizingPolicy(defaultWidth = NULL, defaultHeight = NULL, padding = NULL, viewer.defaultWidth = NULL, viewer.defaultHeight = NULL, viewer.padding = NULL, viewer.fill = TRUE, viewer.suppress = FALSE, viewer.paneHeight = NULL, browser.defaultWidth = NULL, browser.defaultHeight = NULL, browser.padding = NULL, browser.fill = FALSE, knitr.defaultWidth = NULL, knitr.defaultHeight = NULL, knitr.figure = TRUE) "
+	}
+}
