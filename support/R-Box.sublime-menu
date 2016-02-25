@@ -5,7 +5,10 @@
     "id": "R-Box",
     "children": [
       {
-        "command": "send_text_plus_change_dir",
+        "command": "send_text_plus",
+        "args": {
+          "cmd": "setwd(\"$file_path\")"
+        },
         "caption": "Set Working Directory"
       },
       {
