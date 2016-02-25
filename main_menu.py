@@ -18,7 +18,7 @@ class RBoxMainMenuListener(sublime_plugin.EventListener):
 
         psettings = sublime.load_settings('Preferences.sublime-settings')
         if "SendText+" not in psettings.get("ignored_packages", []) and \
-                "SendText+" in sys.modules and \
+                ("SendText+" in sys.modules or "SendTextPlus" in sys.modules) and \
                 view.score_selector(
                     point,
                     "source.r, text.tex.latex.rsweave, text.html.markdown.rmarkdown"):

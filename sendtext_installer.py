@@ -13,7 +13,7 @@ def plugin_loaded():
     if "SendText+" in psettings.get("ignored_packages", []):
         return
 
-    if "SendText+" in sys.modules:
+    if "SendText+" in sys.modules or "SendTextPlus" in sys.modules:
         return
 
     if "package_control" not in sys.modules:
