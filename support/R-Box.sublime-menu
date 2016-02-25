@@ -8,24 +8,49 @@
         "command": "send_text_plus_change_dir",
         "caption": "Set Working Directory"
       },
+      {
+        "command": "r_box_main_menu_clear_workspace",
+        "caption": "Clear Workspace"
+      },
       { "caption": "-"},
       {
         "command": "send_text_plus",
-        "args":{
+        "args": {
+          "cmd": "devtools::install(\"$project_path\")"
+        },
+        "caption": "Build and reload"
+      },
+      {
+        "command": "send_text_plus",
+        "args": {
+          "cmd": "devtools::install(\"$project_path\", local=FALSE)"
+        },
+        "caption": "Clean and Build"
+      },
+      {
+        "command": "send_text_plus",
+        "args": {
           "cmd": "devtools::load_all(\"$project_path\")"
         },
         "caption": "Devtools: Load All"
       },
       {
         "command": "send_text_plus",
-        "args":{
+        "args": {
+          "cmd": "devtools::check(\"$project_path\")"
+        },
+        "caption": "Devtools: Check"
+      },
+      {
+        "command": "send_text_plus",
+        "args": {
           "cmd": "devtools::test(\"$project_path\")"
         },
         "caption": "Devtools: Test"
       },
       {
         "command": "send_text_plus",
-        "args":{
+        "args": {
           "cmd": "devtools::document(\"$project_path\")"
         },
         "caption": "Devtools: Document"
@@ -33,28 +58,31 @@
       { "caption": "-"},
       {
         "command": "send_text_plus",
-        "args":{
+        "args": {
           "cmd": "rmarkdown::render(\"$file\")"
         },
         "caption": "Rmarkdown: Render"
       },
       {
         "command": "send_text_plus",
-        "args":{
-          "cmd": "setwd('$file_path')\nSweave('$file')\ntools::texi2dvi('$file_base_name.tex', pdf = TRUE)"
+        "args": {
+          "cmd": "setwd(\"$file_path\")\nSweave(\"$file\")\ntools::texi2dvi(\"$file_base_name.tex\", pdf = TRUE)"
         },
         "caption": "Rnw: Sweave + PdfLaTeX"
       },
       {
         "command": "send_text_plus",
-        "args":{
-          "cmd": "setwd('$file_path')\nknitr::knit('$file', output='$file_base_name.tex')\ntools::texi2dvi('$file_base_name.tex', pdf = TRUE)"
+        "args": {
+          "cmd": "setwd(\"$file_path\")\nknitr::knit(\"$file\", output=\"$file_base_name.tex\")\ntools::texi2dvi(\"$file_base_name.tex\", pdf = TRUE)"
         },
         "caption": "Rnw: Kintr + PdfLaTeX"
       },
       { "caption": "-"},
       {
-        "command": "send_text_plus_source_code",
+        "command": "send_text_plus",
+        "args": {
+          "cmd": "source(\"$file\")"
+        },
         "caption": "Source Current File"
       },
       {

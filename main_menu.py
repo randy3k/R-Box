@@ -35,3 +35,10 @@ class RBoxMainMenuListener(sublime_plugin.EventListener):
         else:
             if os.path.exists(targetpath):
                 os.remove(targetpath)
+
+
+class RBoxMainMenuClearWorkspace(sublime_plugin.TextCommand):
+    def run(self, edit):
+        ok = sublime.ok_cancel_dialog("Clear R Workspace?")
+        if ok:
+            self.view.run_command("send_text_plus", {"cmd": "rm(list=ls())"})
