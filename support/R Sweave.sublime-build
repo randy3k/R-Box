@@ -2,15 +2,19 @@
     "selector": "text.tex.latex.rsweave",
     "working_dir": "${project_path:${folder}}",
     "cmd": [
-        "R", "CMD", "Sweave", "$file"
+        "Rscript", "-e",
+        "Sweave('$file'); tools::texi2dvi('$file_base_name.tex', pdf = TRUE)"
     ],
     "variants": [
         {
             "name": "knitr",
             "cmd": [
                 "Rscript", "-e",
-                "library(knitr); knit('$file', output=file.path('$file_path', '$file_base_name.tex'))"
+                "knitr::knit('$file'); tools::texi2dvi('$file_base_name.tex', pdf = TRUE)"
             ]
         }
-    ]
+    ],
+    "osx":{
+        "path": "/Library/TeX/texbin:/usr/local/bin:$PATH"
+    }
 }
