@@ -21,7 +21,11 @@ class RBoxMainMenuListener(sublime_plugin.EventListener):
                 ("SendText+" in sys.modules or "SendTextPlus" in sys.modules) and \
                 view.score_selector(
                     point,
-                    "source.r, text.tex.latex.rsweave, text.html.markdown.rmarkdown"):
+                    "source.r, "
+                    "text.tex.latex.rsweave, "
+                    "text.html.markdown.rmarkdown, "
+                    "source.c++.rcpp"
+                ):
 
             if not os.path.exists(targetdir):
                 os.makedirs(targetdir, 0o755)
