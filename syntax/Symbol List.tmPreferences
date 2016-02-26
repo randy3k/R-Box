@@ -11,10 +11,7 @@
 		<key>showInSymbolList</key>
 		<integer>1</integer>
 		<key>symbolTransformation</key>
-		<string>
-		s/\s*(&lt;-|=)\s*(function)\s*//;
-		s/\s+/ /g;
-	</string>
+		<string>s/\s*(&lt;-|=)\s*(function)\s*//</string>
 	</dict>
 	<key>uuid</key>
 	<string>5157F71C-2801-4385-92EA-3D0B72AEE7C5</string>

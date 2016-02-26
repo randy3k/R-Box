@@ -65,7 +65,7 @@ contexts:
         - include: main
 
   fndefs:
-    - match: \b([a-zA-Z._][a-zA-Z0-9._]*)\s*(<-|=)\s*(function)\s*(\()
+    - match: ^\s*([a-zA-Z._][a-zA-Z0-9._]*)\s*(<-|=)\s*(function)\s*(\()
       captures:
         1: entity.name.function.r
         2: keyword.operator.assignment.r
