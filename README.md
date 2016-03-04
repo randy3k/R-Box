@@ -6,7 +6,7 @@ R package for Sublime Text
 Sublime Text 2. There is a huge change of R-Box in this Sublime Text 3 only
 version --- 
 R-Box no longer ships with the "send code" functionality. R-Box will
-mainly focus on the R language development. The "send code" functionality is exported to [SendText+](https://github.com/randy3k/SendTextPlus). You could choose the active program by the option `SendText+: Choose Program` in command palette.
+mainly focus on the R language development. The "send code" functionality is exported to [SendTextPlus](https://github.com/randy3k/SendTextPlus). You could choose the active program by the option `SendTextPlus: Choose Program` in command palette.
 
 Features:
 
