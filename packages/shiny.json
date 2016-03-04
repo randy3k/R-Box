@@ -232,7 +232,7 @@
 		"downloadLink" : "downloadLink(outputId, label = \"Download\", class = NULL) ",
 		"em" : "em(...) ",
 		"eventReactive" : "eventReactive(eventExpr, valueExpr, event.env = parent.frame(), event.quoted = FALSE, value.env = parent.frame(), value.quoted = FALSE, label = NULL, domain = getDefaultReactiveDomain(), ignoreNULL = TRUE) ",
-		"exprToFunction" : "exprToFunction(expr, env = parent.frame(2), quoted = FALSE, caller_offset = 1) ",
+		"exprToFunction" : "exprToFunction(expr, env = parent.frame(), quoted = FALSE) ",
 		"extractStackTrace" : "extractStackTrace(calls, full = getOption(\"shiny.fullstacktrace\", FALSE), offset = getOption(\"shiny.stacktraceoffset\", TRUE)) ",
 		"fileInput" : "fileInput(inputId, label, multiple = FALSE, accept = NULL, width = NULL) ",
 		"fillCol" : "fillCol(..., flex = 1, width = \"100%\", height = \"100%\") ",

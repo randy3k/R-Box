@@ -210,7 +210,7 @@
 		"skewpart" : "skewpart(x) ",
 		"solve" : "solve(a, b, ...) ",
 		"sparse.model.matrix" : "sparse.model.matrix(object, data = environment(object), contrasts.arg = NULL, xlev = NULL, transpose = FALSE, drop.unused.levels = FALSE, row.names = TRUE, verbose = FALSE, ...) ",
-		"sparseMatrix" : "sparseMatrix(i = ep, j = ep, p, x, dims, dimnames, symmetric = FALSE, index1 = TRUE, giveCsparse = TRUE, check = TRUE, use.last.ij = FALSE) ",
+		"sparseMatrix" : "sparseMatrix(i = ep, j = ep, p, x, dims, dimnames, symmetric = FALSE, triangular = FALSE, index1 = TRUE, giveCsparse = TRUE, check = TRUE, use.last.ij = FALSE) ",
 		"sparseVector" : "sparseVector(x, i, length) ",
 		"spMatrix" : "spMatrix(nrow, ncol, i = integer(), j = integer(), x = numeric()) ",
 		"summary" : "summary(object, ...) ",
