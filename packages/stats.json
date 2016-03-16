@@ -818,7 +818,7 @@
 		"setNames" : "setNames(object = nm, nm) ",
 		"shapiro.test" : "shapiro.test(x) ",
 		"simulate" : "simulate(object, nsim = 1, seed = NULL, ...) ",
-		"smooth" : "smooth(x, kind = c(\"3RS3R\", \"3RSS\", \"3RSR\", \"3R\", \"3\", \"S\"), twiceit = FALSE, endrule = \"Tukey\", do.ends = FALSE) ",
+		"smooth" : "smooth(x, kind = c(\"3RS3R\", \"3RSS\", \"3RSR\", \"3R\", \"3\", \"S\"), twiceit = FALSE, endrule = c(\"Tukey\", \"copy\"), do.ends = FALSE) ",
 		"smooth.spline" : "smooth.spline(x, y = NULL, w = NULL, df, spar = NULL, cv = FALSE, all.knots = FALSE, nknots = .nknots.smspl, keep.data = TRUE, df.offset = 0, penalty = 1, control.spar = list(), tol = 1e-06 *     IQR(x)) ",
 		"smoothEnds" : "smoothEnds(y, k = 3) ",
 		"sortedXyData" : "sortedXyData(x, y, data) ",
