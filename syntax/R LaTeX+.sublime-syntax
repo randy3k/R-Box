@@ -3,6 +3,7 @@
 # http://www.sublimetext.com/docs/3/syntax.html
 name: R LaTeX+
 scope: text.tex.latex
+hidden: true
 contexts:
   prototype:
     - match: (%:).*$\n?
