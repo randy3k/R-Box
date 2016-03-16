@@ -4,26 +4,15 @@ import re
 import json
 import os
 
-if sublime.version() < '3000':
-    set_timeout = sublime.set_timeout
-else:
-    set_timeout = sublime.set_timeout_async
-
 
 def load_jsonfile(pkg):
     data = None
-    if sublime.version() < '3000':
-        jsonFilepath = os.path.join(sublime.packages_path(),
-                                    'R-Box', 'packages', '%s.json' % pkg)
-        if os.path.exists(jsonFilepath):
-            with open(jsonFilepath, "r") as f:
-                data = json.load(f)
-    else:
-        jsonFilepath = "/".join(['Packages', 'R-Box', 'packages', '%s.json' % pkg])
-        try:
-            data = json.loads(sublime.load_resource(jsonFilepath))
-        except IOError:
-            pass
+
+    jsonFilepath = "/".join(['Packages', 'R-Box', 'packages', '%s.json' % pkg])
+    try:
+        data = json.loads(sublime.load_resource(jsonFilepath))
+    except IOError:
+        pass
 
     if data:
         return data
@@ -69,7 +58,7 @@ class RBoxStatusListener(sublime_plugin.EventListener):
 
     def on_modified(self, view):
         if self.check(view):
-            set_timeout(lambda: self.update_status(view), 100)
+            sublime.set_timeout_async(lambda: self.update_status(view), 100)
 
     def update_status(self, view):
         vid = view.id()
@@ -123,15 +112,15 @@ class RBoxStatusListener(sublime_plugin.EventListener):
 
     def on_post_save(self, view):
         if self.check(view):
-            set_timeout(lambda: self.loaded_libraries(view), 100)
+            sublime.set_timeout_async(lambda: self.loaded_libraries(view), 100)
 
     def on_load(self, view):
         if self.check(view):
-            set_timeout(lambda: self.loaded_libraries(view), 100)
+            sublime.set_timeout_async(lambda: self.loaded_libraries(view), 100)
 
     def on_activated(self, view):
         if self.check(view):
-            set_timeout(lambda: self.loaded_libraries(view), 100)
+            sublime.set_timeout_async(lambda: self.loaded_libraries(view), 100)
 
 
 class RBoxCleanStatus(sublime_plugin.TextCommand):

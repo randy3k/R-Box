@@ -4,26 +4,15 @@ import json
 import os
 import re
 
-if sublime.version() < '3000':
-    set_timeout = sublime.set_timeout
-else:
-    set_timeout = sublime.set_timeout_async
-
 
 def load_jsonfile(pkg):
     data = None
-    if sublime.version() < '3000':
-        jsonFilepath = os.path.join(sublime.packages_path(),
-                                    'R-Box', 'packages', '%s.json' % pkg)
-        if os.path.exists(jsonFilepath):
-            with open(jsonFilepath, "r") as f:
-                data = json.load(f)
-    else:
-        jsonFilepath = "/".join(['Packages', 'R-Box', 'packages', '%s.json' % pkg])
-        try:
-            data = json.loads(sublime.load_resource(jsonFilepath))
-        except IOError:
-            pass
+
+    jsonFilepath = "/".join(['Packages', 'R-Box', 'packages', '%s.json' % pkg])
+    try:
+        data = json.loads(sublime.load_resource(jsonFilepath))
+    except IOError:
+        pass
 
     if data:
         return data
@@ -57,7 +46,7 @@ class RBoxCompletions(sublime_plugin.EventListener):
 
         vid = view.id()
         if vid not in self.completions:
-            set_timeout(lambda: self.loaded_libraries(view), 100)
+            sublime.set_timeout_async(lambda: self.loaded_libraries(view), 100)
             return
 
         completions = [item for item in self.completions[vid] if prefix in item[1]]
@@ -91,12 +80,12 @@ class RBoxCompletions(sublime_plugin.EventListener):
 
     def on_post_save(self, view):
         if self.check(view):
-            set_timeout(lambda: self.loaded_libraries(view), 100)
+            sublime.set_timeout_async(lambda: self.loaded_libraries(view), 100)
 
     def on_load(self, view):
         if self.check(view):
-            set_timeout(lambda: self.loaded_libraries(view), 100)
+            sublime.set_timeout_async(lambda: self.loaded_libraries(view), 100)
 
     def on_activated(self, view):
         if self.check(view):
-            set_timeout(lambda: self.loaded_libraries(view), 100)
+            sublime.set_timeout_async(lambda: self.loaded_libraries(view), 100)
