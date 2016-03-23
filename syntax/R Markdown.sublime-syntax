@@ -1312,19 +1312,12 @@ contexts:
             )
             |[^\$\{\}]
           )*?
-          (?<=\S)\$[^a-zA-Z0-9]
+          (?<=\S)\$(?:[^a-zA-Z0-9]|$)
         )
       with_prototype:
         - include: rinline
       push:
         - meta_scope: text.tex.latex
-        - match: (?<=\S\$)(?=[^a-zA-Z0-9])
-          pop: true
-        - include: "R LaTeX+.sublime-syntax"
-
-    - match: (?i)(?<=<\!-- latex -->)|(?<=<\!--latex -->)|(?<=<\!-- latex-->)|(?<=<\!--latex-->)
-      push:
-        - meta_scope: text.tex.latex
-        - match: (?i)(?=<\!--  -->)|(?=<\!-- -->)|(?=<\!---->)
+        - match: (?<=\S\$)(?=(?:[^a-zA-Z0-9]|$))
           pop: true
         - include: "R LaTeX+.sublime-syntax"
