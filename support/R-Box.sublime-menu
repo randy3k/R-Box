@@ -58,6 +58,13 @@
         },
         "caption": "Devtools: Document"
       },
+      {
+        "command": "send_text_plus",
+        "args": {
+          "cmd": "Rcpp::compileAttributes(\"$project_path\")"
+        },
+        "caption": "Rcpp: Compile Attributes"
+      },
       { "caption": "-"},
       {
         "command": "send_text_plus",
