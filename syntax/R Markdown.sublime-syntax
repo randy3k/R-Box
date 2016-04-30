@@ -3,11 +3,6 @@
 # http://www.sublimetext.com/docs/3/syntax.html
 name: R Markdown
 file_extensions:
-  - mdown
-  - markdown
-  - markdn
-  - md.hbs
-  - md
   - rmdown
   - rmarkdown
   - rmarkdn
@@ -70,7 +65,7 @@ contexts:
         - include: block_raw
         - include: heading
         - include: separator
-    - match: '(```|~~~|{%\s*highlight)\s*(c)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(c){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -78,14 +73,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.c
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.c
-    - match: '(```|~~~|{%\s*highlight)\s*(cpp)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(cpp){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -93,14 +86,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.c++
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.c++
-    - match: '(```|~~~|{%\s*highlight)\s*(coffee|coffeescript)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(coffee|coffeescript){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -108,14 +99,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.coffee
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.coffee
-    - match: '(```|~~~|{%\s*highlight)\s*(jade)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(jade){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -123,14 +112,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.jade
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.jade
-    - match: '(```|~~~|{%\s*highlight)\s*(css)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(css){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -138,14 +125,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.css
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.css
-    - match: '(```|~~~|{%\s*highlight)\s*(csharp)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(csharp){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -153,14 +138,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.cs
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.cs
-    - match: '(```|~~~|{%\s*highlight)\s*(ejs|underscore|lodash)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(ejs|underscore|lodash){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -168,14 +151,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.ejs
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.ejs
-    - match: '(```|~~~|{%\s*highlight)\s*(erlang)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(erlang){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -183,14 +164,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.erlang
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.erlang
-    - match: '(```|~~~|{%\s*highlight)\s*(diff)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(diff){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -198,14 +177,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.diff
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.diff
-    - match: '(```|~~~|{%\s*highlight)\s*(go|golang)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(go|golang){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -213,14 +190,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.go
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.go
-    - match: '(```|~~~|{%\s*highlight)\s*(hbs|handlebars|html|html5)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(hbs|handlebars|html|html5){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -228,15 +203,13 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: text.html.basic
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:text.html.basic
         - include: scope:text.html.handlebars
-    - match: '(```|~~~|{%\s*highlight)\s*(ini)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(ini){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -244,14 +217,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.ini
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.ini
-    - match: '(```|~~~|{%\s*highlight)\s*(java)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(java){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -259,14 +230,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.java
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.java
-    - match: '(```|~~~|{%\s*highlight)\s*(javascript|js)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(javascript|js){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -274,14 +243,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.js
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.js
-    - match: '(```|~~~|{%\s*highlight)\s*(json)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(json){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -289,14 +256,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.json
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.json
-    - match: '(```|{%\s*highlight)\s*(julia|jl)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(julia|jl){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -304,14 +269,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.julia
-        - match: '(```|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.julia
-    - match: '(```|{%\s*highlight)\s*(less)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(less){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -319,14 +282,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.css.less
-        - match: '(```|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.css.less
-    - match: '(```|~~~|{%\s*highlight)\s*(ls|livescript|LiveScript)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(ls|livescript|LiveScript){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -334,14 +295,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.livescript
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.livescript
-    - match: '(```|~~~|{%\s*highlight)\s*(lua)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(lua){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -349,14 +308,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.lua
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.lua
-    - match: '(```|~~~|{%\s*highlight)\s*(md|markdown)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(md|markdown){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -364,14 +321,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: text.html.markdown
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:text.html.markdown
-    - match: '(```|~~~|{%\s*highlight)\s*(nginx)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(nginx){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -379,14 +334,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.nginx
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.nginx
-    - match: '(```|~~~|{%\s*highlight)\s*(swift)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(swift){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -394,14 +347,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.swift
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.swift
-    - match: '(```|~~~|{%\s*highlight)\s*(obj(?:ective\-|)c)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(obj(?:ective\-|)c){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -409,14 +360,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.objc
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.objc
-    - match: '(```|~~~|{%\s*highlight)\s*(obj(?:ective\-|)c\+\+)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(obj(?:ective\-|)c\+\+){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -424,14 +373,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.objc++
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.objc++
-    - match: '(```|~~~|{%\s*highlight)\s*(perl)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(perl){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -439,14 +386,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.perl
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.perl
-    - match: '(```|~~~|{%\s*highlight)\s*(php)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(php){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -454,14 +399,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.php
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.php
-    - match: '(```|~~~|{%\s*highlight)\s*(python)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(python){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -469,14 +412,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.python
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.python
-    - match: '(```|~~~)\s*\{?\s*(r)(?:[ \},].*$|\}?$)'
+    - match: '{{fenced_code_begin_head}}(r(?=[ ,%\}]|$)){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -484,14 +425,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.r
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: "R Extended.sublime-syntax"
-    - match: '(```|~~~|{%\s*highlight)\s*(ruby)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(ruby){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -499,14 +438,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.ruby
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.ruby
-    - match: '(```|~~~|{%\s*highlight)\s*(rust)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(rust){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -514,14 +451,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.rust
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.rust
-    - match: '(```|~~~|{%\s*highlight)\s*(sass)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(sass){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -529,14 +464,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.sass
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.sass
-    - match: '(```|~~~|{%\s*highlight)\s*(scala)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(scala){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -544,14 +477,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.scala
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.scala
-    - match: '(```|~~~|{%\s*highlight)\s*(scss)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(scss){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -559,14 +490,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.scss
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.scss
-    - match: '(```|~~~|{%\s*highlight)\s*(sh|shell|bash)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(sh|shell|bash){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -574,14 +503,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.shell
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.shell
-    - match: '(```|~~~|{%\s*highlight)\s*(sql|mysql|ddl|dml)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(sql|mysql|ddl|dml){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -589,14 +516,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.sql
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.sql
-    - match: '(```|~~~|{%\s*highlight)\s*(postgresql|postgres|pgsql)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(postgresql|postgres|pgsql){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -604,14 +529,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.pgsql
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.pgsql
-    - match: '(```|~~~|{%\s*highlight)\s*(styl)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(styl){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -619,14 +542,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.stylus
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.stylus
-    - match: '(```|~~~|{%\s*highlight)\s*(swig|liquid)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(swig|liquid){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -634,14 +555,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: text.html.swig
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:text.html.swig
-    - match: '(```|~~~|{%\s*highlight)\s*(xml)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(xml){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -649,14 +568,12 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: text.xml
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:text.xml
-    - match: '(```|~~~|{%\s*highlight)\s*(yaml)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(yaml){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
@@ -664,38 +581,21 @@ contexts:
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
         - meta_content_scope: source.yaml
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
         - include: scope:source.yaml
-    - match: '(```|~~~|{%\s*highlight)\s*(\w*)\s*((?:linenos\s*)?%})?$'
+    - match: '{{fenced_code_begin_head}}(\w*){{fenced_code_begin_tail}}'
       captures:
         1: punctuation.definition.fenced.markdown
         2: variable.language.fenced.markdown
         3: punctuation.definition.fenced.markdown
       push:
         - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
+        - match: '{{fenced_code_end}}'
           captures:
             1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
-          pop: true
-    - match: '(```|~~~|{%\s*highlight)\{[^\}]*\}$'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - match: '(```|~~~|{%\s*endhighlight\s*%})\n'
-          captures:
-            1: punctuation.definition.fenced.markdown
-            2: variable.language.fenced.markdown
-            3: punctuation.definition.fenced.markdown
           pop: true
     - match: '^[ ]{0,3}([*+-])(?=\s)'
       captures:
@@ -1035,7 +935,7 @@ contexts:
     - include: escape
     - include: ampersand
     - include: bracket
-    - include: rinline
+    - include: inline-r-code
     - include: raw
     - include: bold
     - include: italic
@@ -1272,8 +1172,7 @@ contexts:
         - include: image-ref
         - include: link-ref-literal
         - include: link-ref
-
-  rinline:
+  inline-r-code:
     - match: '(`+)r '
       scope: markup.raw.inline.markdown
       captures:
@@ -1285,18 +1184,16 @@ contexts:
           captures:
             1: punctuation.definition.raw.markdown
         - include: "R Extended.sublime-syntax"
-
   latex:
     - match: \\\$
     - match: (?=\$\$)
       with_prototype:
-        - include: rinline
+        - include: inline-r-code
       push:
         - meta_scope: text.tex.latex
         - match: (?<=\$\$)
           pop: true
         - include: "R LaTeX+.sublime-syntax"
-
     - match: |-
         (?x)
         (?=
@@ -1315,9 +1212,13 @@ contexts:
           (?<=\S)\$(?:[^a-zA-Z0-9]|$)
         )
       with_prototype:
-        - include: rinline
+        - include: inline-r-code
       push:
         - meta_scope: text.tex.latex
         - match: (?<=\S\$)(?=(?:[^a-zA-Z0-9]|$))
           pop: true
         - include: "R LaTeX+.sublime-syntax"
+variables:
+  fenced_code_begin_head: '^(```{?|~~~{?|{%\s*highlight)\s*'
+  fenced_code_begin_tail: '(?:.*?)(%?\}?)$'
+  fenced_code_end: '^(```|~~~|{%\s*endhighlight\s*%})$'
