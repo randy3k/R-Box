@@ -15,7 +15,7 @@ Features:
   - Extend R Syntaxe
   - Support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
   - Build commands for Rmarkdown and Rnw files.
-  - A main menu inspired by [SublimeStudio](https://github.com/christophsax/SublimeStudio)
+  - A main menu inspired by [SublimeStudio](https://github.com/christophsax/SublimeStudio) (requires SendTextPlus)
 
     <img src="https://raw.githubusercontent.com/randy3k/R-Box/screenshots/main_menu.png" width="200"/>
 
