@@ -258,7 +258,7 @@
 		"hr" : "hr(...) ",
 		"HTML" : "HTML(text, ...) ",
 		"htmlOutput" : "htmlOutput(outputId, inline = FALSE, container = if (inline) span else div, ...) ",
-		"htmlTemplate" : "htmlTemplate(filename, ..., document_ = \"auto\") ",
+		"htmlTemplate" : "htmlTemplate(filename = NULL, ..., text_ = NULL, document_ = \"auto\") ",
 		"icon" : "icon(name, class = NULL, lib = \"font-awesome\") ",
 		"imageOutput" : "imageOutput(outputId, width = \"100%\", height = \"400px\", click = NULL, dblclick = NULL, hover = NULL, hoverDelay = NULL, hoverDelayType = NULL, brush = NULL, clickId = NULL, hoverId = NULL, inline = FALSE) ",
 		"img" : "img(...) ",
