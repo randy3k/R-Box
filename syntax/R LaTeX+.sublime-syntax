@@ -2,7 +2,7 @@
 ---
 # http://www.sublimetext.com/docs/3/syntax.html
 name: R LaTeX+
-scope: text.tex.latex
+scope: text.tex.latex.embedded
 hidden: true
 contexts:
   prototype:

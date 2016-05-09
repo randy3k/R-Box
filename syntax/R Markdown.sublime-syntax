@@ -8,6 +8,10 @@ file_extensions:
   - rmarkdn
   - rmd
 scope: text.html.markdown.rmarkdown
+variables:
+  fenced_code_begin_head: '^(```{?|~~~{?|{%\s*highlight)\s*'
+  fenced_code_begin_tail: '(?:.*?)(%?\}?)$'
+  fenced_code_end: '^(```|~~~|{%\s*endhighlight\s*%})$'
 contexts:
   main:
     - match: (?=(?<!\s)---(\s*coffee|\s*json)?\n$)
@@ -1218,7 +1222,3 @@ contexts:
         - match: (?<=\S\$)(?=(?:[^a-zA-Z0-9]|$))
           pop: true
         - include: "R LaTeX+.sublime-syntax"
-variables:
-  fenced_code_begin_head: '^(```{?|~~~{?|{%\s*highlight)\s*'
-  fenced_code_begin_tail: '(?:.*?)(%?\}?)$'
-  fenced_code_end: '^(```|~~~|{%\s*endhighlight\s*%})$'
