@@ -9,683 +9,36 @@ file_extensions:
   - rmd
 scope: text.html.markdown.rmarkdown
 variables:
-  fenced_code_begin_head: '^(```{?|~~~{?|{%\s*highlight)\s*'
+  fenced_code_begin_head: '^(```{?\.?|~~~{?\.?|{%\s*highlight)\s*'
   fenced_code_begin_tail: '(?:.*?)(%?\}?)$'
   fenced_code_end: '^(```|~~~|{%\s*endhighlight\s*%})$'
 contexts:
   main:
-    - match: (?=(?<!\s)---(\s*coffee|\s*json)?\n$)
+    - match: (?=^---\n$)
       push: front-matter
     - match: ""
       push: body
+
   front-matter:
-    - match: (?<!\s)---\n$
+    - match: ^---\n$
       push:
         - meta_scope: markup.raw.yaml.front-matter
         - meta_content_scope: source.yaml
         - match: ^---\s
           pop: true
         - include: scope:source.yaml
-    - match: (?<!\s)---\s*coffee\n$
-      push:
-        - meta_scope: markup.raw.coffee.front-matter
-        - meta_content_scope: source.coffee
-        - match: ^---\s
-          pop: true
-        - include: scope:source.coffee
-    - match: (?<!\s)---\s*json\n$
-      push:
-        - meta_scope: markup.raw.json.front-matter
-        - meta_content_scope: source.json
-        - match: ^---\s
-          pop: true
-        - include: scope:source.json
     - match: ""
       pop: true
       push: body
+
   body:
-    - match: |-
-        (?x)^
-        (?= [ ]{,3}>.
-        | ([ ]{4}|\t)(?!$)
-        | [#]{1,6}\s*+
-        | [ ]{,3}(?<marker>[-*_])([ ]{,2}\k<marker>){2,}[ \t]*+$
-        )
-      comment: |
-        We could also use an empty end match and set
-                applyEndPatternLast, but then we must be sure that the begin
-                pattern will only match stuff matched by the sub-patterns.
-      push:
-        - meta_scope: meta.block-level.markdown
-        - match: |-
-            (?x)^
-            (?! [ ]{,3}>.
-            | ([ ]{4}|\t)
-            | [#]{1,6}\s*+
-            | [ ]{,3}(?<marker>[-*_])([ ]{,2}\k<marker>){2,}[ \t]*+$
-            )
-          pop: true
-        - include: block_quote
-        - include: block_raw
-        - include: heading
-        - include: separator
-    - match: '{{fenced_code_begin_head}}(c){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.c
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.c
-    - match: '{{fenced_code_begin_head}}(cpp){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.c++
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.c++
-    - match: '{{fenced_code_begin_head}}(coffee|coffeescript){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.coffee
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.coffee
-    - match: '{{fenced_code_begin_head}}(jade){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.jade
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.jade
-    - match: '{{fenced_code_begin_head}}(css){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.css
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.css
-    - match: '{{fenced_code_begin_head}}(csharp){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.cs
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.cs
-    - match: '{{fenced_code_begin_head}}(ejs|underscore|lodash){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.ejs
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.ejs
-    - match: '{{fenced_code_begin_head}}(erlang){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.erlang
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.erlang
-    - match: '{{fenced_code_begin_head}}(diff){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.diff
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.diff
-    - match: '{{fenced_code_begin_head}}(go|golang){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.go
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.go
-    - match: '{{fenced_code_begin_head}}(hbs|handlebars|html|html5){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: text.html.basic
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:text.html.basic
-        - include: scope:text.html.handlebars
-    - match: '{{fenced_code_begin_head}}(ini){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.ini
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.ini
-    - match: '{{fenced_code_begin_head}}(java){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.java
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.java
-    - match: '{{fenced_code_begin_head}}(javascript|js){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.js
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.js
-    - match: '{{fenced_code_begin_head}}(json){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.json
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.json
-    - match: '{{fenced_code_begin_head}}(julia|jl){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.julia
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.julia
-    - match: '{{fenced_code_begin_head}}(less){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.css.less
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.css.less
-    - match: '{{fenced_code_begin_head}}(ls|livescript|LiveScript){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.livescript
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.livescript
-    - match: '{{fenced_code_begin_head}}(lua){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.lua
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.lua
-    - match: '{{fenced_code_begin_head}}(md|markdown){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: text.html.markdown
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:text.html.markdown
-    - match: '{{fenced_code_begin_head}}(nginx){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.nginx
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.nginx
-    - match: '{{fenced_code_begin_head}}(swift){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.swift
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.swift
-    - match: '{{fenced_code_begin_head}}(obj(?:ective\-|)c){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.objc
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.objc
-    - match: '{{fenced_code_begin_head}}(obj(?:ective\-|)c\+\+){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.objc++
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.objc++
-    - match: '{{fenced_code_begin_head}}(perl){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.perl
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.perl
-    - match: '{{fenced_code_begin_head}}(php){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.php
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.php
-    - match: '{{fenced_code_begin_head}}(python){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.python
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.python
-    - match: '{{fenced_code_begin_head}}(r(?=[ ,%\}]|$)){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.r
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: "R Extended.sublime-syntax"
-    - match: '{{fenced_code_begin_head}}(ruby){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.ruby
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.ruby
-    - match: '{{fenced_code_begin_head}}(rust){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.rust
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.rust
-    - match: '{{fenced_code_begin_head}}(sass){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.sass
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.sass
-    - match: '{{fenced_code_begin_head}}(scala){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.scala
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.scala
-    - match: '{{fenced_code_begin_head}}(scss){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.scss
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.scss
-    - match: '{{fenced_code_begin_head}}(sh|shell|bash){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.shell
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.shell
-    - match: '{{fenced_code_begin_head}}(sql|mysql|ddl|dml){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.sql
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.sql
-    - match: '{{fenced_code_begin_head}}(postgresql|postgres|pgsql){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.pgsql
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.pgsql
-    - match: '{{fenced_code_begin_head}}(styl){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.stylus
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.stylus
-    - match: '{{fenced_code_begin_head}}(swig|liquid){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: text.html.swig
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:text.html.swig
-    - match: '{{fenced_code_begin_head}}(xml){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: text.xml
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:text.xml
-    - match: '{{fenced_code_begin_head}}(yaml){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - meta_content_scope: source.yaml
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-        - include: scope:source.yaml
-    - match: '{{fenced_code_begin_head}}(\w*){{fenced_code_begin_tail}}'
-      captures:
-        1: punctuation.definition.fenced.markdown
-        2: variable.language.fenced.markdown
-        3: punctuation.definition.fenced.markdown
-      push:
-        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
-        - match: '{{fenced_code_end}}'
-          captures:
-            1: punctuation.definition.fenced.markdown
-          pop: true
-    - match: '^[ ]{0,3}([*+-])(?=\s)'
-      captures:
-        1: punctuation.definition.list_item.markdown
-      push:
-        - meta_scope: markup.list.unnumbered.markdown
-        - match: ^(?=\S)
-          captures:
-            1: punctuation.definition.list_item.markdown
-          pop: true
-        - include: list-paragraph
-    - match: '^[ ]{0,3}([0-9]+)(\.)(?=\s)'
-      captures:
-        1: punctuation.definition.list_item.markdown punctuation.definition.list_item.number.markdown
-        2: punctuation.definition.list_item.markdown
-      push:
-        - meta_scope: markup.list.numbered.markdown
-        - match: ^(?=\S)
-          captures:
-            1: punctuation.definition.list_item.markdown punctuation.definition.list_item.number.markdown
-            2: punctuation.definition.list_item.markdown
-          pop: true
-        - include: list-paragraph
-    - match: '^(?=<(p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|script|noscript|form|fieldset|iframe|math|ins|del)\b)(?!.*?</\1>)'
-      comment: Markdown formatting is disabled inside block-level tags.
-      push:
-        - meta_scope: meta.disable-markdown
-        - match: (?<=^</\1>$\n)
-          pop: true
-        - include: scope:text.html.basic
-        - include: scope:text.html.handlebars
-        - include: latex
-    - match: '^(?=<(p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|script|noscript|form|fieldset|iframe|math|ins|del)\b)'
-      comment: Same rule but for one line disables.
-      push:
-        - meta_scope: meta.disable-markdown
-        - match: $\n?
-          pop: true
-        - include: scope:text.html.basic
-        - include: scope:text.html.handlebars
-    - match: |-
-        (?x:
-          \s*           # Leading whitespace
-          (\[)(.+?)(\])(:)    # Reference name
-          [ \t]*          # Optional whitespace
-          (<?)(\S+?)(>?)      # The url
-          [ \t]*          # Optional whitespace
-          (?:
-              ((\().+?(\)))   # Match title in quotes…
-            | ((").+?("))   # or in parens.
-          )?            # Title is optional
-          \s*           # Optional whitespace
-          $
-        )
-      scope: meta.link.reference.def.markdown
-      captures:
-        1: punctuation.definition.constant.markdown
-        2: constant.other.reference.link.markdown
-        3: punctuation.definition.constant.markdown
-        4: punctuation.separator.key-value.markdown
-        5: punctuation.definition.link.markdown
-        6: markup.underline.link.markdown
-        7: punctuation.definition.link.markdown
-        8: string.other.link.description.title.markdown
-        9: punctuation.definition.string.begin.markdown
-        10: punctuation.definition.string.end.markdown
-        11: string.other.link.description.title.markdown
-        12: punctuation.definition.string.begin.markdown
-        13: punctuation.definition.string.end.markdown
-    - match: '^(?=\S)(?![=-]{3,}(?=$))'
-      push:
-        - meta_scope: meta.paragraph.markdown
-        - include: html_comment
-        - match: '^(?:\s*$|(?=[ ]{,3}>.))|(?=[ \t]*\n)(?<=^===|^====|=====|^---|^----|-----)[ \t]*\n|(?=^#)'
-          pop: true
-        - include: inline
-        - include: scope:text.html.handlebars
-        - match: '^(={3,})(?=[ \t]*$)'
-          scope: markup.heading.1.markdown
-          captures:
-            1: punctuation.definition.heading.markdown
-        - match: '^(-{3,})(?=[ \t]*$)'
-          scope: markup.heading.2.markdown
-          captures:
-            1: punctuation.definition.heading.markdown
-  html_comment:
+    - include: block
+    - include: list
+    - include: html-basic
+    - include: link-ref-definition
+    - include: paragraph
+
+  html-comment:
     - match: <!--
       captures:
         0: punctuation.definition.comment.html
@@ -695,18 +48,43 @@ contexts:
           pop: true
         - match: "--"
           scope: invalid.illegal.bad-comments-or-CDATA.html
-  ampersand:
-    - match: "&(?!([a-zA-Z0-9]+|#[0-9]+|#x[0-9a-fA-F]+);)"
+
+  block:
+    - match: |-
+        (?x)^
+        (?= [ ]{,3}>.
+        | ([ ]{4}|\t)(?!$)
+        | [#]{1,6}\s*+
+        | [ ]{,3}(?<marker>[-*_])([ ]{,2}\k<marker>){2,}[ \t]*+$
+        | {{fenced_code_begin_head}}
+        )
       comment: |
-        Markdown will convert this for us. We match it so that the
-                HTML grammar will not mark it up as invalid.
-      scope: meta.other.valid-ampersand.markdown
+        We could also use an empty end match and set
+                        applyEndPatternLast, but then we must be sure that the begin
+                        pattern will only match stuff matched by the sub-patterns.
+      push:
+        - meta_scope: meta.block-level.markdown
+        - match: |-
+            (?x)^
+            (?! [ ]{,3}>.
+            | ([ ]{4}|\t)
+            | [#]{1,6}\s*+
+            | [ ]{,3}(?<marker>[-*_])([ ]{,2}\k<marker>){2,}[ \t]*+$
+            | {{fenced_code_begin_head}}
+            )
+          pop: true
+        - include: block_quote
+        - include: block_raw
+        - include: fenced-code
+        - include: heading
+        - include: separator
+
   block_quote:
     - match: '\G[ ]{,3}(>)(?!$)[ ]?'
       comment: |
         We terminate the block quote when seeing an empty line, a
-                separator or a line with leading > characters. The latter is
-                to “reset” the quote level for quoted lines.
+                        separator or a line with leading > characters. The latter is
+                        to “reset” the quote level for quoted lines.
       captures:
         1: punctuation.definition.blockquote.markdown
       push:
@@ -750,86 +128,11 @@ contexts:
             - match: $|(?<=\n)
               pop: true
             - include: inline
+
   block_raw:
     - match: '\G([ ]{4}|\t).*$\n?'
       scope: markup.raw.block.markdown
-  bold:
-    - match: |-
-        (?x)
-        (\*\*|__)(?=\S)               # Open
-        (?=
-          (
-              <[^>]*+>             # HTML tags
-            | (?<raw>`+)([^`]|(?!(?<!`)\k<raw>(?!`))`)*+\k<raw>
-                              # Raw
-            | \\[\\`*_{}\[\]()#.!+\->]?+     # Escapes
-            | \[
-            (
-                    (?<square>          # Named group
-                  [^\[\]\\]       # Match most chars
-                      | \\.           # Escaped chars
-                      | \[ \g<square>*+ \]    # Nested brackets
-                    )*+
-              \]
-              (
-                (             # Reference Link
-                  [ ]?          # Optional space
-                  \[[^\]]*+\]       # Ref name
-                )
-                | (             # Inline Link
-                  \(            # Opening paren
-                    [ \t]*+       # Optional whtiespace
-                    <?(.*?)>?     # URL
-                    [ \t]*+       # Optional whtiespace
-                    (         # Optional Title
-                      (?<title>['"])
-                      (.*?)
-                      \k<title>
-                    )?
-                  \)
-                )
-              )
-            )
-            | (?!(?<=\S)\1).           # Everything besides
-                              # style closer
-          )++
-          (?<=\S)\1                # Close
-        )
-      captures:
-        1: punctuation.definition.bold.markdown
-      push:
-        - meta_scope: markup.bold.markdown
-        - match: (?<=\S)(\1)
-          captures:
-            1: punctuation.definition.bold.markdown
-          pop: true
-        - match: "(?=<[^>]*?>)"
-          push:
-            - include: scope:text.html.handlebars
-            - match: (?<=>)
-              pop: true
-        - include: escape
-        - include: ampersand
-        - include: bracket
-        - include: raw
-        - include: italic
-        - include: strike
-        - include: image-inline
-        - include: link-inline
-        - include: link-inet
-        - include: link-email
-        - include: image-ref
-        - include: link-ref-literal
-        - include: link-ref
-  bracket:
-    - match: '<(?![a-z/?\$!])'
-      comment: |
-        Markdown will convert this for us. We match it so that the
-                HTML grammar will not mark it up as invalid.
-      scope: meta.other.valid-bracket.markdown
-  escape:
-    - match: '\\[-`*_#+.!(){}\[\]\\>]'
-      scope: constant.character.escape.markdown
+
   heading:
     - match: '\G(#{1})(?!#)\s*(?=\S)'
       captures:
@@ -891,334 +194,526 @@ contexts:
             1: punctuation.definition.heading.markdown
           pop: true
         - include: inline
-  image-inline:
-    - match: |-
-        (?x:
-         \!              # Images start with !
-         (\[)((?<square>[^\[\]\\]|\\.|\[\g<square>*+\])*+)(\])
-                       # Match the link text.
-         ([ ])?            # Space not allowed
-         (\()            # Opening paren for url
-           (<?)(\S+?)(>?)      # The url
-           [ \t]*          # Optional whitespace
-           (?:
-               ((\().+?(\)))   # Match title in parens…
-             | ((").+?("))   # or in quotes.
-           )?            # Title is optional
-           \s*           # Optional whitespace
-         (\))
-        )
-      scope: meta.image.inline.markdown
-      captures:
-        1: punctuation.definition.string.begin.markdown
-        2: string.other.link.description.markdown
-        4: punctuation.definition.string.end.markdown
-        5: invalid.illegal.whitespace.markdown
-        6: punctuation.definition.metadata.markdown
-        7: punctuation.definition.link.markdown
-        8: markup.underline.link.image.markdown
-        9: punctuation.definition.link.markdown
-        10: string.other.link.description.title.markdown
-        11: punctuation.definition.string.markdown
-        12: punctuation.definition.string.markdown
-        13: string.other.link.description.title.markdown
-        14: punctuation.definition.string.markdown
-        15: punctuation.definition.string.markdown
-        16: punctuation.definition.metadata.markdown
-  image-ref:
-    - match: '\!(\[)((?<square>[^\[\]\\]|\\.|\[\g<square>*+\])*+)(\])[ ]?(\[)(.*?)(\])'
-      scope: meta.image.reference.markdown
-      captures:
-        1: punctuation.definition.string.begin.markdown
-        2: string.other.link.description.markdown
-        4: punctuation.definition.string.begin.markdown
-        5: punctuation.definition.constant.markdown
-        6: constant.other.reference.link.markdown
-        7: punctuation.definition.constant.markdown
+
   inline:
-    - include: escape
-    - include: ampersand
-    - include: bracket
-    - include: inline-r-code
-    - include: raw
-    - include: bold
-    - include: italic
-    - include: strike
-    - include: line-break
-    - include: image-inline
-    - include: link-inline
-    - include: link-inet
-    - include: link-email
-    - include: image-ref
-    - include: link-ref-literal
-    - include: link-ref
-    - include: latex
-  italic:
-    - match: |-
-        (?x)
-        (\*|_)(?=\S)                         # Open
-        (?=
-          (
-              <[^>]*+>              # HTML tags
-            | (?<raw>`+)([^`]|(?!(?<!`)\k<raw>(?!`))`)*+\k<raw>
-                                             # Raw
-            | \\[\\`*_{}\[\]()#.!+\->]?+  # Escapes
-            | \[
-            (
-                    (?<square>         # Named group
-                  [^\[\]\\]                  # Match most chars
-                      | \\.                  # Escaped chars
-                      | \[ \g<square>*+ \]  # Nested brackets
-                    )*+
-              \]
-              (
-                (                            # Reference Link
-                  [ ]?                       # Optional space
-                  \[[^\]]*+\]                # Ref name
-                )
-                | (                          # Inline Link
-                  \(                         # Opening paren
-                    [ \t]*+                  # Optional whtiespace
-                    <?(.*?)>?          # URL
-                    [ \t]*+                  # Optional whtiespace
-                    (                        # Optional Title
-                      (?<title>['"])
-                      (.*?)
-                      \k<title>
-                    )?
-                  \)
-                )
-              )
-            )
-            | \1\1                        # Must be bold closer
-            | (?!(?<=\S)\1).           # Everything besides
-                                          # style closer
-          )++
-          (?<=\S)\1                    # Close
-        )
-      captures:
-        1: punctuation.definition.italic.markdown
-      push:
-        - meta_scope: markup.italic.markdown
-        - match: (?<=\S)(\1)((?!\1)|(?=\1\1))
-          captures:
-            1: punctuation.definition.italic.markdown
-          pop: true
-        - match: "(?=<[^>]*?>)"
-          push:
-            - include: scope:text.html.handlebars
-            - match: (?<=>)
-              pop: true
-        - include: escape
-        - include: ampersand
-        - include: bracket
-        - include: raw
-        - include: bold
-        - include: strike
-        - include: image-inline
-        - include: link-inline
-        - include: link-inet
-        - include: link-email
-        - include: image-ref
-        - include: link-ref-literal
-        - include: link-ref
-  line-break:
-    - match: " {2,}$"
-      scope: meta.dummy.line-break
-  link-email:
-    - match: '(<)((?:mailto:)?[-.\w]+@[-a-z0-9]+(\.[-a-z0-9]+)*\.[a-z]+)(>)'
-      scope: meta.link.email.lt-gt.markdown
-      captures:
-        1: punctuation.definition.link.markdown
-        2: markup.underline.link.markdown
-        4: punctuation.definition.link.markdown
-  link-inet:
-    - match: (<)((?:https?|ftp)://.*?)(>)
-      scope: meta.link.inet.markdown
-      captures:
-        1: punctuation.definition.link.markdown
-        2: markup.underline.link.markdown
-        3: punctuation.definition.link.markdown
-  link-inline:
-    - match: |-
-        (?x:
-         (\[)((?<square>[^\[\]\\]|\\.|\[\g<square>*+\])*+)(\])
-                       # Match the link text.
-         ([ ])?            # Space not allowed
-         (\()            # Opening paren for url
-           (<?)(.*?)(>?)     # The url
-           [ \t]*          # Optional whitespace
-           (?:
-               ((\().+?(\)))   # Match title in parens…
-             | ((").+?("))   # or in quotes.
-           )?            # Title is optional
-           \s*           # Optional whitespace
-         (\))
-        )
-      scope: meta.link.inline.markdown
-      captures:
-        1: punctuation.definition.string.begin.markdown
-        2: string.other.link.title.markdown
-        4: punctuation.definition.string.end.markdown
-        5: invalid.illegal.whitespace.markdown
-        6: punctuation.definition.metadata.markdown
-        7: punctuation.definition.link.markdown
-        8: markup.underline.link.markdown
-        9: punctuation.definition.link.markdown
-        10: string.other.link.description.title.markdown
-        11: punctuation.definition.string.begin.markdown
-        12: punctuation.definition.string.end.markdown
-        13: string.other.link.description.title.markdown
-        14: punctuation.definition.string.begin.markdown
-        15: punctuation.definition.string.end.markdown
-        16: punctuation.definition.metadata.markdown
-  link-ref:
-    - match: '(\[)((?<square>[^\[\]\\]|\\.|\[\g<square>*+\])*+)(\])[ ]?(\[)([^\]]*+)(\])'
-      scope: meta.link.reference.markdown
-      captures:
-        1: punctuation.definition.string.begin.markdown
-        2: string.other.link.title.markdown
-        4: punctuation.definition.string.end.markdown
-        5: punctuation.definition.constant.begin.markdown
-        6: constant.other.reference.link.markdown
-        7: punctuation.definition.constant.end.markdown
-  link-ref-literal:
-    - match: '(\[)((?<square>[^\[\]\\]|\\.|\[\g<square>*+\])*+)(\])[ ]?(\[)(\])'
-      scope: meta.link.reference.literal.markdown
-      captures:
-        1: punctuation.definition.string.begin.markdown
-        2: string.other.link.title.markdown
-        4: punctuation.definition.string.end.markdown
-        5: punctuation.definition.constant.begin.markdown
-        6: punctuation.definition.constant.end.markdown
-  list-paragraph:
-    - match: \G\s+(?=\S)
-      push:
-        - meta_scope: meta.paragraph.list.markdown
-        - match: ^\s*$
-          pop: true
-        - include: inline
-  raw:
-    - match: '(`+)([^`]|(?!(?<!`)\1(?!`))`)*+(\1)'
-      scope: markup.raw.inline.markdown
-      captures:
-        1: punctuation.definition.raw.markdown
-        3: punctuation.definition.raw.markdown
+    - include: scope:text.html.markdown#escape
+    - include: scope:text.html.markdown#ampersand
+    - include: scope:text.html.markdown#bracket
+    - include: rcode-inline
+    - include: latex-math
+    - include: scope:text.html.markdown#raw
+    - include: scope:text.html.markdown#bold
+    - include: scope:text.html.markdown#italic
+    # - include: scope:text.html.markdown#strike
+    - include: scope:text.html.markdown#line-break
+    - include: scope:text.html.markdown#image-inline
+    - include: scope:text.html.markdown#link-inline
+    - include: scope:text.html.markdown#link-inet
+    - include: scope:text.html.markdown#link-email
+    - include: scope:text.html.markdown#image-ref
+    - include: scope:text.html.markdown#link-ref-literal
+    - include: scope:text.html.markdown#link-ref
+
   separator:
     - match: '\G[ ]{,3}([-*_])([ ]{,2}\1){2,}[ \t]*$\n?'
       scope: meta.separator.markdown
-  strike:
-    - match: |-
-        (?x)
-        (~~)(?=\S)                         # Open
-        (?=
-          (
-              <[^>]*+>              # HTML tags
-            | (?<raw>`+)([^`]|(?!(?<!`)\k<raw>(?!`))`)*+\k<raw>
-                                             # Raw
-            | \\[\\`*_{}\[\]()#.!+\->]?+  # Escapes
-            | \[
-            (
-                    (?<square>         # Named group
-                  [^\[\]\\]                  # Match most chars
-                      | \\.                  # Escaped chars
-                      | \[ \g<square>*+ \]  # Nested brackets
-                    )*+
-              \]
-              (
-                (                            # Reference Link
-                  [ ]?                       # Optional space
-                  \[[^\]]*+\]                # Ref name
-                )
-                | (                          # Inline Link
-                  \(                         # Opening paren
-                    [ \t]*+                  # Optional whtiespace
-                    <?(.*?)>?          # URL
-                    [ \t]*+                  # Optional whtiespace
-                    (                        # Optional Title
-                      (?<title>['"])
-                      (.*?)
-                      \k<title>
-                    )?
-                  \)
-                )
-              )
-            )
-            | \1\1                        # Must be bold closer
-            | (?!(?<=\S)\1).           # Everything besides
-                                          # style closer
-          )++
-          (?<=\S)\1                    # Close
-        )
+
+
+  list-paragraph:
+    - match: '\s*([*+-])(?=\s)'
       captures:
-        1: punctuation.definition.strike.markdown
+        1: punctuation.definition.list_item.markdown
+    - match: '\s*(([0-9]+)\.)(?=\s)'
+      captures:
+        1: punctuation.definition.list_item.markdown
+        2: punctuation.definition.list_item.number.markdown
+    - include: block_raw
+    - include: fenced-code
+    - include: inline
+
+  list:
+    - match: '^(?=[ ]{0,3}([*+-])\s)'
       push:
-        - meta_scope: markup.strike.markdown
-        - match: (?<=\S)(\1)((?!\1)|(?=\1\1))
-          captures:
-            1: punctuation.definition.strike.markdown
+        - meta_scope: markup.list.unnumbered.markdown meta.paragraph.list.markdown
+        - match: ^(?=\s*$)
           pop: true
-        - match: "(?=<[^>]*?>)"
-          push:
-            - include: scope:text.html.handlebars
-            - match: (?<=>)
-              pop: true
-        - include: escape
-        - include: ampersand
-        - include: bracket
-        - include: raw
-        - include: bold
-        - include: italic
-        - include: image-inline
-        - include: link-inline
-        - include: link-inet
-        - include: link-email
-        - include: image-ref
-        - include: link-ref-literal
-        - include: link-ref
-  inline-r-code:
-    - match: '(`+)r '
-      scope: markup.raw.inline.markdown
+        - include: list-paragraph
+    - match: '^(?=[ ]{0,3}([0-9]+)(\.)\s)'
+      push:
+        - meta_scope: markup.list.numbered.markdown meta.paragraph.list.markdown
+        - match: ^(?=\s*$)
+          pop: true
+        - include: list-paragraph
+
+
+  html-basic:
+    - match: '^(?=<(p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|script|noscript|form|fieldset|iframe|math|ins|del)\b)'
+      comment: Same rule but for one line disables.
+      push:
+        - meta_scope: meta.disable-markdown
+        - match: $\n?
+          pop: true
+        - include: scope:text.html.basic
+        - include: latex-math
+    - match: '^(?=<(p|div|h[1-6]|blockquote|pre|table|dl|ol|ul|script|noscript|form|fieldset|iframe|math|ins|del)\b)(?!.*?</\1>)'
+      comment: Markdown formatting is disabled inside block-level tags.
+      push:
+        - meta_scope: meta.disable-markdown
+        - match: (?<=^</\1>$\n)
+          pop: true
+        - include: scope:text.html.basic
+        - include: latex-math
+
+  link-ref-definition:
+    - match: |-
+        (?x:
+          \s*                 # Leading whitespace
+          (\[)(.+?)(\])(:)    # Reference name
+          [ \t]*              # Optional whitespace
+          (<?)(\S+?)(>?)      # The url
+          [ \t]*              # Optional whitespace
+          (?:
+              ((\().+?(\)))   # Match title in quotes…
+            | ((").+?("))     # or in parens.
+          )?                  # Title is optional
+          \s*                 # Optional whitespace
+          $
+        )
+      scope: meta.link.reference.def.markdown
+      captures:
+        1: punctuation.definition.constant.markdown
+        2: constant.other.reference.link.markdown
+        3: punctuation.definition.constant.markdown
+        4: punctuation.separator.key-value.markdown
+        5: punctuation.definition.link.markdown
+        6: markup.underline.link.markdown
+        7: punctuation.definition.link.markdown
+        8: string.other.link.description.title.markdown
+        9: punctuation.definition.string.begin.markdown
+        10: punctuation.definition.string.end.markdown
+        11: string.other.link.description.title.markdown
+        12: punctuation.definition.string.begin.markdown
+        13: punctuation.definition.string.end.markdown
+
+  paragraph:
+    - match: '^(?=\S)(?![=-]{3,}(?=$))'
+      push:
+        - meta_scope: meta.paragraph.markdown
+        - include: html-comment
+        - match: '^(?:\s*$|(?=[ ]{,3}>.))|(?=[ \t]*\n)(?<=^===|^====|=====|^---|^----|-----)[ \t]*\n|(?=^#)'
+          pop: true
+        - include: inline
+        - include: scope:text.html.basic
+        - match: '^(={3,})(?=[ \t]*$)'
+          scope: markup.heading.1.markdown
+          captures:
+            1: punctuation.definition.heading.markdown
+        - match: '^(-{3,})(?=[ \t]*$)'
+          scope: markup.heading.2.markdown
+          captures:
+            1: punctuation.definition.heading.markdown
+
+  fenced-code:
+    - match: '{{fenced_code_begin_head}}(c){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.c
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.c
+    - match: '{{fenced_code_begin_head}}(cpp){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.c++
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.c++
+    - match: '{{fenced_code_begin_head}}(css){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.css
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.css
+    - match: '{{fenced_code_begin_head}}(csharp){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.cs
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.cs
+    - match: '{{fenced_code_begin_head}}(erlang){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.erlang
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.erlang
+    - match: '{{fenced_code_begin_head}}(diff){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.diff
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.diff
+    - match: '{{fenced_code_begin_head}}(go|golang){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.go
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.go
+    - match: '{{fenced_code_begin_head}}(java){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.java
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.java
+    - match: '{{fenced_code_begin_head}}(javascript|js){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.js
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.js
+    - match: '{{fenced_code_begin_head}}(json){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.json
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.json
+    - match: '{{fenced_code_begin_head}}(julia|jl){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.julia
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.julia
+    - match: '{{fenced_code_begin_head}}(lua){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.lua
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.lua
+    - match: '{{fenced_code_begin_head}}(md|markdown){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: text.html.markdown
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:text.html.markdown
+    - match: '{{fenced_code_begin_head}}(obj(?:ective\-|)c){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.objc
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.objc
+    - match: '{{fenced_code_begin_head}}(obj(?:ective\-|)c\+\+){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.objc++
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.objc++
+    - match: '{{fenced_code_begin_head}}(perl){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.perl
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.perl
+    - match: '{{fenced_code_begin_head}}(php){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.php
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.php
+    - match: '{{fenced_code_begin_head}}(python|py){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.python
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.python
+    - match: '{{fenced_code_begin_head}}(r(?=[ ,%\}]|$)){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.r
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: "R Extended.sublime-syntax"
+    - match: '{{fenced_code_begin_head}}(ruby){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.ruby
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.ruby
+    - match: '{{fenced_code_begin_head}}(rust){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.rust
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.rust
+    - match: '{{fenced_code_begin_head}}(scala){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.scala
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.scala
+    - match: '{{fenced_code_begin_head}}(sh|shell|bash){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.shell
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.shell
+    - match: '{{fenced_code_begin_head}}(sql|mysql|ddl|dml){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.sql
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.sql
+    - match: '{{fenced_code_begin_head}}(xml){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: text.xml
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:text.xml
+    - match: '{{fenced_code_begin_head}}(yaml){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - meta_content_scope: source.yaml
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+        - include: scope:source.yaml
+    - match: '{{fenced_code_begin_head}}(\w*){{fenced_code_begin_tail}}'
+      captures:
+        1: punctuation.definition.fenced.markdown
+        2: variable.language.fenced.markdown
+        3: punctuation.definition.fenced.markdown
+      push:
+        - meta_scope: markup.raw.block.markdown markup.raw.block.fenced.markdown
+        - match: '{{fenced_code_end}}'
+          captures:
+            1: punctuation.definition.fenced.markdown
+          pop: true
+
+  rcode-inline:
+    - match: '(`+)(r) '
       captures:
         1: punctuation.definition.raw.markdown
+        2: variable.language.fenced.markdown
       push:
+        - meta_scope: markup.raw.inline.markdown
         - meta_content_scope: source.r
-        - match: '(\1)'
+        - match: '\1'
+          scope: punctuation.definition.raw.markdown
           pop: true
-          captures:
-            1: punctuation.definition.raw.markdown
         - include: "R Extended.sublime-syntax"
-  latex:
+
+  latex-math:
     - match: \\\$
-    - match: (?=\$\$)
+    - match: \$\$
+      scope: string.other.math.latex punctuation.definition.string.begin.latex
       with_prototype:
-        - include: inline-r-code
+        - include: rcode-inline
       push:
-        - meta_scope: text.tex.latex
-        - match: (?<=\$\$)
+        - meta_scope: text.tex.latex meta.environment.math.latex
+        - include: scope:text.tex.latex#macros
+        - include: scope:text.tex.latex#math-content
+        - match: \$\$
+          scope: string.other.math.latex punctuation.definition.string.end.latex
           pop: true
-        - include: "R LaTeX+.sublime-syntax"
     - match: |-
         (?x)
+        (\$)(?=\S)
         (?=
-          \$
           (?:
             \\\\
-            |\\\{
+            |\\\$
             |\\\{
             |(?<brace> # allow $ inside nested braces
               \{
-              (?:[^{}]|\g<brace>)*
+              (?:[^{}]|\k<brace>)*
               \}
             )
             |[^\$\{\}]
           )*?
-          (?<=\S)\$(?:[^a-zA-Z0-9]|$)
+          \S\$(?:[^a-zA-Z0-9]|$)
         )
+      scope: string.other.math.latex punctuation.definition.string.begin.latex
       with_prototype:
-        - include: inline-r-code
+        - include: rcode-inline
       push:
-        - meta_scope: text.tex.latex
-        - match: (?<=\S\$)(?=(?:[^a-zA-Z0-9]|$))
+        - meta_scope: text.tex.latex meta.environment.math.latex
+        - include: scope:text.tex.latex#macros
+        - include: scope:text.tex.latex#math-content
+        - match: \$
+          scope: string.other.math.latex punctuation.definition.string.end.latex
           pop: true
-        - include: "R LaTeX+.sublime-syntax"
