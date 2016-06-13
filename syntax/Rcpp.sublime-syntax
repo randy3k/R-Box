@@ -6,10 +6,9 @@ file_extensions:
   - cpp
   - cxx
   - c++
-  - C
+  - cc
 first_line_match: .*?Rcpp.*
 scope: source.c++.rcpp
 contexts:
   main:
-    - include: scope:source.c
     - include: scope:source.c++
