@@ -42,7 +42,7 @@
 		"clusterMap" : "clusterMap(cl = NULL, fun, ..., MoreArgs = NULL, RECYCLE = TRUE, SIMPLIFY = FALSE, USE.NAMES = TRUE, .scheduling = c(\"static\",     \"dynamic\")) ",
 		"clusterSetRNGStream" : "clusterSetRNGStream(cl = NULL, iseed = NULL) ",
 		"clusterSplit" : "clusterSplit(cl = NULL, seq) ",
-		"detectCores" : "detectCores(all.tests = FALSE, logical = FALSE) ",
+		"detectCores" : "detectCores(all.tests = FALSE, logical = TRUE) ",
 		"makeCluster" : "makeCluster(spec, type = getClusterOption(\"type\"), ...) ",
 		"makeForkCluster" : "makeForkCluster(nnodes = getOption(\"mc.cores\", 2L), ...) ",
 		"makePSOCKcluster" : "makePSOCKcluster(names, ...) ",

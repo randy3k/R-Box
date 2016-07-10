@@ -1,6 +1,8 @@
 {
-  "objects": ["flatten", "fromJSON", "minify", "prettify", "rbind.pages", "serializeJSON", "stream_in", "stream_out", "toJSON", "unbox", "unserializeJSON", "validate"],
+  "objects": ["base64_dec", "base64_enc", "flatten", "fromJSON", "minify", "prettify", "rbind.pages", "serializeJSON", "stream_in", "stream_out", "toJSON", "unbox", "unserializeJSON", "validate"],
   "methods": {
+    "base64_dec": ["base64_dec(input) "],
+    "base64_enc": ["base64_enc(input) "],
     "flatten": ["flatten(x, recursive = TRUE) "],
     "fromJSON": ["fromJSON(txt, simplifyVector = TRUE, simplifyDataFrame = simplifyVector, simplifyMatrix = simplifyVector, flatten = FALSE, ...) "],
     "minify": ["minify(txt) "],
