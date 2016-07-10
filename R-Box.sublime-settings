@@ -3,8 +3,5 @@
     "auto_completions": true,
 
     // enable status bar hint
-    "status_bar_hint": true,
-
-    // sendtext_install_message
-    "show_sendtext_installer_message": true
+    "status_bar_hint": true
 }
