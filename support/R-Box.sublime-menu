@@ -5,7 +5,7 @@
     "id": "R-Box",
     "children": [
       {
-        "command": "send_text_plus",
+        "command": "send_repl",
         "args": {
           "cmd": "setwd(\"$file_path\")"
         },
@@ -17,49 +17,49 @@
       },
       { "caption": "-"},
       {
-        "command": "send_text_plus",
+        "command": "send_repl",
         "args": {
           "cmd": "devtools::install(\"$project_path\")"
         },
         "caption": "Build and reload"
       },
       {
-        "command": "send_text_plus",
+        "command": "send_repl",
         "args": {
           "cmd": "devtools::install(\"$project_path\", local=FALSE)"
         },
         "caption": "Clean and Build"
       },
       {
-        "command": "send_text_plus",
+        "command": "send_repl",
         "args": {
           "cmd": "devtools::load_all(\"$project_path\")"
         },
         "caption": "Devtools: Load All"
       },
       {
-        "command": "send_text_plus",
+        "command": "send_repl",
         "args": {
           "cmd": "devtools::check(\"$project_path\")"
         },
         "caption": "Devtools: Check"
       },
       {
-        "command": "send_text_plus",
+        "command": "send_repl",
         "args": {
           "cmd": "devtools::test(\"$project_path\")"
         },
         "caption": "Devtools: Test"
       },
       {
-        "command": "send_text_plus",
+        "command": "send_repl",
         "args": {
           "cmd": "devtools::document(\"$project_path\")"
         },
         "caption": "Devtools: Document"
       },
       {
-        "command": "send_text_plus",
+        "command": "send_repl",
         "args": {
           "cmd": "Rcpp::compileAttributes(\"$project_path\")"
         },
@@ -67,21 +67,21 @@
       },
       { "caption": "-"},
       {
-        "command": "send_text_plus",
+        "command": "send_repl",
         "args": {
           "cmd": "rmarkdown::render(\"$file\")"
         },
         "caption": "Rmarkdown: Render"
       },
       {
-        "command": "send_text_plus",
+        "command": "send_repl",
         "args": {
           "cmd": "setwd(\"$file_path\")\nSweave(\"$file\")\ntools::texi2dvi(\"$file_base_name.tex\", pdf = TRUE)"
         },
         "caption": "Rnw: Sweave + PdfLaTeX"
       },
       {
-        "command": "send_text_plus",
+        "command": "send_repl",
         "args": {
           "cmd": "setwd(\"$file_path\")\nknitr::knit(\"$file\", output=\"$file_base_name.tex\")\ntools::texi2dvi(\"$file_base_name.tex\", pdf = TRUE)"
         },
@@ -89,14 +89,14 @@
       },
       { "caption": "-"},
       {
-        "command": "send_text_plus",
+        "command": "send_repl",
         "args": {
           "cmd": "source(\"$file\")"
         },
         "caption": "Source Current File"
       },
       {
-        "command": "send_text_plus",
+        "command": "send_repl",
         "caption": "Send Current Line/Selection"
       }
     ]

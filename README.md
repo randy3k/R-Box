@@ -8,7 +8,7 @@ Features:
   - Extend R Syntax
   - Support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
   - Build commands for Rmarkdown and Rnw files.
-  - A main menu inspired by [SublimeStudio](https://github.com/christophsax/SublimeStudio) (if [SendTextPlus](https://github.com/randy3k/SendTextPlus) is installed)
+  - A main menu inspired by [SublimeStudio](https://github.com/christophsax/SublimeStudio) (if [SendTextPlus](https://github.com/randy3k/SendTextPlus) or [SendREPL](https://github.com/randy3k/SendREPL) is installed)
 
     <img src="https://raw.githubusercontent.com/randy3k/R-Box/screenshots/main_menu.png" width="200"/>
 
@@ -44,7 +44,8 @@ R-Box no longer ships with the "send code" functionality. R-Box will mainly
 focus on the R language development. The "send code" functionality is exported
 to [SendTextPlus](https://github.com/randy3k/SendTextPlus). You could choose
 the active program by the option `SendTextPlus: Choose Program` in command
-palette.
+palette. If you are using [SendREPL](https://github.com/randy3k/SendREPL), 
+the corresponding command is `SendREPL: Choose REPL Program`.
 
 
 ### License
