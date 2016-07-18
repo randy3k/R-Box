@@ -39,13 +39,13 @@ steps.
 
 This will create a json file under `packages` directory. 
 
-### Send Code to Terminals
-R-Box no longer ships with the "send code" functionality. R-Box will mainly
-focus on the R language development. The "send code" functionality is exported
-to [SendREPL](https://github.com/randy3k/SendREPL). You could choose
+### Send Code to Terminal / R GUI / RStudio
+R-Box no longer ships with the "send code" functionality. The functionality is
+exported to [SendREPL](https://github.com/randy3k/SendREPL). You could choose
 the active program by the option `SendREPL: Choose REPL Program` in command
-palette. If you are using [SendTextPlus](https://github.com/randy3k/SendTextPlus), 
-the corresponding command is `SendTextPlus: Choose Program`.
+palette. If you are using
+[SendTextPlus](https://github.com/randy3k/SendTextPlus), the corresponding
+command is `SendTextPlus: Choose Program`.
 
 
 ### License
