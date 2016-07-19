@@ -44,9 +44,13 @@ template <- "
         2: punctuation.definition.parameters.r
       push:
         - meta_content_scope: meta.function-call.parameters.r
-        - match: (?<=\\(|,|^)\\s*([a-zA-Z._][a-zA-Z0-9._]*)(?=\\s*(?:\\)|=[^=]|,|\\n))
-          captures:
-            1: variable.parameter.r
+        - match: '[a-zA-Z._][a-zA-Z0-9._]*(?=\\s*=)'
+          scope: variable.parameter.r
+        - match: '(?==)'
+          push:
+            - include: \"R Extended.sublime-syntax\"
+            - match: (?=[,)])
+              pop: true
         - match: \\)
           pop: true
         - include: \"R Extended.sublime-syntax\"

@@ -74,10 +74,15 @@ contexts:
       push:
         - meta_scope: meta.function.r
         - meta_content_scope: meta.function.parameters.r
-        - include: fnpara
+        - match: '[a-zA-Z._][a-zA-Z0-9._]*'
+          scope: variable.parameter.r
+        - match: '(?==)'
+          push:
+            - include: main
+            - match: (?=[,)])
+              pop: true
         - match: \)
           pop: true
-        - include: main
 
   functions:
     - match: \b(function)\s*(\()
@@ -85,28 +90,35 @@ contexts:
         1: keyword.control.r
         2: punctuation.definition.parameters.r
       push:
+        - meta_scope: meta.function.r
         - meta_content_scope: meta.function.parameters.r
-        - include: fnpara
+        - match: '[a-zA-Z._][a-zA-Z0-9._]*'
+          scope: variable.parameter.r
+        - match: '(?==)'
+          push:
+            - include: main
+            - match: (?=[,)])
+              pop: true
         - match: \)
           pop: true
-        - include: main
 
   fncall:
     - match: \b([a-zA-Z._][a-zA-Z0-9._]*)\s*(\()
-      scope: meta.function-call.r
       captures:
         2: punctuation.definition.parameters.r
       push:
+        - meta_scope: meta.function-call.r
         - meta_content_scope: meta.function-call.parameters.r
-        - include: fnpara
+        - match: '[a-zA-Z._][a-zA-Z0-9._]*(?=\s*=)'
+          scope: variable.parameter.r
+        - match: '(?==)'
+          push:
+            - include: main
+            - match: (?=[,)])
+              pop: true
         - match: \)
           pop: true
         - include: main
-
-  fnpara:
-    - match: (?<=\(|,|^)\s*([a-zA-Z._][a-zA-Z0-9._]*)(?=\s*(?:\)|=[^=]|,|\n))
-      captures:
-        1: variable.parameter.r
 
   roxygen:
     - match: ^(#')\s*
@@ -114,11 +126,12 @@ contexts:
         1: punctuation.definition.comment.r
       push:
         - meta_scope: comment.line.roxygen.r
+        - match: (@param)\s*([a-zA-Z._][a-zA-Z0-9._]*)
+          captures:
+            1: keyword.other.r
+            2: variable.parameter.r
         - match: '@[a-zA-Z0-9]+'
           scope: keyword.other.r
-        - match: (?<=@param)\s*([a-zA-Z._][a-zA-Z0-9._]*)
-          captures:
-            1: variable.parameter.r
         - match: $\n?
           pop: true
 
