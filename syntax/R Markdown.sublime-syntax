@@ -697,13 +697,7 @@ contexts:
           (?:
             \\\\
             |\\\$
-            |\\\{
-            |(?<brace> # allow $ inside nested braces
-              \{
-              (?:[^{}]|\k<brace>)*
-              \}
-            )
-            |[^\$\{\}]
+            |[^\$]
           )*?
           \S\$(?:[^a-zA-Z0-9]|$)
         )
