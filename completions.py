@@ -78,14 +78,14 @@ class RBoxCompletions(sublime_plugin.EventListener):
         vid = view.id()
         self.completions[vid] = objects
 
-    def on_post_save(self, view):
+    def on_post_save_async(self, view):
         if self.check(view):
-            sublime.set_timeout_async(lambda: self.loaded_libraries(view), 100)
+            self.loaded_libraries(view)
 
-    def on_load(self, view):
+    def on_load_async(self, view):
         if self.check(view):
-            sublime.set_timeout_async(lambda: self.loaded_libraries(view), 100)
+            self.loaded_libraries(view)
 
-    def on_activated(self, view):
+    def on_activated_async(self, view):
         if self.check(view):
-            sublime.set_timeout_async(lambda: self.loaded_libraries(view), 100)
+            self.loaded_libraries(view)

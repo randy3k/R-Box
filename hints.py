@@ -26,7 +26,7 @@ def load_jsonfile(pkg):
     return data
 
 
-class RBoxStatusListener(sublime_plugin.EventListener):
+class RBoxHintsListener(sublime_plugin.EventListener):
     cache = {}
     last_row = 0
 
@@ -46,38 +46,51 @@ class RBoxStatusListener(sublime_plugin.EventListener):
             return False
 
         settings = sublime.load_settings('R-Box.sublime-settings')
-        return settings.get("status_bar_hint", True)
+        return settings.get("show_hints", True)
 
-    def on_selection_modified(self, view):
-        if self.check(view):
-            point = view.sel()[0].end() if len(view.sel()) > 0 else 0
-            this_row = view.rowcol(point)[0]
-            if this_row != self.last_row:
-                view.set_status("r_box", "")
-                view.settings().set("r_box_status", False)
+    def on_modified_async(self, view):
+        if not self.check(view):
+            return
 
-    def on_modified(self, view):
-        if self.check(view):
-            sublime.set_timeout_async(lambda: self.update_status(view), 100)
-
-    def update_status(self, view):
         vid = view.id()
         if vid not in self.cache:
             return
+
         point = view.sel()[0].end() if len(view.sel()) > 0 else 0
-        this_row = view.rowcol(point)[0]
         contentb = view.substr(sublime.Region(view.line(point).begin(), point))
         m = re.match(r".*?([a-zA-Z0-9._]+)\($", contentb)
-        if not m:
+        func = m.group(1) if m else None
+        if not func:
             return
-        view.set_status("r_box", "")
-        func = m.group(1)
 
         if func in self.cache[vid]:
-            call = self.cache[vid][func]
-            self.last_row = this_row
-            view.set_status("r_box", call)
-            view.settings().set("r_box_status", True)
+            view.show_popup(
+                self.cache[vid][func],
+                sublime.COOPERATE_WITH_AUTO_COMPLETE | sublime.HIDE_ON_MOUSE_MOVE_AWAY,
+                max_width=600)
+
+    def on_hover(self, view, point, hover_zone):
+        if not self.check(view):
+            return
+
+        vid = view.id()
+        if vid not in self.cache:
+            return
+
+        if hover_zone != sublime.HOVER_TEXT:
+            return
+
+        word_region = view.word(point)
+        if view.substr(word_region.end()) != "(":
+            return
+
+        func = view.substr(view.word(point))
+        if func in self.cache[vid]:
+            view.show_popup(
+                self.cache[vid][func],
+                sublime.COOPERATE_WITH_AUTO_COMPLETE | sublime.HIDE_ON_MOUSE_MOVE_AWAY,
+                location=point,
+                max_width=600)
 
     def loaded_libraries(self, view):
         packages = [
@@ -110,21 +123,14 @@ class RBoxStatusListener(sublime_plugin.EventListener):
         vid = view.id()
         self.cache[vid] = methods
 
-    def on_post_save(self, view):
+    def on_post_save_async(self, view):
         if self.check(view):
-            sublime.set_timeout_async(lambda: self.loaded_libraries(view), 100)
+            self.loaded_libraries(view)
 
-    def on_load(self, view):
+    def on_load_async(self, view):
         if self.check(view):
-            sublime.set_timeout_async(lambda: self.loaded_libraries(view), 100)
+            self.loaded_libraries(view)
 
-    def on_activated(self, view):
+    def on_activated_async(self, view):
         if self.check(view):
-            sublime.set_timeout_async(lambda: self.loaded_libraries(view), 100)
-
-
-class RBoxCleanStatus(sublime_plugin.TextCommand):
-    def run(self, edit):
-        view = self.view
-        view.set_status("r_box", "")
-        view.settings().set("r_box_status", False)
+            self.loaded_libraries(view)

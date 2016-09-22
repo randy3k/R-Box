@@ -2,6 +2,6 @@
     // enable auto completions
     "auto_completions": true,
 
-    // enable status bar hint
-    "status_bar_hint": true
+    // show hints
+    "show_hints": true
 }
