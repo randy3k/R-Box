@@ -38,11 +38,10 @@ get_functions <- function(objs){
 
 template <- "
     - match: \\b(foo)\\s*(\\()
-      scope: meta.function-call.r
       captures:
         1: support.function.r
-        2: punctuation.definition.parameters.r
       push:
+        - meta_scope: meta.function-call.r
         - meta_content_scope: meta.function-call.parameters.r
         - match: '[a-zA-Z._][a-zA-Z0-9._]*(?=\\s*=)'
           scope: variable.parameter.r

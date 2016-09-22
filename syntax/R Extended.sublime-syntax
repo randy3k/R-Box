@@ -34,8 +34,22 @@ contexts:
       scope: keyword.other.r
 
   storage-types:
-    - match: \b(character|complex|double|expression|integer|list|logical|numeric|single|raw)\b(?=\s*\()
-      scope: storage.type.r
+    - match: \b(character|complex|double|expression|integer|list|logical|numeric|single|raw)\b(\s*\()
+      captures:
+        1: storage.type.r
+      push:
+        - meta_scope: meta.function-call.r
+        - meta_content_scope: meta.function-call.parameters.r
+        - match: '[a-zA-Z._][a-zA-Z0-9._]*(?=\s*=)'
+          scope: variable.parameter.r
+        - match: '(?==)'
+          push:
+            - include: main
+            - match: (?=[,)])
+              pop: true
+        - match: \)
+          pop: true
+        - include: main
 
   strings:
     - match: '"'
@@ -70,7 +84,6 @@ contexts:
         1: entity.name.function.r
         2: keyword.operator.assignment.r
         3: keyword.control.r
-        4: punctuation.definition.parameters.r
       push:
         - meta_scope: meta.function.r
         - meta_content_scope: meta.function.parameters.r
@@ -88,7 +101,6 @@ contexts:
     - match: \b(function)\s*(\()
       captures:
         1: keyword.control.r
-        2: punctuation.definition.parameters.r
       push:
         - meta_scope: meta.function.r
         - meta_content_scope: meta.function.parameters.r
@@ -104,8 +116,6 @@ contexts:
 
   fncall:
     - match: \b([a-zA-Z._][a-zA-Z0-9._]*)\s*(\()
-      captures:
-        2: punctuation.definition.parameters.r
       push:
         - meta_scope: meta.function-call.r
         - meta_content_scope: meta.function-call.parameters.r
