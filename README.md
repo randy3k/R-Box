@@ -8,11 +8,11 @@ R package for Sublime Text
 Features:
 
 - Autocompletions for [various packages](packages/).
-- Function hints in status bar for various packages.
+- Popup function hints.
 - Extend R Syntax
 - Support Roxygen, Rcpp, R Sweave and R Markdown syntaxes. 
 - Build commands for Rmarkdown and Rnw files.
-- A main menu inspired by [SublimeStudio](https://github.com/christophsax/SublimeStudio) (if [SendREPL](https://github.com/randy3k/SendREPL) is installed)
+- R-Box main menu (if [SendREPL](https://github.com/randy3k/SendREPL) is installed)
 
 <img src="https://raw.githubusercontent.com/randy3k/R-Box/screenshots/main_menu.png" width="200"/>
 
@@ -20,7 +20,6 @@ Features:
 ### Installation
 
 - Install via [Package Control](https://sublime.wbond.net)
-
 
 ### Settings
 
@@ -34,8 +33,3 @@ the active program by the option `SendREPL: Choose REPL Program` in command
 palette. For histroical reasons, if you are still using
 [SendTextPlus](https://github.com/randy3k/SendTextPlus), the corresponding
 command is `SendTextPlus: Choose Program`.
-
-
-### License
-
-R-Box is licensed under the MIT License.
