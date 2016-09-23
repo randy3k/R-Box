@@ -1,29 +1,8 @@
 import sublime
 import sublime_plugin
 import re
-import json
-import os
 
-
-def load_jsonfile(pkg):
-    data = None
-
-    jsonFilepath = "/".join(['Packages', 'R-Box', 'packages', '%s.json' % pkg])
-    try:
-        data = json.loads(sublime.load_resource(jsonFilepath))
-    except IOError:
-        pass
-
-    if data:
-        return data
-
-    jsonFilepath = os.path.join(sublime.packages_path(), "User",
-                                'R-Box', 'packages', '%s.json' % pkg)
-    if os.path.exists(jsonFilepath):
-        with open(jsonFilepath, "r") as f:
-            data = json.load(f)
-
-    return data
+from .util import look_up_packages, load_package_file
 
 
 class RBoxHintsListener(sublime_plugin.EventListener):
@@ -61,6 +40,7 @@ class RBoxHintsListener(sublime_plugin.EventListener):
         m = re.match(r".*?([a-zA-Z0-9._]+)\($", contentb)
         func = m.group(1) if m else None
         if not func:
+            view.hide_popup()
             return
 
         if func in self.cache[vid]:
@@ -73,6 +53,10 @@ class RBoxHintsListener(sublime_plugin.EventListener):
         if not self.check(view):
             return
 
+        settings = sublime.load_settings('R-Box.sublime-settings')
+        if not settings.get("show_hints_on_hover", True):
+            return
+
         vid = view.id()
         if vid not in self.cache:
             return
@@ -80,36 +64,41 @@ class RBoxHintsListener(sublime_plugin.EventListener):
         if hover_zone != sublime.HOVER_TEXT:
             return
 
-        word_region = view.word(point)
-        if view.substr(word_region.end()) != "(":
+        if "meta.function-call.parameters.r" not in view.scope_name(point):
             return
 
-        func = view.substr(view.word(point))
+        if view.scope_name(point).endswith("variable.function.r "):
+            return
+
+        if view.scope_name(point).endswith("support.function.r "):
+            return
+
+        func = None
+        nextpoint = view.line(point).begin()
+        while True:
+            nextm = view.find(r"""[a-zA-Z.][a-zA-Z0-9._]*"""
+                              r"""(\((?:(["\'])(?:[^\\]|\\.)*?\2|#.*$|[^()]|(?1))*\))""",
+                              nextpoint)
+            if nextm.begin() == -1 or nextm.begin() > point:
+                break
+            else:
+                thism = view.find(r"""[a-zA-Z.][a-zA-Z0-9._]*(?=\()""", nextm.begin())
+                if nextm.begin() < point and nextm.end() > point:
+                    func = view.substr(thism)
+                nextpoint = thism.end()
+
         if func in self.cache[vid]:
             view.show_popup(
                 self.cache[vid][func],
                 sublime.COOPERATE_WITH_AUTO_COMPLETE | sublime.HIDE_ON_MOUSE_MOVE_AWAY,
-                location=point,
                 max_width=600)
 
     def loaded_libraries(self, view):
-        packages = [
-            "base",
-            "stats",
-            "methods",
-            "utils",
-            "graphics",
-            "grDevices"
-        ]
-        for s in [view.substr(s) for s in view.find_all("(?:library|require)\(([^)]*?)\)")]:
-            m = re.search(r"""\((?:"|')?(.*?)(?:"|')?\)""", s)
-            if m:
-                packages.append(m.group(1))
-
-        packages = list(set(packages))
+        packages = look_up_packages(view)
         methods = {}
+
         for pkg in packages:
-            j = load_jsonfile(pkg)
+            j = load_package_file(pkg)
             if j:
                 methods.update(j.get("methods"))
 

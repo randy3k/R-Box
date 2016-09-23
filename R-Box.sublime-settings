@@ -3,5 +3,8 @@
     "auto_completions": true,
 
     // show hints
-    "show_hints": true
+    "show_hints": true,
+
+    // show hints
+    "show_hints_on_hover": true
 }

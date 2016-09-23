@@ -116,6 +116,8 @@ contexts:
 
   fncall:
     - match: \b([a-zA-Z._][a-zA-Z0-9._]*)\s*(\()
+      captures:
+        1: variable.function.r
       push:
         - meta_scope: meta.function-call.r
         - meta_content_scope: meta.function-call.parameters.r

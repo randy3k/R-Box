@@ -1,29 +1,7 @@
 import sublime
 import sublime_plugin
-import json
-import os
-import re
 
-
-def load_jsonfile(pkg):
-    data = None
-
-    jsonFilepath = "/".join(['Packages', 'R-Box', 'packages', '%s.json' % pkg])
-    try:
-        data = json.loads(sublime.load_resource(jsonFilepath))
-    except IOError:
-        pass
-
-    if data:
-        return data
-
-    jsonFilepath = os.path.join(sublime.packages_path(), "User",
-                                'R-Box', 'packages', '%s.json' % pkg)
-    if os.path.exists(jsonFilepath):
-        with open(jsonFilepath, "r") as f:
-            data = json.load(f)
-
-    return data
+from .util import look_up_packages, load_package_file
 
 
 class RBoxCompletions(sublime_plugin.EventListener):
@@ -54,23 +32,11 @@ class RBoxCompletions(sublime_plugin.EventListener):
         return completions
 
     def loaded_libraries(self, view):
-        packages = [
-            "base",
-            "stats",
-            "methods",
-            "utils",
-            "graphics",
-            "grDevices"
-        ]
-        for s in [view.substr(s) for s in view.find_all("(?:library|require)\(([^)]*?)\)")]:
-            m = re.search(r"""\((?:"|')?(.*?)(?:"|')?\)""", s)
-            if m:
-                packages.append(m.group(1))
-
-        packages = list(set(packages))
+        packages = look_up_packages(view)
         objects = []
+
         for pkg in packages:
-            j = load_jsonfile(pkg)
+            j = load_package_file(pkg)
             if j:
                 for obj in j.get("objects"):
                     objects.append((obj + "\t{" + pkg + "}", obj))
