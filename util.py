@@ -18,9 +18,9 @@ def look_up_packages(view):
         if m:
             packages.append(m.group(1))
 
-    for s in [view.substr(s) for s in
-                view.find_all("([a-zA-Z][a-zA-Z0-9.]*)::(:)?([a-zA-Z0-9.]*)")]:
-        packages.append(m.group(1))
+    for s in [view.substr(s)
+              for s in view.find_all("([a-zA-Z][a-zA-Z0-9.]*)(?=::(:)?[a-zA-Z0-9.]*)")]:
+        packages.append(s)
 
     packages = list(set(packages))
 
@@ -46,3 +46,21 @@ def load_package_file(pkg):
             data = json.load(f)
 
     return data
+
+
+def function_at_point(view, point):
+    func = None
+    nextpoint = view.line(point).begin()
+    while True:
+        nextm = view.find(r"""[a-zA-Z.][a-zA-Z0-9._]*"""
+                          r"""(\((?:(["\'])(?:[^\\]|\\.)*?\2|#.*$|[^()]|(?1))*\))""",
+                          nextpoint)
+        if nextm.begin() == -1 or nextm.begin() > point:
+            break
+        else:
+            thism = view.find(r"""[a-zA-Z.][a-zA-Z0-9._]*(?=\()""", nextm.begin())
+            if nextm.begin() <= point and nextm.end() >= point:
+                func = view.substr(thism)
+            nextpoint = thism.end()
+
+    return func
