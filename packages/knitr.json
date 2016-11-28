@@ -2,6 +2,7 @@
 	"objects" : [
 		"all_labels",
 		"all_patterns",
+		"all_rcpp_labels",
 		"asis_output",
 		"clean_cache",
 		"combine_words",
@@ -9,6 +10,7 @@
 		"dep_auto",
 		"dep_prev",
 		"engine_output",
+		"extract_raw_output",
 		"fig_chunk",
 		"fig_path",
 		"hook_ffmpeg_html",
@@ -72,6 +74,7 @@
 		"plot_crop",
 		"purl",
 		"rand_seed",
+		"raw_output",
 		"read_chunk",
 		"read_demo",
 		"read_rforge",
@@ -84,6 +87,7 @@
 		"render_rst",
 		"render_sweave",
 		"render_textile",
+		"restore_raw_output",
 		"rocco",
 		"rst2pdf",
 		"set_alias",
@@ -100,6 +104,7 @@
 	],
 	"methods" : {
 		"all_labels" : "all_labels(...) ",
+		"all_rcpp_labels" : "all_rcpp_labels(...) ",
 		"asis_output" : "asis_output(x, meta = NULL, cacheable = NA) ",
 		"clean_cache" : "clean_cache(clean = FALSE, path = opts_chunk$get(\"cache.path\")) ",
 		"combine_words" : "combine_words(words, sep = \", \", and = \" and \", before = \"\", after = before) ",
@@ -107,6 +112,7 @@
 		"dep_auto" : "dep_auto(path = opts_chunk$get(\"cache.path\")) ",
 		"dep_prev" : "dep_prev() ",
 		"engine_output" : "engine_output(options, code, out, extra = NULL) ",
+		"extract_raw_output" : "extract_raw_output(text, markers = raw_markers) ",
 		"fig_chunk" : "fig_chunk(label, ext = \"\", number, fig.path = opts_chunk$get(\"fig.path\")) ",
 		"fig_path" : "fig_path(suffix = \"\", options = opts_current$get(), number) ",
 		"hook_ffmpeg_html" : "hook_ffmpeg_html(x, options) ",
@@ -158,8 +164,9 @@
 		"pat_rst" : "pat_rst() ",
 		"pat_tex" : "pat_tex() ",
 		"pat_textile" : "pat_textile() ",
-		"plot_crop" : "plot_crop(x, quiet = !opts_knit$get(\"progress\")) ",
+		"plot_crop" : "plot_crop(x, quiet = TRUE) ",
 		"purl" : "purl(..., documentation = 1L) ",
+		"raw_output" : "raw_output(x, markers = raw_markers, ...) ",
 		"read_chunk" : "read_chunk(path, lines = readLines(path, warn = FALSE), labels = NULL, from = NULL, to = NULL, from.offset = 0L, to.offset = 0L) ",
 		"read_demo" : "read_demo(topic, package = NULL, ...) ",
 		"read_rforge" : "read_rforge(path, project, extra = \"\") ",
@@ -172,6 +179,7 @@
 		"render_rst" : "render_rst(strict = FALSE) ",
 		"render_sweave" : "render_sweave() ",
 		"render_textile" : "render_textile() ",
+		"restore_raw_output" : "restore_raw_output(text, chunks, markers = raw_markers) ",
 		"rocco" : "rocco(input, ...) ",
 		"rst2pdf" : "rst2pdf(input, command = \"rst2pdf\", options = \"\") ",
 		"set_alias" : "set_alias(...) ",
@@ -184,6 +192,6 @@
 		"stitch_rmd" : "stitch_rmd(..., envir = parent.frame()) ",
 		"Sweave2knitr" : "Sweave2knitr(file, output = gsub(\"[.]([^.]+)$\", \"-knitr.\\\\1\", file), encoding = getOption(\"encoding\"), text = NULL) ",
 		"wrap_rmd" : "wrap_rmd(file, width = 80, text = NULL, backup) ",
-		"write_bib" : "write_bib(x = .packages(), file = \"\", tweak = TRUE, prefix = getOption(\"knitr.bib.prefix\", \"R-\")) "
+		"write_bib" : "write_bib(x = .packages(), file = \"\", tweak = TRUE, width = NULL, prefix = getOption(\"knitr.bib.prefix\", \"R-\")) "
 	}
 }

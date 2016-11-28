@@ -308,6 +308,7 @@
 		"duplicated.matrix",
 		"duplicated.numeric_version",
 		"duplicated.POSIXlt",
+		"duplicated.warnings",
 		"dyn.load",
 		"dyn.unload",
 		"dynGet",
@@ -1085,7 +1086,7 @@
 		"zapsmall"
 	],
 	"methods" : {
-		"abbreviate" : "abbreviate(names.arg, minlength = 4L, use.classes = TRUE, dot = FALSE, strict = FALSE, method = c(\"left.kept\", \"both.sides\")) ",
+		"abbreviate" : "abbreviate(names.arg, minlength = 4L, use.classes = TRUE, dot = FALSE, strict = FALSE, method = c(\"left.kept\", \"both.sides\"), named = TRUE) ",
 		"abs" : "abs(x) ",
 		"acos" : "acos(x) ",
 		"acosh" : "acosh(x) ",
@@ -1392,6 +1393,7 @@
 		"duplicated.matrix" : "duplicated.matrix(x, incomparables = FALSE, MARGIN = 1L, fromLast = FALSE, ...) ",
 		"duplicated.numeric_version" : "duplicated.numeric_version(x, incomparables = FALSE, ...) ",
 		"duplicated.POSIXlt" : "duplicated.POSIXlt(x, incomparables = FALSE, ...) ",
+		"duplicated.warnings" : "duplicated.warnings(x, incomparables = FALSE, ...) ",
 		"dyn.load" : "dyn.load(x, local = TRUE, now = TRUE, ...) ",
 		"dyn.unload" : "dyn.unload(x) ",
 		"dynGet" : "dynGet(x, ifnotfound = stop(gettextf(\"%s not found\", sQuote(x)), domain = NA), minframe = 1L, inherits = FALSE) ",
