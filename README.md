@@ -23,7 +23,7 @@ Improve your R coding expriences with Sublime Text!
     </tr>
     <tr>
         <td width="50%">Autocompletions for R packages and Popup function hints.</td>
-        <td width="50%">If <a href="https://github.com/randy3k/SendREPL">SendREPL</a> is installed.</td>
+        <td width="50%">Some of the features are not avaliable without <a href="https://github.com/randy3k/SendREPL">SendREPL</a>.</td>
     </tr>
 </table>
 
