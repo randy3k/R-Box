@@ -6,6 +6,17 @@
     "children": [
       {
         "command": "send_repl",
+        "caption": "Send Current Line/Selection"
+      },
+      {
+        "command": "send_repl",
+        "args": {
+          "cmd": "source(\"$file\")"
+        },
+        "caption": "Source Current File"
+      },
+      {
+        "command": "send_repl",
         "args": {
           "cmd": "setwd(\"$file_path\")"
         },
@@ -21,14 +32,14 @@
         "args": {
           "cmd": "devtools::install(\"$project_path\")"
         },
-        "caption": "Build and reload"
+        "caption": "Build and Reload Package"
       },
       {
         "command": "send_repl",
         "args": {
           "cmd": "devtools::install(\"$project_path\", local=FALSE)"
         },
-        "caption": "Clean and Build"
+        "caption": "Clean and Build Package"
       },
       {
         "command": "send_repl",
@@ -37,26 +48,27 @@
         },
         "caption": "Devtools: Load All"
       },
+      { "caption": "-"},
       {
         "command": "send_repl",
         "args": {
           "cmd": "devtools::check(\"$project_path\")"
         },
-        "caption": "Devtools: Check"
+        "caption": "Devtools: Check Package"
       },
       {
         "command": "send_repl",
         "args": {
           "cmd": "devtools::test(\"$project_path\")"
         },
-        "caption": "Devtools: Test"
+        "caption": "Devtools: Test Package"
       },
       {
         "command": "send_repl",
         "args": {
           "cmd": "devtools::document(\"$project_path\")"
         },
-        "caption": "Devtools: Document"
+        "caption": "Devtools: Document Package"
       },
       {
         "command": "send_repl",
@@ -88,17 +100,6 @@
         "caption": "Rnw: Kintr + PdfLaTeX"
       },
       { "caption": "-"},
-      {
-        "command": "send_repl",
-        "args": {
-          "cmd": "source(\"$file\")"
-        },
-        "caption": "Source Current File"
-      },
-      {
-        "command": "send_repl",
-        "caption": "Send Current Line/Selection"
-      }
     ]
   }
 ]
