@@ -11,12 +11,11 @@ packages <- c(
 
 get_functions <- function(pkg) {
     objs <- getNamespaceExports(asNamespace(pkg))
-    ind <- grep("^[a-zA-Z\\._][0-9a-zA-Z\\._]*$", objs)
-    objs <- objs[ind]
+    objs <- objs[str_detect(objs, "^[a-zA-Z\\._][0-9a-zA-Z\\._]*$")]
     out <- c()
     for (obj in objs){
         try({
-            if (eval(parse(text = paste0("!is.null(body(", pkg, "::", obj, "))")))){
+            if (eval(parse(text = paste0("is.function(", pkg, "::", obj, ")")))){
                 out <- c(out, obj)
             }
         },
