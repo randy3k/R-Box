@@ -44,5 +44,5 @@ See `Preference -> Package Settings -> R-Box`
 
 ### Send Code to Terminal / R GUI / RStudio
 
-You could also installed [SendREPL](https://github.com/randy3k/SendREPL) for
+You could also install [SendREPL](https://github.com/randy3k/SendREPL) for
 sending R code to Terminal / R GUI / RStudio.
