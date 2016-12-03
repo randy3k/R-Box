@@ -5,9 +5,6 @@
     // show popup hints
     "show_popup_hints": true,
 
-    // show popup hints on hover
-    "show_popup_hints_on_hover": true,
-
     // path to Rscript, for example
     // (mac, linux): "/usr/local/bin/Rscript"
     // (windows):    "C:\\Program Files\\R\\R-x.y.z\\bin\\Rscript.exe"
