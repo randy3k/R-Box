@@ -1,40 +1,30 @@
 library(stringr)
 
-args <- commandArgs(TRUE)
+packages <- c(
+    "base",
+    "graphics",
+    "grDevices",
+    "methods",
+    "stats",
+    "utils"
+)
 
-if (length(args) > 0){
-    packages <- args
-}else{
-    packages <- c(
-        "base",
-        "graphics",
-        "grDevices",
-        "methods",
-        "stats",
-        "utils"
-    )
-}
-
-ls_package <- function(pkg){
-    members <- ls(pattern = "*", paste0("package:", pkg))
-    ind <- grep("^[a-zA-Z\\._][0-9a-zA-Z\\._]*$", members)
-    out <- members[ind]
-    attr(out, "package") <- pkg
-    out
-}
-
-get_functions <- function(objs){
-    pkg <- attr(objs, "package")
-    e <- as.environment(paste0("package:", pkg))
-    out <- Filter(function(x) {
-            obj <- get(x, envir = e)
-            is.function(obj)
+get_functions <- function(pkg) {
+    objs <- getNamespaceExports(asNamespace(pkg))
+    ind <- grep("^[a-zA-Z\\._][0-9a-zA-Z\\._]*$", objs)
+    objs <- objs[ind]
+    out <- c()
+    for (obj in objs){
+        try({
+            if (eval(parse(text = paste0("!is.null(body(", pkg, "::", obj, "))")))){
+                out <- c(out, obj)
+            }
         },
-        objs
-    )
-    attr(out, "package") <- pkg
+        silent = TRUE)
+    }
     out
 }
+
 
 template <- "
     - match: \\b(foo)\\s*(\\()
@@ -56,13 +46,12 @@ template <- "
 "
 
 templated_block <- function(pkg){
-    content <- paste0(sub("\\.", "\\\\\\\\.", get_functions(ls_package(pkg))), collapse = "|")
+    content <- paste0(sub("\\.", "\\\\\\\\.", get_functions(pkg)), collapse = "|")
     str_replace(template, "foo", content)
 }
 
 dict <- ""
 for (pkg in packages){
-    library(pkg, character.only = TRUE)
     dict <- paste0(dict, templated_block(pkg))
 }
 
