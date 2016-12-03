@@ -1,4 +1,15 @@
 [
+    // Roxygen
+    { "keys": ["'"], "command": "insert_snippet", "args": {"contents": "'"}, "context":
+        [
+            { "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+            { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+            { "key": "preceding_text", "operator": "regex_contains", "operand": "^\\s*#\\s*$", "match_all": true },
+            { "key": "eol_selector", "operator": "not_equal", "operand": "string.quoted.single", "match_all": true },
+            { "key": "selector", "operator": "equal", "operand": "source.r" }
+        ]
+    },
+    // comment indentation
     { "keys": ["enter"], "command": "insert", "args": {"characters": "\n#' "}, "context":
         [
             { "key": "preceding_text", "operator": "regex_contains", "operand": "^#'.*$", "match_all": true },
@@ -13,6 +24,35 @@
             { "key": "following_text", "operator": "regex_contains", "operand": "^(?:'|\"|\\)| |$)", "match_all": true },
             { "key": "eol_selector", "operator": "not_equal", "operand": "string.quoted.double", "match_all": true },
             { "key": "selector", "operator": "equal", "operand": "source.r" }
+        ]
+    },
+    // completions for package objects
+    { "keys": [":"], "command": "r_box_auto_complete", "args": {"key": ":"}, "context":
+        [
+            { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+            { "key": "preceding_text", "operator": "regex_contains", "operand": ":$", "match_all": true },
+            { "key": "selector", "operator": "equal", "operand": "source.r, source.r-console" }
+        ]
+    },
+    // completions for package objects
+    { "keys": ["tab"], "command": "r_box_auto_complete", "context":
+        [
+            { "key": "preceding_text", "operator": "regex_contains", "operand": "::$", "match_all": true },
+            { "key": "setting.tab_completion", "operator": "equal", "operand": true },
+            { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+            { "key": "selector", "operator": "equal", "operand": "source.r, source.r-console" },
+            { "key": "auto_complete_visible", "operator": "equal", "operand": false }
+        ]
+    },
+    // completions for package objects
+    { "keys": ["tab"], "command": "r_box_auto_complete", "context":
+        [
+            { "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
+            { "key": "preceding_text", "operator": "regex_contains", "operand": "( |,|\\()$", "match_all": true },
+            { "key": "setting.tab_completion", "operator": "equal", "operand": true },
+            { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
+            { "key": "selector", "operator": "equal", "operand": "meta.function-call.r" },
+            { "key": "auto_complete_visible", "operator": "equal", "operand": false }
         ]
     }
 ]

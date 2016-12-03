@@ -2,7 +2,7 @@ library(stringr)
 
 args <- commandArgs(TRUE)
 
-if (length(args)>0){
+if (length(args) > 0){
     packages <- args
 }else{
     packages <- c(
@@ -16,8 +16,8 @@ if (length(args)>0){
 }
 
 ls_package <- function(pkg){
-    members <- ls(pattern="*", paste0("package:",pkg))
-    ind <- grep("^[a-zA-Z\\._][0-9a-zA-Z\\._]+$", members)
+    members <- ls(pattern = "*", paste0("package:", pkg))
+    ind <- grep("^[a-zA-Z\\._][0-9a-zA-Z\\._]*$", members)
     out <- members[ind]
     attr(out, "package") <- pkg
     out
@@ -56,13 +56,13 @@ template <- "
 "
 
 templated_block <- function(pkg){
-    content <- paste0(sub("\\.","\\\\\\\\.", get_functions(ls_package(pkg))), collapse="|")
+    content <- paste0(sub("\\.", "\\\\\\\\.", get_functions(ls_package(pkg))), collapse = "|")
     str_replace(template, "foo", content)
 }
 
 dict <- ""
 for (pkg in packages){
-    library(pkg, character.only=TRUE)
+    library(pkg, character.only = TRUE)
     dict <- paste0(dict, templated_block(pkg))
 }
 
@@ -72,4 +72,4 @@ begin_pt <- str_locate(content, "main:\n")[2]
 str_sub(content, begin_pt, str_length(content)) <- dict
 
 dir.create("syntax", FALSE)
-cat(content, file=syntax_file)
+cat(content, file = syntax_file)

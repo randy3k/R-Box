@@ -1,7 +1,7 @@
 import sublime
 
 
-def plugin_loaded():
+def install_linter_spec():
     s = sublime.load_settings("SublimeLinter.sublime-settings")
     if s.has("user"):
         user = s.get("user")
