@@ -8,5 +8,8 @@
     // path to Rscript, for example
     // (mac, linux): "/usr/local/bin/Rscript"
     // (windows):    "C:\\Program Files\\R\\R-x.y.z\\bin\\Rscript.exe"
-    "rscript_binary": null
+    "rscript_binary": null,
+
+    // additional paths to PATH variable
+    "additional_paths": []
 }
