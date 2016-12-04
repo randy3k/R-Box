@@ -1,0 +1,3 @@
+R-Box is installed successfully. Enjoy!
+
+If you encounter any issues, please go to https://github.com/randy3k/R-Box and let me know.

@@ -10,15 +10,15 @@ Improve your R coding expriences with Sublime Text!
 
 <table>
     <tr>
-        <th>Auto Completions.</th>
+        <th>Auto Completions</th>
         <th>R-Box Main Menu</th>
     </tr>
     <tr>
         <td width="50%">
-            <img src="https://cloud.githubusercontent.com/assets/1690993/20857883/dd93703a-b906-11e6-92df-c1ee710beff5.gif" width="100%">
+            <img src="https://cloud.githubusercontent.com/assets/1690993/20864185/e4c49e58-b9b3-11e6-879f-64f4efed4a01.gif" width="100%">
         </td>
         <td width="50%">
-            <img src="https://cloud.githubusercontent.com/assets/1690993/20857884/e0c7e63c-b906-11e6-83b7-16a24569bc5b.png" width="100%">
+            <img src="https://cloud.githubusercontent.com/assets/1690993/20864181/d033a308-b9b3-11e6-82b7-e62b2426e15e.png" width="100%">
         </td>
     </tr>
     <tr>
