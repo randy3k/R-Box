@@ -22,7 +22,14 @@ class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
             text,
             sublime.COOPERATE_WITH_AUTO_COMPLETE | sublime.HIDE_ON_MOUSE_MOVE_AWAY,
             location=point,
-            max_width=600)
+            max_width=600,
+            on_navigate=self.on_help)
+
+    def on_help(self, package):
+        pkg, funct = package.split(":::")
+        self.view.window().run_command(
+            "open_url",
+            {"url": "http://www.rdocumentation.org/packages/{}/topics/{}".format(pkg, funct)})
 
     def on_hover(self, point, hover_zone):
         sublime.set_timeout_async(lambda: self.on_hover_async(point, hover_zone))
@@ -36,6 +43,11 @@ class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
         pkg, funct = self.function_name_at_point(self.view, point)
         if not funct:
             return
-        text = namespace_manager.get_function(pkg, funct)
-        if text:
-            self.popup(text, point)
+        if not pkg:
+            pkg = namespace_manager.find_object_in_packages(funct)
+        funct_call = namespace_manager.get_function_call(pkg, funct)
+        if not funct_call:
+            return
+        funct_call = funct_call.replace("\n", "<br>")
+        template = """{}<br><a href="{}:::{}">Help</a>"""
+        self.popup(template.format(funct_call, pkg, funct), point)

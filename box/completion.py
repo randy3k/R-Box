@@ -102,7 +102,7 @@ class RBoxCompletionListener(sublime_plugin.ViewEventListener, RBoxMixins):
         pkg, funct = self.function_name_at_point(self.view, pt)
         if not funct:
             return []
-        args = namespace_manager.get_function_args(pkg, funct)
+        args = namespace_manager.list_function_args(pkg, funct)
         return [["{} = \tArguments".format(arg), "{} = ".format(arg)] for arg in args]
 
     def on_query_completions(self, prefix, locations):

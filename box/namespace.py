@@ -16,7 +16,7 @@ class NamespaceManager(RBoxMixins):
 
     def installed_packages(self):
         if not self._installed_packages:
-            self._installed_packages = self.list_installed_packages()
+            self._installed_packages = super().installed_packages()
         return self._installed_packages
 
     def get_namespace(self, pkg):
@@ -34,7 +34,7 @@ class NamespaceManager(RBoxMixins):
 
         return ns
 
-    def get_function(self, pkg=None, funct=None):
+    def get_function_call(self, pkg=None, funct=None):
         if not pkg:
             pkg = self.find_object_in_packages(funct)
         if not pkg:
@@ -43,11 +43,11 @@ class NamespaceManager(RBoxMixins):
         if pkg_name in self.fcall:
             return self.fcall[pkg_name]
 
-        fcall = self.show_function(pkg, funct)
+        fcall = super().get_function_call(pkg, funct)
         self.fcall[pkg_name] = fcall
         return fcall
 
-    def get_function_args(self, pkg=None, funct=None):
+    def list_function_args(self, pkg=None, funct=None):
         if not pkg:
             pkg = self.find_object_in_packages(funct)
         if not pkg:
@@ -56,7 +56,7 @@ class NamespaceManager(RBoxMixins):
         if pkg_name in self.fargs:
             return self.fargs[pkg_name]
 
-        fargs = self.show_function_args(pkg, funct)
+        fargs = super().list_function_args(pkg, funct)
         self.fargs[pkg_name] = fargs
         return fargs
 

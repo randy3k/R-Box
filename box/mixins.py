@@ -38,7 +38,7 @@ class RscriptMixins:
             print("R-Box:", e)
             return ""
 
-    def list_installed_packages(self):
+    def installed_packages(self):
         return self.rcmd("cat(rownames(installed.packages()))").strip().split(" ")
 
     def list_package_objects(self, pkg, exported_only=True):
@@ -48,13 +48,13 @@ class RscriptMixins:
             objects = self.rcmd("cat(objects(asNamespace('{}')))".format(pkg))
         return objects.strip().split(" ")
 
-    def show_function(self, pkg, funct):
+    def get_function_call(self, pkg, funct):
         out = self.rcmd("args({}:::{})".format(pkg, funct))
         out = re.sub(r"^function ", funct, out).strip()
         out = re.sub(r"NULL(?:\n|\s)*$", "", out).strip()
         return out
 
-    def show_function_args(self, pkg, funct):
+    def list_function_args(self, pkg, funct):
         out = self.rcmd("cat(names(formals({}:::{})))".format(pkg, funct))
         return out.strip().split(" ")
 
