@@ -76,7 +76,7 @@ class RBoxCompletionListener(sublime_plugin.ViewEventListener, RBoxMixins):
         return self.rbox_settings("auto_completions", True)
 
     def complete_package_objects(self, pt):
-        line = self.view.substr(self.view.line(pt))
+        line = self.extract_line(self.view, pt, truncated=True)
         m = VALIDOBJECT.search(line)
         if not m:
             return []
@@ -109,10 +109,9 @@ class RBoxCompletionListener(sublime_plugin.ViewEventListener, RBoxMixins):
         if not self.should_complete():
             return
 
-        if not prefix:
-            completions = self.complete_package_objects(locations[0])
-            if completions:
-                return completions
+        completions = self.complete_package_objects(locations[0])
+        if completions:
+            return completions
 
         completions = self.complete_function_args(locations[0])
 
