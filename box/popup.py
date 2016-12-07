@@ -1,5 +1,6 @@
 import sublime
 import sublime_plugin
+import html
 from .mixins import RBoxMixins
 from .completion import completion_manager
 from .namespace import namespace_manager
@@ -48,5 +49,9 @@ class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
         funct_call = namespace_manager.get_function_call(pkg, funct)
         if not funct_call:
             return
+        funct_call = html.escape(funct_call, quote=False) \
+            .replace("\n", "<br>")\
+            .replace(" ", "&nbsp;")
+
         template = """{}<br><a href="{}:::{}">Help</a>"""
         self.popup(template.format(funct_call, pkg, funct), point)
