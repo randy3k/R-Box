@@ -11,14 +11,14 @@ contexts:
     - match: ""
       with_prototype:
         - include: sexpr
-      set:
         - include: chunk
+      set:
         - include: scope:text.tex.latex
 
   chunk:
     - match: ^\s*<<.*?>>(=)\s*$
       captures:
-        1: keyword.operator.assignment.r
+        1: keyword.operator.assignment.rsweave
       push:
         - meta_scope: source.r
         - match: ^\s*@\s*$
