@@ -24,7 +24,6 @@ get_functions <- function(pkg) {
     out
 }
 
-
 template <- "
     - match: \\b(foo)\\s*(\\()
       captures:

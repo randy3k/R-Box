@@ -48,6 +48,5 @@ class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
         funct_call = namespace_manager.get_function_call(pkg, funct)
         if not funct_call:
             return
-        funct_call = funct_call.replace("\n", "<br>")
         template = """{}<br><a href="{}:::{}">Help</a>"""
         self.popup(template.format(funct_call, pkg, funct), point)

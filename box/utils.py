@@ -14,17 +14,16 @@ def read_registry(key, valueex):
 ANSI_ESCAPE = re.compile(r'(\x9B|\x1B\[)[0-?]*[ -/]*[@-~]')
 
 
-def execute_command(cmd, env=None, **kwargs):
-    if not env:
-        env = os.environ.copy()
+def execute_command(cmd, **kwargs):
     if sublime.platform() == "windows":
         # make sure console does not come up
         startupinfo = subprocess.STARTUPINFO()
         startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        out = subprocess.check_output(
-            cmd, startupinfo=startupinfo, env=env, **kwargs).decode("utf-8")
     else:
-        out = subprocess.check_output(cmd, env=env, **kwargs).decode("utf-8")
+        startupinfo = None
+
+    out = subprocess.check_output(
+        cmd, startupinfo=startupinfo, **kwargs).decode("utf-8")
 
     return ANSI_ESCAPE.sub('', out)
 
