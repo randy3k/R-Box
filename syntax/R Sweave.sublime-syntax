@@ -13,13 +13,12 @@ contexts:
         - include: sexpr
       set:
         - include: chunk
-        - include: "R LaTeX+.sublime-syntax"
+        - include: scope:text.tex.latex
 
   chunk:
-    - match: ^\s*<<.*?>>=\s*$
+    - match: ^\s*<<.*?>>(=)\s*$
       captures:
-        1: entity.name.function.r
-        2: keyword.operator.assignment.r
+        1: keyword.operator.assignment.r
       push:
         - meta_scope: source.r
         - match: ^\s*@\s*$
