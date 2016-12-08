@@ -2,7 +2,6 @@ import sublime
 import sublime_plugin
 import mdpopups
 from .mixins import RBoxMixins
-from .completion import completion_manager
 from .namespace import namespace_manager
 
 
