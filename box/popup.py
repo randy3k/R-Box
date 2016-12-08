@@ -22,12 +22,6 @@ class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
         return self.rbox_settings("show_popup_hints", True)
 
     def popup(self, text, point=-1):
-        # self.view.show_popup(
-        #     text,
-        #     sublime.COOPERATE_WITH_AUTO_COMPLETE | sublime.HIDE_ON_MOUSE_MOVE_AWAY,
-        #     location=point,
-        #     max_width=600,
-        #     on_navigate=self.on_help)
         mdpopups.show_popup(
             self.view,
             text,
