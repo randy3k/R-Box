@@ -4,7 +4,7 @@ import os
 from .utils import execute_command, read_registry
 
 
-class RscriptMixins:
+class RscriptMixin:
     message_shown = False
 
     def custom_env(self):
@@ -59,7 +59,7 @@ class RscriptMixins:
         return out.strip().split(" ")
 
 
-class RBoxSettingsMixins:
+class RBoxSettingsMixin:
     _rscript_binary = None
     _additional_paths = None
 
@@ -99,7 +99,7 @@ class RBoxSettingsMixins:
         return additional_paths
 
 
-class RBoxViewMixins:
+class RBoxViewMixin:
     VALIDCALL = re.compile(r"(?:([a-zA-Z][a-zA-Z0-9.]*)(?::::?))?([.a-zA-Z0-9_-]+)\s*\($")
 
     def function_name_at_point(self, view, pt):
@@ -139,6 +139,6 @@ class RBoxViewMixins:
             return view.substr(view.line(pt))
 
 
-class RBoxMixins(RBoxViewMixins, RscriptMixins, RBoxSettingsMixins):
+class RBoxMixins(RBoxViewMixin, RscriptMixin, RBoxSettingsMixin):
 
     pass
