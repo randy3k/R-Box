@@ -6,7 +6,7 @@ from .completion import completion_manager
 from .namespace import namespace_manager
 
 
-POPUP_TEMPLATE = """{}[Help]({}:::{})"""
+POPUP_TEMPLATE = """{}[Help](help:{}:::{}) [Copy](copy:)"""
 
 
 class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
@@ -28,13 +28,19 @@ class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
             flags=sublime.COOPERATE_WITH_AUTO_COMPLETE | sublime.HIDE_ON_MOUSE_MOVE_AWAY,
             location=point,
             max_width=800,
-            on_navigate=self.on_help)
+            on_navigate=self.on_navigate)
 
-    def on_help(self, package):
-        pkg, funct = package.split(":::")
-        self.view.window().run_command(
-            "open_url",
-            {"url": "http://www.rdocumentation.org/packages/{}/topics/{}".format(pkg, funct)})
+    def on_navigate(self, link):
+        command, option = link.split(":", 1)
+        if command == "help":
+            pkg, funct = option.split(":::")
+            self.view.window().run_command(
+                "open_url",
+                {"url": "http://www.rdocumentation.org/packages/{}/topics/{}".format(pkg, funct)})
+
+        elif command == "copy":
+            sublime.set_clipboard(self._funct_call)
+            self.view.run_command("hide_popup")
 
     def on_hover(self, point, hover_zone):
         sublime.set_timeout_async(lambda: self.on_hover_async(point, hover_zone))
@@ -53,6 +59,8 @@ class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
         funct_call = namespace_manager.get_function_call(pkg, funct)
         if not funct_call:
             return
+
+        self._funct_call = " ".join([x.strip() for x in funct_call.split("\n")])
 
         pref_settings = sublime.load_settings("Preferences.sublime-settings")
         use_sublime_highlighter = pref_settings.get("mdpopups.use_sublime_highlighter", True)
