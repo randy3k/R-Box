@@ -28,19 +28,7 @@ template <- "
     - match: \\b(foo)\\s*(\\()
       captures:
         1: support.function.r
-      push:
-        - meta_scope: meta.function-call.r
-        - meta_content_scope: meta.function-call.parameters.r
-        - match: '[a-zA-Z._][a-zA-Z0-9._]*(?=\\s*=)'
-          scope: variable.parameter.r
-        - match: '(?==)'
-          push:
-            - include: \"R Extended.sublime-syntax\"
-            - match: (?=[,)])
-              pop: true
-        - match: \\)
-          pop: true
-        - include: \"R Extended.sublime-syntax\"
+      push: function-parameters
 "
 
 templated_block <- function(pkg){
@@ -53,8 +41,8 @@ for (pkg in packages){
     dict <- paste0(dict, templated_block(pkg))
 }
 
-syntax_file <- "syntax/R Support Functions.sublime-syntax"
+syntax_file <- "syntax/R Extended.sublime-syntax"
 content <- readChar(syntax_file, file.info(syntax_file)$size)
-begin_pt <- str_locate(content, "main:\n")[2]
+begin_pt <- str_locate(content, "builtins-functions:\n")[2]
 str_sub(content, begin_pt, str_length(content)) <- dict
 cat(content, file = syntax_file)
