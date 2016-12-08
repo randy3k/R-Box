@@ -15,15 +15,29 @@ Improve your R coding expriences with Sublime Text!
     </tr>
     <tr>
         <td width="50%">
-            <img src="https://cloud.githubusercontent.com/assets/1690993/20864185/e4c49e58-b9b3-11e6-879f-64f4efed4a01.gif" width="100%">
+            <img src="https://cloud.githubusercontent.com/assets/1690993/20997623/44433e6a-bcd5-11e6-9cac-44ea07c961d9.png" width="100%">
         </td>
         <td width="50%">
-            <img src="https://cloud.githubusercontent.com/assets/1690993/20864181/d033a308-b9b3-11e6-82b7-e62b2426e15e.png" width="100%">
+            <img src="https://cloud.githubusercontent.com/assets/1690993/20997724/3b293df6-bcd6-11e6-8e28-35221663b578.png" width="100%">
         </td>
     </tr>
     <tr>
-        <td width="50%">Autocompletions for R packages and Popup function hints.</td>
+        <td width="50%">Installed packages; Objects in packages; Function arguments.</td>
         <td width="50%">Some of the features are not avaliable without <a href="https://github.com/randy3k/SendREPL">SendREPL</a>.</td>
+    </tr>
+    <tr>
+        <th>Popup Hints</th>
+        <th></th>
+    </tr>
+    <tr>
+        <td width="50%">
+            <img src="https://cloud.githubusercontent.com/assets/1690993/20997602/15e13946-bcd5-11e6-9417-6e5ae6b7edc3.png" width="100%">
+        </td>
+        <td width="50%"></td>
+    </tr>
+    <tr>
+        <td width="50%">The [Help] button will bring you to <a href="https://www.rdocumentation.org/">rdocumentation.org</a></td>
+        <td width="50%"></td>
     </tr>
 </table>
 
