@@ -1,7 +1,10 @@
 import sublime
+import sublime_plugin
 import os
 import re
 import subprocess
+from contextlib import contextmanager
+
 if sublime.platform() == "windows":
     from winreg import OpenKey, QueryValueEx, HKEY_LOCAL_MACHINE, KEY_READ
 
@@ -26,6 +29,16 @@ def execute_command(cmd, **kwargs):
         cmd, startupinfo=startupinfo, **kwargs).decode("utf-8")
 
     return ANSI_ESCAPE.sub('', out)
+
+
+@contextmanager
+def preference_temporary_settings(key, value, timeout=0):
+    pref_settings = sublime.load_settings("Preferences.sublime-settings")
+    old_value = pref_settings.get(key)
+    pref_settings.set(key, value)
+    yield
+    sublime.set_timeout(
+        lambda: pref_settings.set(key, old_value), timeout)
 
 
 class OutputPanel:
@@ -72,3 +85,9 @@ class OutputPanel:
     def close(self):
         self.closed = True
         pass
+
+
+class RBoxReplaceSelectionCommand(sublime_plugin.TextCommand):
+
+    def run(self, edit, region, text):
+        self.view.replace(edit, sublime.Region(region[0], region[1]), text)

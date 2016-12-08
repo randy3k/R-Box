@@ -115,6 +115,13 @@ class RBoxViewMixins:
         else:
             return None, None
 
+    def replace_function_at_point(self, view, pt, text):
+        function_region = view.extract_scope(pt)
+        view.run_command(
+            "r_box_replace_selection",
+            {"region": (function_region.begin(), function_region.end()),
+             "text": text})
+
     def inline_packages_for_view(self, view):
         packages = []
         for s in view.find_all(r"""(library|require)\(["']?[a-zA-Z][a-zA-Z0-9.]*"""):

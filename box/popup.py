@@ -3,9 +3,10 @@ import sublime_plugin
 import mdpopups
 from .mixins import RBoxMixins
 from .namespace import namespace_manager
+from .utils import preference_temporary_settings
 
 
-POPUP_TEMPLATE = """{}[Help](help:{}:::{}) [Copy](copy:)"""
+POPUP_TEMPLATE = """{}[Help](help:{}:::{}) [Replace](replace:)"""
 
 
 class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
@@ -20,14 +21,27 @@ class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
 
         return self.rbox_settings("show_popup_hints", True)
 
-    def popup(self, text, point=-1):
-        mdpopups.show_popup(
-            self.view,
-            text,
-            flags=sublime.COOPERATE_WITH_AUTO_COMPLETE | sublime.HIDE_ON_MOUSE_MOVE_AWAY,
-            location=point,
-            max_width=800,
-            on_navigate=self.on_navigate)
+    def function_popup(self, pkg, funct, point=-1):
+        funct_call = namespace_manager.get_function_call(pkg, funct)
+        if not funct_call:
+            return
+        self._funct_call = " ".join([x.strip() for x in funct_call.split("\n")])
+        self._point = point
+        with preference_temporary_settings("mdpopups.use_sublime_highlighter", True):
+            with preference_temporary_settings(
+                    "mdpopups.sublime_user_lang_map",
+                    {"s": [["r"], ["R-Box/syntax/R Extended"]]}):
+                text = POPUP_TEMPLATE.format(
+                        mdpopups.syntax_highlight(self.view, funct_call.strip(), language="r"),
+                        pkg,
+                        funct)
+                mdpopups.show_popup(
+                    self.view,
+                    text,
+                    flags=sublime.COOPERATE_WITH_AUTO_COMPLETE | sublime.HIDE_ON_MOUSE_MOVE_AWAY,
+                    location=point,
+                    max_width=800,
+                    on_navigate=self.on_navigate)
 
     def on_navigate(self, link):
         command, option = link.split(":", 1)
@@ -37,8 +51,8 @@ class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
                 "open_url",
                 {"url": "http://www.rdocumentation.org/packages/{}/topics/{}".format(pkg, funct)})
 
-        elif command == "copy":
-            sublime.set_clipboard(self._funct_call)
+        elif command == "replace":
+            self.replace_function_at_point(self.view, self._point, self._funct_call)
             self.view.run_command("hide_popup")
 
     def on_hover(self, point, hover_zone):
@@ -51,31 +65,7 @@ class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
             return
 
         pkg, funct = self.function_name_at_point(self.view, point)
-        if not funct:
-            return
-        if not pkg:
-            pkg = namespace_manager.find_object_in_packages(funct)
-        funct_call = namespace_manager.get_function_call(pkg, funct)
-        if not funct_call:
-            return
-
-        self._funct_call = " ".join([x.strip() for x in funct_call.split("\n")])
-
-        pref_settings = sublime.load_settings("Preferences.sublime-settings")
-        use_sublime_highlighter = pref_settings.get("mdpopups.use_sublime_highlighter", True)
-        sublime_user_lang_map = pref_settings.get("sublime_user_lang_map", {})
-        pref_settings.set("mdpopups.use_sublime_highlighter", True)
-        pref_settings.set(
-            "mdpopups.sublime_user_lang_map",
-            {"s": [["r"], ["R-Box/syntax/R Extended"]]})
-
-        self.popup(POPUP_TEMPLATE.format(
-            mdpopups.syntax_highlight(self.view, funct_call.strip(), language="r"),
-            pkg,
-            funct), point)
-
-        def reset_vs():
-            pref_settings.set("mdpopups.use_sublime_highlighter", use_sublime_highlighter)
-            pref_settings.set("mdpopups.sublime_user_lang_map", sublime_user_lang_map)
-
-        sublime.set_timeout_async(reset_vs, 1000)
+        if funct:
+            if not pkg:
+                pkg = namespace_manager.find_object_in_packages(funct)
+            self.function_popup(pkg, funct, point)

@@ -3,6 +3,7 @@ from .box.popup import RBoxPopupListener
 from .box.main_menu import RBoxMainMenuListener, RBoxMainMenuClearWorkspace
 from .box.source_prompt import RBoxSourcePromptCommand
 from .box.linter import install_linter_spec
+from .box.utils import RBoxReplaceSelectionCommand
 
 
 def plugin_loaded():
