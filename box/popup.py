@@ -1,9 +1,12 @@
 import sublime
 import sublime_plugin
-import html
+import mdpopups
 from .mixins import RBoxMixins
 from .completion import completion_manager
 from .namespace import namespace_manager
+
+
+POPUP_TEMPLATE = """{}[Help]({}:::{})"""
 
 
 class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
@@ -19,11 +22,18 @@ class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
         return self.rbox_settings("show_popup_hints", True)
 
     def popup(self, text, point=-1):
-        self.view.show_popup(
+        # self.view.show_popup(
+        #     text,
+        #     sublime.COOPERATE_WITH_AUTO_COMPLETE | sublime.HIDE_ON_MOUSE_MOVE_AWAY,
+        #     location=point,
+        #     max_width=600,
+        #     on_navigate=self.on_help)
+        mdpopups.show_popup(
+            self.view,
             text,
-            sublime.COOPERATE_WITH_AUTO_COMPLETE | sublime.HIDE_ON_MOUSE_MOVE_AWAY,
+            flags=sublime.COOPERATE_WITH_AUTO_COMPLETE | sublime.HIDE_ON_MOUSE_MOVE_AWAY,
             location=point,
-            max_width=600,
+            max_width=800,
             on_navigate=self.on_help)
 
     def on_help(self, package):
@@ -49,9 +59,22 @@ class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
         funct_call = namespace_manager.get_function_call(pkg, funct)
         if not funct_call:
             return
-        funct_call = html.escape(funct_call, quote=False) \
-            .replace("\n", "<br>")\
-            .replace(" ", "&nbsp;")
 
-        template = """{}<br><a href="{}:::{}">Help</a>"""
-        self.popup(template.format(funct_call, pkg, funct), point)
+        pref_settings = sublime.load_settings("Preferences.sublime-settings")
+        use_sublime_highlighter = pref_settings.get("mdpopups.use_sublime_highlighter", True)
+        sublime_user_lang_map = pref_settings.get("sublime_user_lang_map", {})
+        pref_settings.set("mdpopups.use_sublime_highlighter", True)
+        pref_settings.set(
+            "mdpopups.sublime_user_lang_map",
+            {"s": [["r"], ["R-Box/syntax/R Extended"]]})
+
+        self.popup(POPUP_TEMPLATE.format(
+            mdpopups.syntax_highlight(self.view, funct_call.strip(), language="r"),
+            pkg,
+            funct), point)
+
+        def reset_vs():
+            pref_settings.set("mdpopups.use_sublime_highlighter", use_sublime_highlighter)
+            pref_settings.set("mdpopups.sublime_user_lang_map", sublime_user_lang_map)
+
+        sublime.set_timeout_async(reset_vs, 1000)
