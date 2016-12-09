@@ -115,7 +115,7 @@ class RBoxViewMixin:
         else:
             return None, None
 
-    def replace_function_at_point(self, view, point):
+    def _render_from_mdpopups_view(self, view):
         mdpops_view = view.window().find_output_panel("mdpopups")
         var_scope = "source.r meta.function-call.r " \
             "meta.function-call.parameters.r variable.parameter.r "
@@ -140,8 +140,10 @@ class RBoxViewMixin:
                 {"region": (r.end(), sep_point),
                  "text": " = $%d" % count})
             count = count - 1
+        return mdpops_view.substr(sublime.Region(0, mdpops_view.size()))
 
-        text = mdpops_view.substr(sublime.Region(0, mdpops_view.size()))
+    def replace_function_at_point(self, view, point):
+        text = self._render_from_mdpopups_view(view)
         text = " ".join([x.strip() for x in text.split("\n")])
         function_region = view.extract_scope(point)
         view.sel().clear()

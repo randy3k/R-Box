@@ -6,7 +6,7 @@ from .namespace import namespace_manager
 from .utils import preference_temporary_settings
 
 
-POPUP_TEMPLATE = """{}[Help](help:{}:::{}) [Replace](replace:)"""
+POPUP_TEMPLATE = """{}[Help](help:{}:::{}) [Paste](paste:)"""
 
 
 class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
@@ -39,17 +39,18 @@ class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
                     flags=sublime.COOPERATE_WITH_AUTO_COMPLETE | sublime.HIDE_ON_MOUSE_MOVE_AWAY,
                     location=point,
                     max_width=800,
-                    on_navigate=lambda x: self.on_navigate(x, point))
+                    on_navigate=lambda x: self.on_navigate(x, pkg, funct, point))
 
-    def on_navigate(self, link, point):
+    def on_navigate(self, link, pkg, funct, point):
         command, option = link.split(":", 1)
         if command == "help":
             pkg, funct = option.split(":::")
             self.view.window().run_command(
                 "open_url",
                 {"url": "http://www.rdocumentation.org/packages/{}/topics/{}".format(pkg, funct)})
+            self.function_popup(pkg, funct, point)
 
-        elif command == "replace":
+        elif command == "paste":
             self.replace_function_at_point(self.view, point)
             self.view.run_command("hide_popup")
 
