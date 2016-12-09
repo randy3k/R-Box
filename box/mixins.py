@@ -115,12 +115,38 @@ class RBoxViewMixin:
         else:
             return None, None
 
-    def replace_function_at_point(self, view, pt, text):
-        function_region = view.extract_scope(pt)
-        view.run_command(
-            "r_box_replace_selection",
-            {"region": (function_region.begin(), function_region.end()),
-             "text": text})
+    def replace_function_at_point(self, view, point):
+        mdpops_view = view.window().find_output_panel("mdpopups")
+        var_scope = "source.r meta.function-call.r " \
+            "meta.function-call.parameters.r variable.parameter.r "
+        comma_scope = "source.r meta.function-call.r " \
+            "meta.function-call.parameters.r punctuation.separator.parameters.r "
+        regions = mdpops_view.find_by_selector(var_scope)
+        regions = [r for r in regions if mdpops_view.scope_name(r.begin()) == var_scope]
+        count = len(regions)
+        for r in reversed(regions):
+            sep_point = r.end()
+            while True:
+                pt = mdpops_view.find(",", sep_point)
+                if pt.end() == -1:
+                    sep_point = mdpops_view.size() - 1
+                    break
+                if mdpops_view.scope_name(pt.begin()) == comma_scope:
+                    sep_point = pt.begin()
+                    break
+                sep_point = pt.begin() + 1
+            mdpops_view.run_command(
+                "r_box_replace_selection",
+                {"region": (r.end(), sep_point),
+                 "text": " = $%d" % count})
+            count = count - 1
+
+        text = mdpops_view.substr(sublime.Region(0, mdpops_view.size()))
+        text = " ".join([x.strip() for x in text.split("\n")])
+        function_region = view.extract_scope(point)
+        view.sel().clear()
+        view.sel().add(function_region)
+        view.run_command("insert_snippet", {"contents": text})
 
     def inline_packages_for_view(self, view):
         packages = []

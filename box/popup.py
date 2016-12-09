@@ -25,8 +25,6 @@ class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
         funct_call = namespace_manager.get_function_call(pkg, funct)
         if not funct_call:
             return
-        self._funct_call = " ".join([x.strip() for x in funct_call.split("\n")])
-        self._point = point
         with preference_temporary_settings("mdpopups.use_sublime_highlighter", True):
             with preference_temporary_settings(
                     "mdpopups.sublime_user_lang_map",
@@ -41,9 +39,9 @@ class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
                     flags=sublime.COOPERATE_WITH_AUTO_COMPLETE | sublime.HIDE_ON_MOUSE_MOVE_AWAY,
                     location=point,
                     max_width=800,
-                    on_navigate=self.on_navigate)
+                    on_navigate=lambda x: self.on_navigate(x, point))
 
-    def on_navigate(self, link):
+    def on_navigate(self, link, point):
         command, option = link.split(":", 1)
         if command == "help":
             pkg, funct = option.split(":::")
@@ -52,7 +50,7 @@ class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
                 {"url": "http://www.rdocumentation.org/packages/{}/topics/{}".format(pkg, funct)})
 
         elif command == "replace":
-            self.replace_function_at_point(self.view, self._point, self._funct_call)
+            self.replace_function_at_point(self.view, point)
             self.view.run_command("hide_popup")
 
     def on_hover(self, point, hover_zone):
