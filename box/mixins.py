@@ -51,6 +51,7 @@ class RscriptMixin:
     def get_function_call(self, pkg, funct):
         out = self.rcmd("args({}:::{})".format(pkg, funct))
         out = re.sub(r"^function ", funct, out).strip()
+        out = re.sub(r"<bytecode: [^>]+>", "", out).strip()
         out = re.sub(r"NULL(?:\n|\s)*$", "", out).strip()
         return out
 
