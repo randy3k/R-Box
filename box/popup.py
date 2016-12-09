@@ -1,5 +1,6 @@
 import sublime
 import sublime_plugin
+import threading
 import mdpopups
 from .mixins import RBoxMixins
 from .namespace import namespace_manager
@@ -9,19 +10,16 @@ from .utils import preference_temporary_settings
 POPUP_TEMPLATE = """{}[Help](help:{}:::{}) [Paste](paste:)"""
 
 
-class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
+class RBoxShowPopup(sublime_plugin.TextCommand, RBoxMixins):
+    def run(self, edit, pkg, funct, point=-1):
+        sublime.set_timeout_async(
+            lambda: self.run_async(pkg, funct, point))
 
-    def should_show_popup(self):
-        if self.view.settings().get('is_widget'):
-            return False
-
-        point = self.view.sel()[0].end() if len(self.view.sel()) > 0 else 0
-        if not self.view.match_selector(point, "source.r, source.r-console"):
-            return False
-
-        return self.rbox_settings("show_popup_hints", True)
-
-    def function_popup(self, pkg, funct, point=-1):
+    def run_async(self, pkg, funct, point=-1):
+        if not funct:
+            pkg, funct = self.function_name_at_point(self.view, point)
+        if not pkg:
+            pkg = namespace_manager.find_object_in_packages(funct)
         funct_call = namespace_manager.get_function_call(pkg, funct)
         if not funct_call:
             return
@@ -48,11 +46,24 @@ class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
             self.view.window().run_command(
                 "open_url",
                 {"url": "http://www.rdocumentation.org/packages/{}/topics/{}".format(pkg, funct)})
-            self.function_popup(pkg, funct, point)
 
         elif command == "paste":
             self.replace_function_at_point(self.view, point)
             self.view.run_command("hide_popup")
+
+
+class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
+    thread = None
+
+    def should_show_popup(self):
+        if self.view.settings().get('is_widget'):
+            return False
+
+        point = self.view.sel()[0].end() if len(self.view.sel()) > 0 else 0
+        if not self.view.match_selector(point, "source.r, source.r-console"):
+            return False
+
+        return self.rbox_settings("show_popup_hints", True)
 
     def on_hover(self, point, hover_zone):
         sublime.set_timeout_async(lambda: self.on_hover_async(point, hover_zone))
@@ -63,8 +74,35 @@ class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
         if hover_zone != sublime.HOVER_TEXT:
             return
 
-        pkg, funct = self.function_name_at_point(self.view, point)
-        if funct:
-            if not pkg:
-                pkg = namespace_manager.find_object_in_packages(funct)
-            self.function_popup(pkg, funct, point)
+        self.view.run_command(
+            "r_box_show_popup", {
+                "pkg": None,
+                "funct": None,
+                "point": point
+            })
+
+    def on_modified_async(self):
+        if not self.should_show_popup():
+            return
+        if self.thread:
+            self.thread.cancel()
+            self.thread = None
+
+        sel = self.view.sel()
+        if len(sel) == 0 or not sel[0].empty():
+            return
+        point = self.view.sel()[0].end()
+        if self.view.substr(sublime.Region(point-1, point)) is not "(":
+            return
+        if not self.view.match_selector(point-2, "meta.function-call.r"):
+            return
+        self.thread = threading.Timer(
+            2,
+            lambda: self.view.run_command(
+                "r_box_show_popup", {
+                    "pkg": None,
+                    "funct": None,
+                    "point": point-1
+                })
+        )
+        self.thread.start()
