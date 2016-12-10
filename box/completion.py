@@ -10,7 +10,7 @@ VALIDOBJECT = re.compile(r"([a-zA-Z][a-zA-Z0-9.]*)(:::?)([.a-zA-Z0-9_-]*)$")
 ARGVALUE = re.compile(r"=\s*[.a-zA-Z0-9_-]*$")
 
 
-class CompletionManager(RBoxMixins):
+class CompletionMixin:
 
     default_packages = [
         "base",
@@ -56,14 +56,14 @@ class CompletionManager(RBoxMixins):
         else:
             return self.filter_completions(ns.unexported)
 
+    def get_function_args(self, pkg, funct):
+        return namespace_manager.list_function_args(pkg, funct)
+
     def preload_package(self, pkg):
         namespace_manager.get_namespace(pkg)
 
 
-completion_manager = CompletionManager()
-
-
-class RBoxCompletionListener(sublime_plugin.ViewEventListener, RBoxMixins):
+class RBoxCompletionListener(CompletionMixin, RBoxMixins, sublime_plugin.ViewEventListener, ):
 
     def should_complete(self):
         if self.view.settings().get('is_widget'):
@@ -83,10 +83,10 @@ class RBoxCompletionListener(sublime_plugin.ViewEventListener, RBoxMixins):
         pkg, delim, prefix = m.groups()
 
         if delim == "::":
-            completions = completion_manager.get_completions_for_package(
+            completions = self.get_completions_for_package(
                 pkg, exported_only=True)
         elif delim == ":::":
-            completions = completion_manager.get_completions_for_package(
+            completions = self.get_completions_for_package(
                 pkg, exported_only=False)
         else:
             return []
@@ -102,7 +102,7 @@ class RBoxCompletionListener(sublime_plugin.ViewEventListener, RBoxMixins):
         pkg, funct = self.function_name_at_point(self.view, pt)
         if not funct:
             return []
-        args = namespace_manager.list_function_args(pkg, funct)
+        args = self.get_function_args(pkg, funct)
         return [["{} = \tArguments".format(arg), "{} = ".format(arg)] for arg in args]
 
     def on_query_completions(self, prefix, locations):
@@ -115,27 +115,24 @@ class RBoxCompletionListener(sublime_plugin.ViewEventListener, RBoxMixins):
 
         completions = self.complete_function_args(locations[0])
 
-        completions += completion_manager.get_completions_for_view(self.view)
+        completions += self.get_completions_for_view(self.view)
         completions = [item for item in completions if len(item) == 1 or item[1].startswith(prefix)]
         return completions
 
-    def refresh_manager(self):
-        completion_manager.refresh_completions_for_view(self.view)
-
     def on_post_save_async(self):
         if self.should_complete():
-            self.refresh_manager()
+            self.refresh_completions_for_view(self.view)
 
     def on_load_async(self):
         if self.should_complete():
-            self.refresh_manager()
+            self.refresh_completions_for_view(self.view)
 
     def on_activated_async(self):
         if self.should_complete():
-            self.refresh_manager()
+            self.refresh_completions_for_view(self.view)
 
 
-class RBoxAutoComplete(sublime_plugin.TextCommand, RBoxMixins):
+class RBoxAutoComplete(CompletionMixin, RBoxMixins, sublime_plugin.TextCommand):
 
     def run(self, edit, key=""):
         sublime.set_timeout_async(lambda: self.run_async(key))
@@ -149,7 +146,7 @@ class RBoxAutoComplete(sublime_plugin.TextCommand, RBoxMixins):
             current_line = self.extract_line(self.view, self.view.sel()[0].end(), truncated=True)
             m = VALIDOBJECT.search(current_line)
             if m:
-                pkg, delim, _ = m.groups()
-                completion_manager.preload_package(pkg)
+                pkg, _, _ = m.groups()
+                self.preload_package(pkg)
 
         self.view.run_command("auto_complete")

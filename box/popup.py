@@ -10,7 +10,7 @@ from .utils import preference_temporary_settings
 POPUP_TEMPLATE = """{}[Help](help:{}:::{}) [Paste](paste:)"""
 
 
-class RBoxShowPopup(sublime_plugin.TextCommand, RBoxMixins):
+class RBoxShowPopup(RBoxMixins, sublime_plugin.TextCommand):
     def run(self, edit, pkg, funct, point=-1):
         sublime.set_timeout_async(
             lambda: self.run_async(pkg, funct, point))
@@ -52,7 +52,7 @@ class RBoxShowPopup(sublime_plugin.TextCommand, RBoxMixins):
             self.view.run_command("hide_popup")
 
 
-class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
+class RBoxPopupListener(RBoxMixins, sublime_plugin.ViewEventListener):
     thread = None
 
     def should_show_popup(self):
