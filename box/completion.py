@@ -73,7 +73,7 @@ class RBoxCompletionListener(sublime_plugin.ViewEventListener, RBoxMixins):
         if not self.view.match_selector(point, "source.r, source.r-console"):
             return False
 
-        return self.rbox_settings("auto_completions", True)
+        return self.r_box_settings("auto_completions", True)
 
     def complete_package_objects(self, pt):
         line = self.extract_line(self.view, pt, truncated=True)

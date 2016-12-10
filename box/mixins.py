@@ -4,72 +4,16 @@ import os
 from .utils import execute_command, read_registry
 
 
-class RscriptMixin:
-    message_shown = False
-
-    def custom_env(self):
-        paths = self.additional_paths()
-        env = os.environ.copy()
-        if paths:
-            sep = ";" if sublime.platform() == "windows" else ":"
-            env["PATH"] = env["PATH"] + sep + sep.join(paths)
-        return env
-
-    def rcmd(self, script=None, file=None, args=None):
-        cmd = [self.rscript_binary()]
-        if script:
-            cmd = cmd + ["-e", script]
-        elif file:
-            cmd = cmd + [file]
-        if args:
-            cmd = cmd + args
-
-        try:
-            return execute_command(cmd, env=self.custom_env())
-        except FileNotFoundError:
-            print("Rscript binary not found.")
-            if not self.message_shown:
-                sublime.message_dialog(
-                    "Rscript binary cannot be found automatically."
-                    "The path to `Rscript` can be specified in the R-Box settings.")
-                self.message_shown = True
-            return ""
-        except Exception as e:
-            print("R-Box:", e)
-            return ""
-
-    def installed_packages(self):
-        return self.rcmd("cat(rownames(installed.packages()))").strip().split(" ")
-
-    def list_package_objects(self, pkg, exported_only=True):
-        if exported_only:
-            objects = self.rcmd("cat(getNamespaceExports(asNamespace('{}')))".format(pkg))
-        else:
-            objects = self.rcmd("cat(objects(asNamespace('{}')))".format(pkg))
-        return objects.strip().split(" ")
-
-    def get_function_call(self, pkg, funct):
-        out = self.rcmd("args({}:::{})".format(pkg, funct))
-        out = re.sub(r"^function ", funct, out).strip()
-        out = re.sub(r"<bytecode: [^>]+>", "", out).strip()
-        out = re.sub(r"NULL(?:\n|\s)*$", "", out).strip()
-        return out
-
-    def list_function_args(self, pkg, funct):
-        out = self.rcmd("cat(names(formals({}:::{})))".format(pkg, funct))
-        return out.strip().split(" ")
-
-
 class RBoxSettingsMixin:
     _rscript_binary = None
     _additional_paths = None
 
-    def rbox_settings(self, key, default):
+    def r_box_settings(self, key, default):
         s = sublime.load_settings('R-Box.sublime-settings')
         return s.get(key, default)
 
     def rscript_binary(self):
-        rscript_binary = self.rbox_settings("rscript_binary", self._rscript_binary)
+        rscript_binary = self.r_box_settings("rscript_binary", self._rscript_binary)
         if not rscript_binary:
             if sublime.platform() == "windows":
                 try:
@@ -85,7 +29,7 @@ class RBoxSettingsMixin:
         return rscript_binary
 
     def additional_paths(self):
-        additional_paths = self.rbox_settings("additional_paths", [])
+        additional_paths = self.r_box_settings("additional_paths", [])
         if not additional_paths:
             additional_paths = self._additional_paths
         if not additional_paths:
@@ -168,6 +112,62 @@ class RBoxViewMixin:
             return view.substr(view.line(pt))
 
 
-class RBoxMixins(RBoxViewMixin, RscriptMixin, RBoxSettingsMixin):
+class RBoxMixins(RBoxViewMixin, RBoxSettingsMixin):
 
     pass
+
+
+class RscriptMixin:
+    message_shown = False
+
+    def custom_env(self):
+        paths = self.additional_paths()
+        env = os.environ.copy()
+        if paths:
+            sep = ";" if sublime.platform() == "windows" else ":"
+            env["PATH"] = env["PATH"] + sep + sep.join(paths)
+        return env
+
+    def rcmd(self, script=None, file=None, args=None):
+        cmd = [self.rscript_binary()]
+        if script:
+            cmd = cmd + ["-e", script]
+        elif file:
+            cmd = cmd + [file]
+        if args:
+            cmd = cmd + args
+
+        try:
+            return execute_command(cmd, env=self.custom_env())
+        except FileNotFoundError:
+            print("Rscript binary not found.")
+            if not self.message_shown:
+                sublime.message_dialog(
+                    "Rscript binary cannot be found automatically."
+                    "The path to `Rscript` can be specified in the R-Box settings.")
+                self.message_shown = True
+            return ""
+        except Exception as e:
+            print("R-Box:", e)
+            return ""
+
+    def installed_packages(self):
+        return self.rcmd("cat(rownames(installed.packages()))").strip().split(" ")
+
+    def list_package_objects(self, pkg, exported_only=True):
+        if exported_only:
+            objects = self.rcmd("cat(getNamespaceExports(asNamespace('{}')))".format(pkg))
+        else:
+            objects = self.rcmd("cat(objects(asNamespace('{}')))".format(pkg))
+        return objects.strip().split(" ")
+
+    def get_function_call(self, pkg, funct):
+        out = self.rcmd("args({}:::{})".format(pkg, funct))
+        out = re.sub(r"^function ", funct, out).strip()
+        out = re.sub(r"<bytecode: [^>]+>", "", out).strip()
+        out = re.sub(r"NULL(?:\n|\s)*$", "", out).strip()
+        return out
+
+    def list_function_args(self, pkg, funct):
+        out = self.rcmd("cat(names(formals({}:::{})))".format(pkg, funct))
+        return out.strip().split(" ")

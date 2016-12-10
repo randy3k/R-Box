@@ -63,7 +63,7 @@ class RBoxPopupListener(sublime_plugin.ViewEventListener, RBoxMixins):
         if not self.view.match_selector(point, "source.r, source.r-console"):
             return False
 
-        return self.rbox_settings("show_popup_hints", True)
+        return self.r_box_settings("show_popup_hints", True)
 
     def on_hover(self, point, hover_zone):
         sublime.set_timeout_async(lambda: self.on_hover_async(point, hover_zone))
