@@ -80,7 +80,7 @@
       {
         "command": "send_repl",
         "args": {
-          "cmd": "rmarkdown::render(\"$file\")"
+          "cmd": "rmarkdown::render(\"$file\", encoding = \"UTF-8\")"
         },
         "caption": "Rmarkdown: Render"
       },

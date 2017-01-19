@@ -3,7 +3,7 @@
     "working_dir": "${project_path:${folder}}",
     "cmd": [
         "Rscript", "-e",
-        "library(rmarkdown); render('$file')"
+        "rmarkdown::render('$file', encoding = 'UTF-8')"
     ],
     "osx":{
         "path": "/Library/TeX/texbin:/usr/local/bin:$PATH"
