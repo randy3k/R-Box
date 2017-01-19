@@ -62,29 +62,44 @@ class RBoxViewMixin:
 
     def _render_from_mdpopups_view(self, view):
         mdpops_view = view.window().find_output_panel("mdpopups")
+        parameters_scope = "source.r meta.function-call.r " \
+            "meta.function-call.parameters.r "
         var_scope = "source.r meta.function-call.r " \
             "meta.function-call.parameters.r variable.parameter.r "
         comma_scope = "source.r meta.function-call.r " \
             "meta.function-call.parameters.r punctuation.separator.parameters.r "
-        regions = mdpops_view.find_by_selector(var_scope)
-        regions = [r for r in regions if mdpops_view.scope_name(r.begin()) == var_scope]
-        count = len(regions)
-        for r in reversed(regions):
-            sep_point = r.end()
-            while True:
-                pt = mdpops_view.find(",", sep_point)
-                if pt.end() == -1:
-                    sep_point = mdpops_view.size() - 1
-                    break
-                if mdpops_view.scope_name(pt.begin()) == comma_scope:
-                    sep_point = pt.begin()
-                    break
-                sep_point = pt.begin() + 1
-            mdpops_view.run_command(
-                "r_box_replace_selection",
-                {"region": (r.end(), sep_point),
-                 "text": " = $%d" % count})
-            count = count - 1
+        parameters_regeion = mdpops_view.find_by_selector(parameters_scope)
+        replacements = []
+        if len(parameters_regeion) > 0:
+            begin = parameters_regeion[0].begin()
+            end = parameters_regeion[0].end()
+            pt = begin
+            count = 1
+            while pt < end:
+                pt = mdpops_view.find(r"\S", pt).begin()
+                if mdpops_view.scope_name(pt) == var_scope:
+                    pt = mdpops_view.find(r"=", pt).begin()
+                    pt = mdpops_view.find(r"\S", pt + 1).begin()
+
+                seppt = mdpops_view.find(",", pt).begin()
+                if seppt > 0 and mdpops_view.scope_name(seppt) != comma_scope:
+                    pt = seppt + 1
+                    continue
+
+                if seppt == -1:
+                    seppt = end
+
+                orig_text = mdpops_view.substr(sublime.Region(pt, seppt))
+                text = "${%d:%s}" % (count, orig_text)
+                replacements.append([pt, seppt, text])
+                count = count + 1
+                pt = seppt + 1
+
+            for begin, end, text in reversed(replacements):
+                mdpops_view.run_command(
+                    "r_box_replace_selection",
+                    {"region": (begin, end), "text": format(text)})
+
         return mdpops_view.substr(sublime.Region(0, mdpops_view.size()))
 
     def replace_function_at_point(self, view, point):
