@@ -77,22 +77,33 @@ class RBoxViewMixin:
             count = 1
             while pt < end:
                 pt = mdpops_view.find(r"\S", pt).begin()
+                kwarg = False
                 if mdpops_view.scope_name(pt) == var_scope:
-                    pt = mdpops_view.find(r"=", pt).begin()
-                    pt = mdpops_view.find(r"\S", pt + 1).begin()
+                    kwarg = True
+                    parapt = mdpops_view.find(r"=", pt).begin()
+                    parapt = mdpops_view.find(r"\S", parapt + 1).begin()
 
-                seppt = mdpops_view.find(",", pt).begin()
-                if seppt > 0 and mdpops_view.scope_name(seppt) != comma_scope:
-                    pt = seppt + 1
-                    continue
+                seppt = pt
+                while True:
+                    seppt = mdpops_view.find(",", seppt + 1).begin()
+                    if seppt > 0 and mdpops_view.scope_name(seppt) == comma_scope:
+                        break
 
-                if seppt == -1:
-                    seppt = end
+                    if seppt == -1:
+                        seppt = end
+                        break
 
-                orig_text = mdpops_view.substr(sublime.Region(pt, seppt))
-                text = "${%d:%s}" % (count, orig_text)
+                if kwarg:
+                    orig_var = mdpops_view.substr(sublime.Region(pt, parapt))
+                    orig_text = mdpops_view.substr(sublime.Region(parapt, seppt))
+                    text = "${%d:%s${%d:%s}}" % (count, orig_var, count + 1, orig_text)
+                    count = count + 2
+                else:
+                    orig_text = mdpops_view.substr(sublime.Region(pt, seppt))
+                    text = "${%d:%s}" % (count, orig_text)
+                    count = count + 1
+
                 replacements.append([pt, seppt, text])
-                count = count + 1
                 pt = seppt + 1
 
             for begin, end, text in reversed(replacements):
