@@ -1,5 +1,5 @@
 [
-    // fix quotation in Rnw
+    // fix double quotes in Rnw
     { "keys": ["\""], "command": "insert_snippet", "args": {"contents": "\"${0:$SELECTION}\""}, "context":
         [
             { "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
@@ -9,7 +9,7 @@
             { "key": "selector", "operator": "equal", "operand": "text.tex.latex.rsweave source.r" }
         ]
     },
-    // fix quotation in Rnw
+    // fix single quotes in Rnw
     { "keys": ["'"], "command": "insert_snippet", "args": {"contents": "'${0:$SELECTION}'"}, "context":
         [
             { "key": "setting.auto_match_enabled", "operator": "equal", "operand": true },
@@ -19,6 +19,7 @@
             { "key": "selector", "operator": "equal", "operand": "text.tex.latex.rsweave source.r" }
         ]
     },
+
     // Roxygen
     { "keys": ["'"], "command": "insert_snippet", "args": {"contents": "'"}, "context":
         [
@@ -29,6 +30,7 @@
             { "key": "selector", "operator": "equal", "operand": "source.r" }
         ]
     },
+
     // comment indentation
     { "keys": ["enter"], "command": "insert", "args": {"characters": "\n#' "}, "context":
         [
@@ -46,6 +48,7 @@
             { "key": "selector", "operator": "equal", "operand": "source.r" }
         ]
     },
+
     // completions for package objects
     { "keys": [":"], "command": "r_box_auto_complete", "args": {"key": ":"}, "context":
         [
@@ -73,6 +76,71 @@
             { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
             { "key": "selector", "operator": "equal", "operand": "meta.function-call.r" },
             { "key": "auto_complete_visible", "operator": "equal", "operand": false }
+        ]
+    },
+
+    // menu: source current file
+    {
+        "keys": ["ctrl+shift+s"], "command": "send_repl",
+        "args": {"cmd": "source(\"$file\")"},
+        "context": [
+            { "key": "selector", "operator": "equal", "operand": "source.r" }
+        ]
+    },
+    // menu: build and reload
+    {
+        "keys": ["ctrl+shift+b"], "command": "send_repl",
+        "args": {"cmd": "devtools::install(\"$project_path\")"},
+        "context": [
+            { "key": "selector", "operator": "equal", "operand": "source.r" }
+        ]
+    },
+    // menu: load all
+    {
+        "keys": ["ctrl+shift+l"], "command": "send_repl",
+        "args": {"cmd": "devtools::load_all(\"$project_path\")"},
+        "context": [
+            { "key": "selector", "operator": "equal", "operand": "source.r" }
+        ]
+    },
+    // menu: check
+    {
+        "keys": ["ctrl+shift+e"], "command": "send_repl",
+        "args": {"cmd": "devtools::check(\"$project_path\")"},
+        "context": [
+            { "key": "selector", "operator": "equal", "operand": "source.r" }
+        ]
+    },
+    // menu: test
+    {
+        "keys": ["ctrl+shift+t"], "command": "send_repl",
+        "args": {"cmd": "devtools::test(\"$project_path\")"},
+        "context": [
+            { "key": "selector", "operator": "equal", "operand": "source.r" }
+        ]
+    },
+    // menu: document
+    {
+        "keys": ["ctrl+shift+d"], "command": "send_repl",
+        "args": {"cmd": "devtools::document(\"$project_path\")"},
+        "context": [
+            { "key": "selector", "operator": "equal", "operand": "source.r" }
+        ]
+    },
+    // menu: render Rmd
+    {
+        "keys": ["ctrl+shift+k"], "command": "send_repl",
+        "args": {"cmd": "rmarkdown::render(\"$file\", encoding = \"UTF-8\")"},
+        "context": [
+            { "key": "selector", "operator": "equal", "operand": "text.html.markdown.rmarkdown source.r" }
+        ]
+    },
+    // menu: Sweave Rnw
+    {
+        "keys": ["ctrl+shift+k"], "command": "send_repl",
+        "args": {"cmd": "setwd(\"$file_path\")\nSweave(\"$file\")\ntools::texi2dvi(\"$file_base_name.tex\", pdf = TRUE)"},
+        "context": [
+            { "key": "selector", "operator": "equal", "operand": "text.tex.latex.rsweave source.r" }
         ]
     }
 ]
