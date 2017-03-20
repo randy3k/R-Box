@@ -35,7 +35,7 @@ contexts:
       scope: keyword.control.r
     - match: \b(ifelse|if|for|return|switch|while|invisible)\b(?=\s*\()
       scope: keyword.control.r
-    - match: (\-|\+|\*|\/|%\/%|%%|%\*%|%in%|%o%|%x%|\^|:=|%between%|%chin%|%like%|%\+%|%\+replace%|%:%|%do%|%dopar%|%>%|%<>%|%T>%|%\$%)
+    - match: (\-|\+|\*|\/|%\/%|%%|%\*%|%in%|%o%|%x%|\^)
       scope: keyword.operator.arithmetic.r
     - match: (=|<-|<<-|->|->>)
       scope: keyword.operator.assignment.r
@@ -43,6 +43,8 @@ contexts:
       scope: keyword.operator.comparison.r
     - match: (!|&{1,2}|[|]{1,2})
       scope: keyword.operator.logical.r
+    - match: (:=|%between%|%chin%|%like%|%\+%|%\+replace%|%:%|%do%|%dopar%|%>%|%<>%|%T>%|%\$%)
+      scope: keyword.operator.other.r
     - match: (\.\.\.|\$|:|\~|@)
       scope: keyword.other.r
 
