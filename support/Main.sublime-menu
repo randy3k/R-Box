@@ -13,21 +13,11 @@
             "caption": "R-Box",
             "children": [
               {
-                "command": "open_file",
+                "caption": "Settings",
+                "command": "edit_settings",
                 "args": {
-                  "file": "${packages}/R-Box/R-Box.sublime-settings"
-                },
-                "caption": "Settings – Default"
-              },
-              {
-                "command": "open_file",
-                "args": {
-                  "file": "${packages}/User/R-Box.sublime-settings"
-                },
-                "caption": "Settings – User"
-              },
-              {
-                "caption": "-"
+                  "base_file": "${packages}/R-Box/R-Box.sublime-settings"
+                }
               }
             ]
           }
