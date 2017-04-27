@@ -43,6 +43,6 @@ for (pkg in packages){
 
 syntax_file <- "syntax/R Extended.sublime-syntax"
 content <- readChar(syntax_file, file.info(syntax_file)$size)
-begin_pt <- str_locate(content, "builtins-functions:\n")[2]
+begin_pt <- str_locate(content, "builtin-functions:\n")[2]
 str_sub(content, begin_pt, str_length(content)) <- dict
 cat(content, file = syntax_file)
