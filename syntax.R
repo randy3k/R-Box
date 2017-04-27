@@ -10,18 +10,8 @@ packages <- c(
 )
 
 get_functions <- function(pkg) {
-    objs <- getNamespaceExports(asNamespace(pkg))
-    objs <- objs[str_detect(objs, "^[a-zA-Z\\._][0-9a-zA-Z\\._]*$")]
-    out <- c()
-    for (obj in objs){
-        try({
-            if (eval(parse(text = paste0("is.function(", pkg, "::", obj, ")")))){
-                out <- c(out, obj)
-            }
-        },
-        silent = TRUE)
-    }
-    out
+    objs <- unclass(lsf.str(envir = asNamespace(pkg)))
+    objs[str_detect(objs, "^[a-zA-Z\\._][0-9a-zA-Z\\._]*$")]
 }
 
 template <- "
