@@ -16,30 +16,27 @@ contexts:
         - include: scope:text.tex.latex
 
   chunk:
-    - match: ^\s*<<.*?>>(=)\s*$
-      captures:
-        1: keyword.operator.assignment.rsweave
+    - match: ^\s*(?=<<.*>>=\s*$)
       push:
-        - meta_scope: source.r
-        - match: ^\s*@\s*$
-          pop: true
-        - include: "R Extended.sublime-syntax"
+        - match: "<<"
+          push:
+            - meta_content_scope: source.r
+            - match: ">>="
+              pop: true
+            - include: "R Extended.sublime-syntax"
+        - match: ""
+          set:
+            - meta_content_scope: source.r
+            - match: ^\s*@\s*$
+              pop: true
+            - include: "R Extended.sublime-syntax"
 
   sexpr:
     - match: (\\Sexpr)\{
       captures:
         1: support.function.latex
-      with_prototype:
+      push:
         - include: "R Extended.sublime-syntax"
-      push:
-        - meta_scope: source.r
         - match: \}
-          pop: true
-        - include: braces
-
-  braces:
-    - match: '\{'
-      push:
-        - match: '\}'
           pop: true
         - include: braces
