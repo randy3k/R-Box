@@ -15,7 +15,8 @@ class RBoxMainMenuListener(sublime_plugin.EventListener):
 
     def should_show_menu(self, view):
 
-        point = view.sel()[0].end() if len(view.sel()) > 0 else 0
+        sel = [s for s in view.sel()]
+        point = sel[0].end() if len(sel) > 0 else 0
         score = view.score_selector(
             point,
             "source.r, "
