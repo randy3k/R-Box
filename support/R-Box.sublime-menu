@@ -81,7 +81,7 @@
         "args": {
           "cmd": "rmarkdown::render(\"$file\", encoding = \"UTF-8\")"
         },
-        "caption": "Render Rmd to HTML"
+        "caption": "Render Rmarkdown"
       },
       {
         "command": "send_repl",
