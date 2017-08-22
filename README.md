@@ -18,26 +18,30 @@ Improve your R coding expriences with Sublime Text!
             <img src="https://cloud.githubusercontent.com/assets/1690993/20997623/44433e6a-bcd5-11e6-9cac-44ea07c961d9.png" width="100%">
         </td>
         <td width="50%">
-            <img src="https://cloud.githubusercontent.com/assets/1690993/20997724/3b293df6-bcd6-11e6-8e28-35221663b578.png" width="100%">
+            <img src="https://user-images.githubusercontent.com/1690993/29596130-ae7efb5a-8789-11e7-9d73-0714b62b6ebb.png" width="100%">
         </td>
     </tr>
     <tr>
         <td width="50%">Installed packages; Objects in packages; Function arguments.</td>
-        <td width="50%">Avaliable with <a href="https://github.com/randy3k/SendCode">SendCode</a>.</td>
+        <td width="50%">Some features are provided by <a href="https://github.com/randy3k/SendCode">SendCode</a>.</td>
     </tr>
     <tr>
         <th>Popup Hints</th>
-        <th></th>
+        <th>Code Tools</th>
     </tr>
     <tr>
         <td width="50%">
-            <img src="https://cloud.githubusercontent.com/assets/1690993/20997602/15e13946-bcd5-11e6-9417-6e5ae6b7edc3.png" width="100%">
+            <img src="https://user-images.githubusercontent.com/1690993/29596301-87a63f7e-878a-11e7-98f6-32e6ab99afd5.png" width="100%">
         </td>
-        <td width="50%"></td>
+        <td width="50%">
+            <img src="https://user-images.githubusercontent.com/1690993/29596563-b993db6c-878b-11e7-9fa9-03e25d2ad506.gif" width="100%">
+            <br>
+            <img src="https://user-images.githubusercontent.com/1690993/29596635-081d6bc2-878c-11e7-8204-aa61683d2792.gif" width="100%">
+        </td>
     </tr>
     <tr>
         <td width="50%">The [Help] button will bring you to <a href="https://www.rdocumentation.org/">rdocumentation.org</a></td>
-        <td width="50%"></td>
+        <td width="50%">Format Code and Extract Function</td>
     </tr>
 </table>
 

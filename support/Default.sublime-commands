@@ -1,0 +1,29 @@
+[
+    {
+        "caption": "Preferences: R-Box Settings",
+        "command": "edit_settings",
+        "args":
+        {
+            "base_file": "${packages}/R-Box/R-Box.sublime-settings",
+            "default": "{\n\t$0\n}\n"
+        }
+    },
+    {
+        "caption": "Preferences: R-Box Key Bindings",
+        "command": "edit_settings",
+        "args":
+        {
+            "base_file": "${packages}/R-Box/support/Default.sublime-keymap",
+            "user_file": "${packages}/User/Default ($platform).sublime-keymap",
+            "default": "[\n\t$0\n]\n"
+        }
+    },
+    {
+        "caption": "R-Box: Format Selected Code",
+        "command": "r_box_format_code"
+    },
+    {
+      "caption": "R-Box: Extract Function from Selection",
+      "command": "r_box_extract_function"
+    }
+]

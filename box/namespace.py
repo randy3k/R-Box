@@ -1,6 +1,5 @@
 from types import SimpleNamespace
 from collections import OrderedDict
-from .view_mixin import RBoxViewMixin
 from .rscript import ScriptMixin
 
 
@@ -9,7 +8,7 @@ class PackageNamespace(SimpleNamespace):
     unexported = []
 
 
-class NamespaceManager(ScriptMixin, RBoxViewMixin):
+class NamespaceManager(ScriptMixin):
     ns = OrderedDict()
     fcall = {}
     fargs = {}

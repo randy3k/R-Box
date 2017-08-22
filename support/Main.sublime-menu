@@ -1,28 +1,37 @@
 [
-  {
-    "caption": "Preferences",
-    "mnemonic": "n",
-    "id": "preferences",
-    "children": [
-      {
-        "caption": "Package Settings",
-        "mnemonic": "P",
-        "id": "package-settings",
+    {
+        "caption": "Preferences",
+        "mnemonic": "n",
+        "id": "preferences",
         "children": [
-          {
-            "caption": "R-Box",
-            "children": [
-              {
-                "caption": "Settings",
-                "command": "edit_settings",
-                "args": {
-                  "base_file": "${packages}/R-Box/R-Box.sublime-settings"
-                }
-              }
-            ]
-          }
+            {
+                "caption": "Package Settings",
+                "mnemonic": "P",
+                "id": "package-settings",
+                "children": [
+                    {
+                        "caption": "R-Box",
+                        "children": [
+                            {
+                                "caption": "Settings",
+                                "command": "edit_settings",
+                                "args": {
+                                    "base_file": "${packages}/R-Box/R-Box.sublime-settings"
+                                }
+                            },
+                            {
+                                "caption": "Key Bindings",
+                                "command": "edit_settings",
+                                "args": {
+                                    "base_file": "${packages}/R-Box/support/Default.sublime-keymap",
+                                    "user_file": "${packages}/User/Default ($platform).sublime-keymap",
+                                    "default": "[\n\t$0\n]\n"
+                                }
+                            }
+                        ]
+                    }
+                ]
+            }
         ]
-      }
-    ]
-  }
+    }
 ]

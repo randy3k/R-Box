@@ -9,6 +9,11 @@ from .settings import r_box_settings
 
 
 POPUP_TEMPLATE = """{}[Help](help:{}:::{}) [Paste](paste:)"""
+POPUP_CSS = """
+.mdpopups .highlight{
+    font-size: 1.1rem;
+}
+"""
 
 
 class RBoxShowPopup(RBoxViewMixin, sublime_plugin.TextCommand):
@@ -35,6 +40,7 @@ class RBoxShowPopup(RBoxViewMixin, sublime_plugin.TextCommand):
                 mdpopups.show_popup(
                     self.view,
                     text,
+                    css=POPUP_CSS,
                     flags=sublime.COOPERATE_WITH_AUTO_COMPLETE | sublime.HIDE_ON_MOUSE_MOVE_AWAY,
                     location=point,
                     max_width=800,
@@ -53,7 +59,7 @@ class RBoxShowPopup(RBoxViewMixin, sublime_plugin.TextCommand):
             self.view.run_command("hide_popup")
 
 
-class RBoxPopupListener(RBoxMixins, sublime_plugin.ViewEventListener):
+class RBoxPopupListener(RBoxViewMixin, sublime_plugin.ViewEventListener):
     thread = None
 
     def should_show_popup(self):
