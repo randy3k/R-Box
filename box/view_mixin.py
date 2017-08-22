@@ -1,51 +1,10 @@
 import re
 import sublime
-import os
-from .utils import execute_command, read_registry
 
-
-class RBoxSettingsMixin:
-    _rscript_binary = None
-    _additional_paths = None
-
-    def r_box_settings(self, key, default):
-        s = sublime.load_settings('R-Box.sublime-settings')
-        return s.get(key, default)
-
-    def rscript_binary(self):
-        rscript_binary = self.r_box_settings("rscript_binary", self._rscript_binary)
-        if not rscript_binary:
-            if sublime.platform() == "windows":
-                try:
-                    rscript_binary = os.path.join(
-                        read_registry("Software\\R-Core\\R", "InstallPath")[0],
-                        "bin",
-                        "Rscript.exe")
-                except:
-                    pass
-        if not rscript_binary:
-            rscript_binary = "Rscript"
-        self._rscript_binary = rscript_binary
-        return rscript_binary
-
-    def additional_paths(self):
-        additional_paths = self.r_box_settings("additional_paths", [])
-        if not additional_paths:
-            additional_paths = self._additional_paths
-        if not additional_paths:
-            if sublime.platform() == "osx":
-                additional_paths = execute_command(
-                    "/usr/bin/login -fpql $USER $SHELL -l -c 'echo -n $PATH'", shell=True)
-                additional_paths = additional_paths.strip().split(":")
-        if not additional_paths:
-            additional_paths = "Rscript"
-
-        self._additional_paths = additional_paths
-        return additional_paths
+VALIDCALL = re.compile(r"(?:([a-zA-Z][a-zA-Z0-9.]*)(?::::?))?([.a-zA-Z0-9_-]+)\s*\($")
 
 
 class RBoxViewMixin:
-    VALIDCALL = re.compile(r"(?:([a-zA-Z][a-zA-Z0-9.]*)(?::::?))?([.a-zA-Z0-9_-]+)\s*\($")
 
     def function_name_at_point(self, view, pt):
         if not view.match_selector(pt, "meta.function-call.r"):
@@ -54,7 +13,7 @@ class RBoxViewMixin:
         if view.match_selector(scope_begin, "support.function.r, variable.function.r"):
             scope_begin = view.find("\(", scope_begin).begin() + 1
         line = self.extract_line(view, scope_begin, truncated=True)
-        m = self.VALIDCALL.search(line)
+        m = VALIDCALL.search(line)
         if m:
             return m.groups()
         else:
@@ -136,8 +95,3 @@ class RBoxViewMixin:
             return view.substr(sublime.Region(line_begin, pt))
         else:
             return view.substr(view.line(pt))
-
-
-class RBoxMixins(RBoxViewMixin, RBoxSettingsMixin):
-
-    pass

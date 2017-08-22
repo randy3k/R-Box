@@ -2,15 +2,16 @@ import sublime
 import sublime_plugin
 import threading
 import mdpopups
-from .mixins import RBoxMixins
+from .view_mixin import RBoxViewMixin
 from .namespace import namespace_manager
 from .utils import preference_temporary_settings
+from .settings import r_box_settings
 
 
 POPUP_TEMPLATE = """{}[Help](help:{}:::{}) [Paste](paste:)"""
 
 
-class RBoxShowPopup(RBoxMixins, sublime_plugin.TextCommand):
+class RBoxShowPopup(RBoxViewMixin, sublime_plugin.TextCommand):
     def run(self, edit, pkg, funct, point=-1):
         sublime.set_timeout_async(
             lambda: self.run_async(pkg, funct, point))
@@ -63,7 +64,7 @@ class RBoxPopupListener(RBoxMixins, sublime_plugin.ViewEventListener):
         if not self.view.match_selector(point, "source.r, source.r-console"):
             return False
 
-        return self.r_box_settings("show_popup_hints", True)
+        return r_box_settings.get("show_popup_hints", True)
 
     def on_hover(self, point, hover_zone):
         sublime.set_timeout_async(lambda: self.on_hover_async(point, hover_zone))

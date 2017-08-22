@@ -2,13 +2,14 @@ import re
 import sublime
 import os
 from .utils import execute_command
+from .settings import r_box_settings
 
 
 class ScriptMixin:
     message_shown = False
 
     def custom_env(self):
-        paths = self.additional_paths()
+        paths = r_box_settings.additional_paths()
         env = os.environ.copy()
         if paths:
             sep = ";" if sublime.platform() == "windows" else ":"
@@ -16,7 +17,7 @@ class ScriptMixin:
         return env
 
     def rcmd(self, script=None, file=None, args=None):
-        cmd = [self.rscript_binary()]
+        cmd = [r_box_settings.rscript_binary()]
         if script:
             cmd = cmd + ["-e", script]
         elif file:

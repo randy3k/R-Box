@@ -1,8 +1,9 @@
 import sublime
 import sublime_plugin
 import re
-from .mixins import RBoxMixins
+from .view_mixin import RBoxViewMixin
 from .namespace import namespace_manager
+from .settings import r_box_settings
 
 
 VALIDCOMPLETION = re.compile(r"[.a-zA-Z0-9_-]+$")
@@ -63,7 +64,7 @@ class CompletionMixin:
         namespace_manager.get_namespace(pkg)
 
 
-class RBoxCompletionListener(CompletionMixin, RBoxMixins, sublime_plugin.ViewEventListener, ):
+class RBoxCompletionListener(CompletionMixin, RBoxViewMixin, sublime_plugin.ViewEventListener):
 
     def should_complete(self):
         if self.view.settings().get('is_widget'):
@@ -73,7 +74,7 @@ class RBoxCompletionListener(CompletionMixin, RBoxMixins, sublime_plugin.ViewEve
         if not self.view.match_selector(point, "source.r, source.r-console"):
             return False
 
-        return self.r_box_settings("auto_completions", True)
+        return r_box_settings.get("auto_completions", True)
 
     def complete_package_objects(self, pt):
         line = self.extract_line(self.view, pt, truncated=True)
@@ -132,7 +133,7 @@ class RBoxCompletionListener(CompletionMixin, RBoxMixins, sublime_plugin.ViewEve
             self.refresh_completions_for_view(self.view)
 
 
-class RBoxAutoComplete(CompletionMixin, RBoxMixins, sublime_plugin.TextCommand):
+class RBoxAutoComplete(CompletionMixin, RBoxViewMixin, sublime_plugin.TextCommand):
 
     def run(self, edit, key=""):
         sublime.set_timeout_async(lambda: self.run_async(key))

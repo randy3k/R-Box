@@ -3,6 +3,7 @@ from .box.popup import RBoxPopupListener, RBoxShowPopup
 from .box.main_menu import RBoxMainMenuListener, RBoxMainMenuClearWorkspace
 from .box.source_prompt import RBoxSourcePromptCommand
 from .box.linter import install_linter_spec
+from .box.format_code import RBoxFormatCodeCommand
 from .box.utils import RBoxReplaceSelectionCommand
 
 
