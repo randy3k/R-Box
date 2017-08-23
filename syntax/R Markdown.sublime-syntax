@@ -108,15 +108,19 @@ contexts:
     - match: (?=^\s*---\s*$)
       push: front-matter
     - match: ""
-      push: body
+      set: body
   front-matter:
-    - match: ^\s*---\s*\n$
+    - match: ^\s*(---)\s*$
+      captures:
+        1: punctuation.definition.frontmatter
       with_prototype:
         - include: scope:source.yaml#prototype
       push:
         - meta_scope: markup.raw.yaml.front-matter
         - meta_content_scope: source.yaml
-        - match: ^\s*---\s*$
+        - match: ^\s*(---)\s*$
+          captures:
+            1: punctuation.definition.frontmatter
           pop: true
         - include: scope:source.yaml
     - match: ""

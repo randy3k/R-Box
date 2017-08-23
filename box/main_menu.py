@@ -1,17 +1,10 @@
 import sublime
 import sublime_plugin
 import os
-import sys
 import re
 
 
 class RBoxMainMenuListener(sublime_plugin.EventListener):
-
-    def send_repl_installed(self):
-        return "SendREPL" in sys.modules
-
-    def send_text_plus_installed(self):
-        return "SendTextPlus" in sys.modules
 
     def should_show_menu(self, view):
 
@@ -56,9 +49,6 @@ class RBoxMainMenuListener(sublime_plugin.EventListener):
             if not os.path.exists(targetpath):
                 data = sublime.load_binary_resource(
                     "Packages/R-Box/support/R-Box.sublime-menu").decode("utf-8")
-                if not self.send_repl_installed() and self.send_text_plus_installed():
-                    # fall back to send_text_plus
-                    data = data.replace("send_repl", "send_text_plus")
                 with open(targetpath, 'w') as binfile:
                     binfile.write(data)
                     binfile.close()
@@ -71,7 +61,4 @@ class RBoxMainMenuClearWorkspace(sublime_plugin.TextCommand):
     def run(self, edit):
         ok = sublime.ok_cancel_dialog("Clear R Workspace?")
         if ok:
-            if "SendREPL" in sys.modules:
-                self.view.run_command("send_repl", {"cmd": "rm(list=ls())"})
-            elif "SendTextPlus" in sys.modules:
-                self.view.run_command("send_text_plus", {"cmd": "rm(list=ls())"})
+            self.view.run_command("send_code", {"cmd": "rm(list=ls())"})
