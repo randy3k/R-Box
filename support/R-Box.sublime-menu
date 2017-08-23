@@ -4,18 +4,18 @@
     "id": "R-Box",
     "children": [
       {
-        "command": "send_repl",
+        "command": "send_code",
         "caption": "Send Current Line/Selection"
       },
       {
-        "command": "send_repl",
+        "command": "send_code",
         "args": {
           "cmd": "source(\"$file\")"
         },
         "caption": "Source Current File"
       },
       {
-        "command": "send_repl",
+        "command": "send_code",
         "args": {
           "cmd": "setwd(\"$file_path\")"
         },
@@ -36,49 +36,49 @@
       },
       { "caption": "-"},
       {
-        "command": "send_repl",
+        "command": "send_code",
         "args": {
           "cmd": "devtools::load_all(\"$project_path\")"
         },
         "caption": "Load All"
       },
       {
-        "command": "send_repl",
+        "command": "send_code",
         "args": {
           "cmd": "devtools::document(\"$project_path\")"
         },
         "caption": "Document Package"
       },
       {
-        "command": "send_repl",
+        "command": "send_code",
         "args": {
           "cmd": "devtools::install(\"$project_path\")"
         },
         "caption": "Build and Reload Package"
       },
       {
-        "command": "send_repl",
+        "command": "send_code",
         "args": {
           "cmd": "devtools::install(\"$project_path\", local=FALSE)"
         },
         "caption": "Clean and Build Package"
       },
       {
-        "command": "send_repl",
+        "command": "send_code",
         "args": {
           "cmd": "devtools::test(\"$project_path\")"
         },
         "caption": "Test Package"
       },
       {
-        "command": "send_repl",
+        "command": "send_code",
         "args": {
           "cmd": "devtools::check(\"$project_path\")"
         },
         "caption": "Check Package"
       },
       {
-        "command": "send_repl",
+        "command": "send_code",
         "args": {
           "cmd": "Rcpp::compileAttributes(\"$project_path\")"
         },
@@ -86,21 +86,21 @@
       },
       { "caption": "-"},
       {
-        "command": "send_repl",
+        "command": "send_code",
         "args": {
           "cmd": "rmarkdown::render(\"$file\", encoding = \"UTF-8\")"
         },
         "caption": "Render Rmarkdown"
       },
       {
-        "command": "send_repl",
+        "command": "send_code",
         "args": {
           "cmd": "setwd(\"$file_path\")\nSweave(\"$file\")\ntools::texi2dvi(\"$file_base_name.tex\", pdf = TRUE)"
         },
         "caption": "Sweave Rnw to PDF"
       },
       {
-        "command": "send_repl",
+        "command": "send_code",
         "args": {
           "cmd": "setwd(\"$file_path\")\nknitr::knit(\"$file\", output=\"$file_base_name.tex\")\ntools::texi2dvi(\"$file_base_name.tex\", pdf = TRUE)"
         },
