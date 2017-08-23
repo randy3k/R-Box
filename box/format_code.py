@@ -16,9 +16,9 @@ class RBoxFormatCodeCommand(ScriptMixin, sublime_plugin.TextCommand):
                 r"^\s*", self.view.substr(self.view.line(region.begin()))).group(0)
 
             if region.empty():
-                code = self.view.substr(self.view.line(region.begin()))
-            else:
-                code = self.view.substr(region)
+                region = self.view.line(region.begin())
+
+            code = self.view.substr(region)
             if code:
                 try:
                     formatted_code = self.format_code(code)
