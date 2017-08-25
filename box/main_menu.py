@@ -8,16 +8,17 @@ class RBoxMainMenuListener(sublime_plugin.EventListener):
 
     def should_show_menu(self, view):
 
-        sel = [s for s in view.sel()]
-        point = sel[0].end() if len(sel) > 0 else 0
-        score = view.score_selector(
-            point,
-            "source.r, "
-            "text.tex.latex.rsweave, "
-            "text.html.markdown.rmarkdown, "
-            "source.c++.rcpp")
+        try:
+            pt = view.sel()[0].end()
+        except:
+            pt = 0
 
-        if score > 0:
+        if view.match_selector(
+                pt,
+                "source.r, "
+                "text.tex.latex.rsweave, "
+                "text.html.markdown.rmarkdown, "
+                "source.c++.rcpp"):
             return True
 
         r = re.compile(".*\.Rproj$")
@@ -33,7 +34,7 @@ class RBoxMainMenuListener(sublime_plugin.EventListener):
         return False
 
     def on_activated_async(self, view):
-        if view.is_scratch() or view.settings().get('is_widget'):
+        if view.settings().get('is_widget'):
             return
 
         targetpath = os.path.join(
