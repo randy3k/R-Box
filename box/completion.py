@@ -64,20 +64,24 @@ class CompletionMixin:
         namespace_manager.get_namespace(pkg)
 
 
-class RBoxCompletionListener(CompletionMixin, RBoxViewMixin, sublime_plugin.ViewEventListener):
+class RBoxCompletionListener(CompletionMixin, RBoxViewMixin, sublime_plugin.EventListener):
 
-    def should_complete(self):
-        if self.view.settings().get('is_widget'):
+    def should_complete(self, view):
+        if view.settings().get('is_widget'):
             return False
 
-        point = self.view.sel()[0].end() if len(self.view.sel()) > 0 else 0
-        if not self.view.match_selector(point, "source.r, source.r-console"):
+        try:
+            pt = view.sel()[0].end()
+        except:
+            pt = 0
+
+        if not view.match_selector(pt, "source.r, source.r-console"):
             return False
 
         return r_box_settings.get("auto_completions", True)
 
-    def complete_package_objects(self, pt):
-        line = self.extract_line(self.view, pt, truncated=True)
+    def complete_package_objects(self, view, pt):
+        line = self.extract_line(view, pt, truncated=True)
         m = VALIDOBJECT.search(line)
         if not m:
             return []
@@ -97,40 +101,40 @@ class RBoxCompletionListener(CompletionMixin, RBoxViewMixin, sublime_plugin.View
             completions,
             sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS)
 
-    def complete_function_args(self, pt):
-        if ARGVALUE.search(self.extract_line(self.view, pt, truncated=True)):
+    def complete_function_args(self, view, pt):
+        if ARGVALUE.search(self.extract_line(view, pt, truncated=True)):
             return []
-        pkg, funct = self.function_name_at_point(self.view, pt)
+        pkg, funct = self.function_name_at_point(view, pt)
         if not funct:
             return []
         args = self.get_function_args(pkg, funct)
         return [["{} = \tArguments".format(arg), "{} = ".format(arg)] for arg in args]
 
-    def on_query_completions(self, prefix, locations):
-        if not self.should_complete():
+    def on_query_completions(self, view, prefix, locations):
+        if not self.should_complete(view):
             return
 
-        completions = self.complete_package_objects(locations[0])
+        completions = self.complete_package_objects(view, locations[0])
         if completions:
             return completions
 
-        completions = self.complete_function_args(locations[0])
+        completions = self.complete_function_args(view, locations[0])
 
-        completions += self.get_completions_for_view(self.view)
+        completions += self.get_completions_for_view(view)
         completions = [item for item in completions if len(item) == 1 or item[1].startswith(prefix)]
         return completions
 
-    def on_post_save_async(self):
-        if self.should_complete():
-            self.refresh_completions_for_view(self.view)
+    def on_post_save_async(self, view):
+        if self.should_complete(view):
+            self.refresh_completions_for_view(view)
 
-    def on_load_async(self):
-        if self.should_complete():
-            self.refresh_completions_for_view(self.view)
+    def on_load_async(self, view):
+        if self.should_complete(view):
+            self.refresh_completions_for_view(view)
 
-    def on_activated_async(self):
-        if self.should_complete():
-            self.refresh_completions_for_view(self.view)
+    def on_activated_async(self, view):
+        if self.should_complete(view):
+            self.refresh_completions_for_view(view)
 
 
 class RBoxAutoComplete(CompletionMixin, RBoxViewMixin, sublime_plugin.TextCommand):

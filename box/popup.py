@@ -59,57 +59,62 @@ class RBoxShowPopup(RBoxViewMixin, sublime_plugin.TextCommand):
             self.view.run_command("hide_popup")
 
 
-class RBoxPopupListener(RBoxViewMixin, sublime_plugin.ViewEventListener):
+class RBoxPopupListener(RBoxViewMixin, sublime_plugin.EventListener):
     thread = None
 
-    def should_show_popup(self):
-        if self.view.settings().get('is_widget'):
+    def should_show_popup(self, view):
+        if view.settings().get('is_widget'):
             return False
 
-        point = self.view.sel()[0].end() if len(self.view.sel()) > 0 else 0
-        if not self.view.match_selector(point, "source.r, source.r-console"):
+        try:
+            pt = view.sel()[0].end()
+        except:
+            pt = 0
+
+        if not view.match_selector(pt, "source.r, source.r-console"):
             return False
 
         return r_box_settings.get("show_popup_hints", True)
 
-    def on_hover(self, point, hover_zone):
-        sublime.set_timeout_async(lambda: self.on_hover_async(point, hover_zone))
+    def on_hover(self, view, point, hover_zone):
+        sublime.set_timeout_async(lambda: self.on_hover_async(view, point, hover_zone))
 
-    def on_hover_async(self, point, hover_zone):
-        if not self.should_show_popup():
+    def on_hover_async(self, view, point, hover_zone):
+        if not self.should_show_popup(view):
             return
         if hover_zone != sublime.HOVER_TEXT:
             return
 
-        self.view.run_command(
+        view.run_command(
             "r_box_show_popup", {
                 "pkg": None,
                 "funct": None,
                 "point": point
             })
 
-    def on_modified_async(self):
-        if not self.should_show_popup():
+    def on_modified_async(self, view):
+        if not self.should_show_popup(view):
             return
         if self.thread:
             self.thread.cancel()
             self.thread = None
 
-        sel = self.view.sel()
-        if len(sel) == 0 or not sel[0].empty():
+        try:
+            pt = view.sel()[0].end()
+        except:
             return
-        point = self.view.sel()[0].end()
-        if self.view.substr(sublime.Region(point-1, point)) is not "(":
+
+        if view.substr(sublime.Region(pt-1, pt)) is not "(":
             return
-        if not self.view.match_selector(point-2, "meta.function-call.r"):
+        if not view.match_selector(pt-2, "meta.function-call.r"):
             return
         self.thread = threading.Timer(
             2,
-            lambda: self.view.run_command(
+            lambda: view.run_command(
                 "r_box_show_popup", {
                     "pkg": None,
                     "funct": None,
-                    "point": point-1
+                    "point": pt-1
                 })
         )
         self.thread.start()
