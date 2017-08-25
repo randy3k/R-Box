@@ -11,7 +11,7 @@ from .settings import r_box_settings
 POPUP_TEMPLATE = """{}[Help](help:{}:::{}) [Paste](paste:)"""
 POPUP_CSS = """
 .mdpopups .highlight{
-    font-size: 1.1rem;
+    font-size: 1.0rem;
 }
 """
 
