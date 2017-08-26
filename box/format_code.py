@@ -45,4 +45,4 @@ class RBoxFormatCodeCommand(ScriptMixin, sublime_plugin.TextCommand):
                 sublime.status_message("Format code failed.")
                 return
 
-            sublime.status_message("Format code successed.")
+        sublime.status_message("Format code successed.")

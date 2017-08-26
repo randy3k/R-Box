@@ -1,8 +1,6 @@
 import sublime
 import sublime_plugin
 import os
-import re
-import subprocess
 from contextlib import contextmanager
 
 if sublime.platform() == "windows":
@@ -12,23 +10,6 @@ if sublime.platform() == "windows":
 def read_registry(key, valueex):
     reg_key = OpenKey(HKEY_LOCAL_MACHINE, key, 0, KEY_READ)
     return QueryValueEx(reg_key, valueex)
-
-
-ANSI_ESCAPE = re.compile(r'(\x9B|\x1B\[)[0-?]*[ -/]*[@-~]')
-
-
-def execute_command(cmd, **kwargs):
-    if sublime.platform() == "windows":
-        # make sure console does not come up
-        startupinfo = subprocess.STARTUPINFO()
-        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-    else:
-        startupinfo = None
-
-    out = subprocess.check_output(
-        cmd, startupinfo=startupinfo, **kwargs).decode("utf-8")
-
-    return ANSI_ESCAPE.sub('', out)
 
 
 @contextmanager

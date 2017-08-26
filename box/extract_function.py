@@ -33,16 +33,21 @@ class RBoxExtractFunctionCommand(ScriptMixin, sublime_plugin.TextCommand):
                     self.view.line(region.begin()).begin(),
                     self.view.line(region.end()).end()
                 ))
-        free_vars = self.detect_free_vars(code)
+        try:
+            free_vars = self.detect_free_vars(code)
 
-        self.view.insert(
-            edit,
-            self.view.line(region.end()).end(),
-            "\n{}}}\n".format(indentation))
+            self.view.insert(
+                edit,
+                self.view.line(region.end()).end(),
+                "\n{}}}\n".format(indentation))
 
-        self.view.insert(
-            edit,
-            self.view.line(region.begin()).begin(),
-            "{}{} <- function({}) {{\n".format(indentation, func_name, ", ".join(free_vars)))
+            self.view.insert(
+                edit,
+                self.view.line(region.begin()).begin(),
+                "{}{} <- function({}) {{\n".format(indentation, func_name, ", ".join(free_vars)))
 
-        self.view.run_command("indent")
+            self.view.run_command("indent")
+            sublime.status_message("Extract function successed.")
+
+        except:
+            sublime.status_message("Extract function failed.")
