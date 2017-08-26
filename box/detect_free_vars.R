@@ -65,6 +65,6 @@ detect_free_vars <- function(code) {
     return(unique(freeVars))
 }
 
-for (var in detect_free_vars(commandArgs(TRUE)[2])){
-   cat(var, "\n")
+for (var in detect_free_vars(commandArgs(TRUE)[2])) {
+    cat(var, "\n")
 }
