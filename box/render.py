@@ -4,6 +4,9 @@ from .utils import escape_dquote
 
 
 class RBoxRenderRmarkdownCommand(sublime_plugin.TextCommand):
+    def is_enabled(self):
+        return self.view.settings().get("syntax").endswith("R Markdown.sublime-syntax")
+
     def run(self, edit):
         file_name = self.view.file_name()
         file_path = os.path.dirname(file_name)
@@ -15,6 +18,9 @@ class RBoxRenderRmarkdownCommand(sublime_plugin.TextCommand):
 
 
 class RBoxSweaveRnwCommand(sublime_plugin.TextCommand):
+    def is_enabled(self):
+        return self.view.settings().get("syntax").endswith("R Sweave.sublime-syntax")
+
     def run(self, edit):
         file_name = self.view.file_name()
         file_path = os.path.dirname(file_name)
@@ -31,6 +37,9 @@ class RBoxSweaveRnwCommand(sublime_plugin.TextCommand):
 
 
 class RBoxKnitRnwCommand(sublime_plugin.TextCommand):
+    def is_enabled(self):
+        return self.view.settings().get("syntax").endswith("R Sweave.sublime-syntax")
+
     def run(self, edit):
         file_name = self.view.file_name()
         file_path = os.path.dirname(file_name)
