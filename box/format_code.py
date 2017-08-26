@@ -29,14 +29,14 @@ class RBoxFormatCodeCommand(ScriptMixin, sublime_plugin.TextCommand):
             code = self.view.substr(region)
             try:
                 if code:
-                    formatted_code = self.format_code(
+                    raw_formatted_code = self.format_code(
                         code,
                         indent=tab_size,
                         width_cutoff=width-len(indentation)-20)
 
                     formatted_code = "\n".join(
                         [indentation + l.rstrip() if len(l.strip()) > 0 else ""
-                         for l in formatted_code.split("\n")])
+                         for l in raw_formatted_code.split("\n")])
 
                     self.view.run_command(
                         "r_box_replace_selection",
