@@ -4,6 +4,9 @@ import os
 import re
 
 
+RE_RPROJ = re.compile(".*\.Rproj$")
+
+
 class RBoxMainMenuListener(sublime_plugin.EventListener):
 
     def should_show_menu(self, view):
@@ -21,15 +24,11 @@ class RBoxMainMenuListener(sublime_plugin.EventListener):
                 "source.c++.rcpp"):
             return True
 
-        r = re.compile(".*\.Rproj$")
-        try:
-            pd = view.window().project_data()
-            first_folder = pd["folders"][0]["path"]
-            for f in os.listdir(first_folder):
-                if r.match(f):
+        folders = view.window().folders()
+        if folders:
+            for f in os.listdir(folders[0]):
+                if RE_RPROJ.match(f):
                     return True
-        except:
-            pass
 
         return False
 
