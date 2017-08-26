@@ -1,7 +1,0 @@
-[
-    { "keys": ["ctrl+c"], "command": "r_box_kill_exec", "context":
-        [
-            {"key": "r_box.main_menu_is_visible"}
-        ]
-    }
-]

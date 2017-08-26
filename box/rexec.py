@@ -23,9 +23,3 @@ class RBoxExecCommand(ScriptMixin, sublime_plugin.WindowCommand):
                 "working_dir": working_dir,
                 "env": {"PATH": custom_env["PATH"]}
             })
-
-
-class RBoxKillExecCommand(sublime_plugin.WindowCommand):
-    def run(self):
-        self.window.run_command("cancel_build")
-        self.window.run_command("exec", {"kill": True})
