@@ -1,6 +1,6 @@
 from types import SimpleNamespace
 from collections import OrderedDict
-from .rscript import ScriptMixin
+from .script_mixin import ScriptMixin
 
 
 class PackageNamespace(SimpleNamespace):

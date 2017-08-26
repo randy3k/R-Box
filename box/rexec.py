@@ -1,7 +1,7 @@
 import sublime
 import sublime_plugin
 from .settings import r_box_settings
-from .rscript import ScriptMixin
+from .script_mixin import ScriptMixin
 
 
 class RBoxExecCommand(ScriptMixin, sublime_plugin.WindowCommand):

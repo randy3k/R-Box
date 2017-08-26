@@ -41,7 +41,7 @@ class ScriptMixin:
             env["PATH"] = env["PATH"] + sep + sep.join(paths)
         return env
 
-    def rcmd(self, script=None, file=None, args=None):
+    def rscript(self, script=None, file=None, args=None):
         cmd = [r_box_settings.rscript_binary()]
         if script:
             cmd = cmd + ["-e", script]
@@ -88,28 +88,28 @@ class ScriptMixin:
             raise Exception("Rscript binary not found.")
 
     def installed_packages(self):
-        return self.rcmd("cat(rownames(installed.packages()))").strip().split(" ")
+        return self.rscript("cat(rownames(installed.packages()))").strip().split(" ")
 
     def list_package_objects(self, pkg, exported_only=True):
         if exported_only:
-            objects = self.rcmd("cat(getNamespaceExports(asNamespace('{}')))".format(pkg))
+            objects = self.rscript("cat(getNamespaceExports(asNamespace('{}')))".format(pkg))
         else:
-            objects = self.rcmd("cat(objects(asNamespace('{}')))".format(pkg))
+            objects = self.rscript("cat(objects(asNamespace('{}')))".format(pkg))
         return objects.strip().split(" ")
 
     def get_function_call(self, pkg, funct):
-        out = self.rcmd("args({}:::{})".format(pkg, funct))
+        out = self.rscript("args({}:::{})".format(pkg, funct))
         out = re.sub(r"^function ", funct, out).strip()
         out = re.sub(r"<bytecode: [^>]+>", "", out).strip()
         out = re.sub(r"NULL(?:\n|\s)*$", "", out).strip()
         return out
 
     def list_function_args(self, pkg, funct):
-        out = self.rcmd("cat(names(formals({}:::{})))".format(pkg, funct))
+        out = self.rscript("cat(names(formals({}:::{})))".format(pkg, funct))
         return out.strip().split(" ")
 
     def format_code(self, code, indent=4, width_cutoff=100):
-        formatted_code = self.rcmd(
+        formatted_code = self.rscript(
             "formatR::tidy_source(text=commandArgs(TRUE)[1], "
             "                     indent={:d}, width.cutoff={:d})".format(indent, width_cutoff),
             args=[code])
@@ -117,7 +117,7 @@ class ScriptMixin:
         return formatted_code[0:-1]
 
     def detect_free_vars(self, code):
-        result = self.rcmd(
+        result = self.rscript(
             "eval(parse(text=commandArgs(TRUE)[1]))",
             args=[sublime.load_resource("Packages/R-Box/box/detect_free_vars.R"), code]
         ).strip()

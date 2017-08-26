@@ -2,7 +2,7 @@ import sublime
 import sublime_plugin
 import re
 
-from .rscript import ScriptMixin
+from .script_mixin import ScriptMixin
 from .namespace import namespace_manager
 
 

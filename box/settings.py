@@ -37,8 +37,6 @@ class RBoxSettings:
                     "/usr/bin/login -fpql $USER $SHELL -l -c 'echo -n $PATH'",
                     shell=True).decode("utf-8")
                 additional_paths = additional_paths.strip().split(":")
-        if not additional_paths:
-            additional_paths = "Rscript"
 
         self._additional_paths = additional_paths
         return additional_paths
