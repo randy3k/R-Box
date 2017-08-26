@@ -1,3 +1,0 @@
-R-Box has just been refactored. 
-
-The completions and popup windows are now generated in real time by calling `Rscript`. `Rscript` is located automatically to fetch installed packages and package functions for auto-completion. If `Rscript` cannot be determined, you could provide the exact path to `Rscript` in R-Box settings.
