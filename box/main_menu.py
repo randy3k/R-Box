@@ -82,11 +82,3 @@ class RBoxMainMenuListener(sublime_plugin.EventListener):
 
         self.timer = threading.Timer(0.1, set_main_menu)
         self.timer.start()
-
-    def on_query_context(self, view, key, operator, operand, match_all):
-        if view.settings().get('is_widget'):
-            return
-
-        if key == "r_box.main_menu_is_visible":
-            out = _main_menu_is_visible[0] == operand
-            return out if operator == 0 else not out
