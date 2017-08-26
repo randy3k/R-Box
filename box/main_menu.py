@@ -1,6 +1,7 @@
 import sublime
 import sublime_plugin
 import os
+import sys
 import re
 
 
@@ -58,6 +59,9 @@ class RBoxMainMenuListener(sublime_plugin.EventListener):
 
 
 class RBoxMainMenuClearWorkspace(sublime_plugin.TextCommand):
+    def is_enabled(self):
+        return "SendCode" in sys.modules
+
     def run(self, edit):
         ok = sublime.ok_cancel_dialog("Clear R Workspace?")
         if ok:
