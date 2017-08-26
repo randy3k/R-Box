@@ -21,6 +21,13 @@
             ]
         },
         {
+            "name": "Document",
+            "cmd": [
+                "Rscript", "-e",
+                "devtools::document(\".\")"
+            ]
+        },
+        {
             "name": "Clean and Build",
             "cmd": [
                 "Rscript", "-e",
