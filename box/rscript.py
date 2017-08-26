@@ -1,7 +1,7 @@
 import re
 import sublime
 import os
-from .utils import execute_command, escape_dquote
+from .utils import execute_command
 from .settings import r_box_settings
 
 
@@ -60,10 +60,10 @@ class ScriptMixin:
         out = self.rcmd("cat(names(formals({}:::{})))".format(pkg, funct))
         return out.strip().split(" ")
 
-    def format_code(self, code, indent=4, width=100):
+    def format_code(self, code, indent=4, width_cutoff=100):
         formatted_code = self.rcmd(
             "formatR::tidy_source(text=commandArgs(TRUE)[1], "
-            "                     indent={:d}, width.cutoff={:d})".format(indent, width),
+            "                     indent={:d}, width.cutoff={:d})".format(indent, width_cutoff),
             args=[code])
 
         return formatted_code[0:-1]
