@@ -1,6 +1,5 @@
 import sublime
 import sublime_plugin
-import sys
 import os
 import threading
 
