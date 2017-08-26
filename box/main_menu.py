@@ -25,13 +25,22 @@ class RBoxMainMenuListener(sublime_plugin.EventListener):
                 "source.c++.rcpp"):
             return True
 
-        folders = view.window().folders()
-        if folders:
-            for f in os.listdir(folders[0]):
-                if RE_RPROJ.match(f):
-                    return True
+        if view.window():
+            folders = view.window().folders()
+            if folders:
+                for f in os.listdir(folders[0]):
+                    if RE_RPROJ.match(f):
+                        return True
 
         return False
+
+    def on_query_context(self, view, key, operator, operand, match_all):
+        if view.settings().get('is_widget'):
+            return
+
+        if key == "r_box.main_menu_is_visible":
+            out = self.should_show_menu(view)
+            return out if operator == 0 else not out
 
     def on_activated_async(self, view):
         if view.settings().get('is_widget'):

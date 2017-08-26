@@ -4,6 +4,15 @@
     "id": "R-Box",
     "children": [
       {
+        "command": "r_box_format_code",
+        "caption": "Format Code"
+      },
+      {
+        "command": "r_box_extract_function",
+        "caption": "Extract Function"
+      },
+      { "caption": "-"},
+      {
         "command": "send_code",
         "caption": "Send Current Line/Selection"
       },
@@ -27,60 +36,52 @@
       },
       { "caption": "-"},
       {
-        "command": "r_box_format_code",
-        "caption": "Format Code"
-      },
-      {
-        "command": "r_box_extract_function",
-        "caption": "Extract Function"
-      },
-      { "caption": "-"},
-      {
         "command": "send_code",
         "args": {
-          "cmd": "devtools::load_all(\"$project_path\")"
+          "cmd": "devtools::load_all(\"$folder\")"
         },
         "caption": "Load All"
       },
       {
         "command": "send_code",
         "args": {
-          "cmd": "devtools::document(\"$project_path\")"
+          "cmd": "devtools::install(\"$folder\")"
+        },
+        "caption": "Build and Reload Package"
+      },
+      { "caption": "-"},
+      {
+        "command": "r_box_exec",
+        "args": {
+          "cmd": "devtools::document(\"$folder\")"
         },
         "caption": "Document Package"
       },
       {
-        "command": "send_code",
+        "command": "r_box_exec",
         "args": {
-          "cmd": "devtools::install(\"$project_path\")"
-        },
-        "caption": "Build and Reload Package"
-      },
-      {
-        "command": "send_code",
-        "args": {
-          "cmd": "devtools::install(\"$project_path\", local=FALSE)"
+          "cmd": "devtools::install(\"$folder\", local=FALSE)"
         },
         "caption": "Clean and Build Package"
       },
       {
-        "command": "send_code",
+        "command": "r_box_exec",
         "args": {
-          "cmd": "devtools::test(\"$project_path\")"
+          "cmd": "devtools::test(\"$folder\")"
         },
         "caption": "Test Package"
       },
       {
-        "command": "send_code",
+        "command": "r_box_exec",
         "args": {
-          "cmd": "devtools::check(\"$project_path\")"
+          "cmd": "devtools::check(\"$folder\")"
         },
         "caption": "Check Package"
       },
       {
-        "command": "send_code",
+        "command": "r_box_exec",
         "args": {
-          "cmd": "Rcpp::compileAttributes(\"$project_path\")"
+          "cmd": "Rcpp::compileAttributes(\"$folder\")"
         },
         "caption": "Compile C++ Attributes"
       },
