@@ -1,107 +1,115 @@
 [
-  {
-    "caption": "R-Box",
-    "id": "R-Box",
-    "children": [
-      {
-        "command": "r_box_format_code",
-        "caption": "Format Code"
-      },
-      {
-        "command": "r_box_extract_function",
-        "caption": "Extract Function"
-      },
-      { "caption": "-"},
-      {
-        "command": "send_code",
-        "caption": "Send Current Line/Selection"
-      },
-      {
-        "command": "send_code",
-        "args": {
-          "cmd": "source(\"$file\")"
-        },
-        "caption": "Source Current File"
-      },
-      {
-        "command": "send_code",
-        "args": {
-          "cmd": "setwd(\"$file_path\")"
-        },
-        "caption": "Set Working Directory"
-      },
-      {
-        "command": "send_code",
-        "args": {
-          "cmd": "rm(list=ls())",
-          "confirmation": "Clear R Workspace?"
-        },
-        "caption": "Clear Workspace"
-      },
-      { "caption": "-"},
-      {
-        "command": "send_code",
-        "args": {
-          "cmd": "devtools::load_all(\"$project_path\")"
-        },
-        "caption": "Load All"
-      },
-      {
-        "command": "send_code",
-        "args": {
-          "cmd": "devtools::install(\"$project_path\")"
-        },
-        "caption": "Build and Reload Package"
-      },
-      { "caption": "-"},
-      {
-        "command": "r_box_exec",
-        "args": {
-          "cmd": "devtools::document(\"$folder\")"
-        },
-        "caption": "Document Package"
-      },
-      {
-        "command": "r_box_exec",
-        "args": {
-          "cmd": "devtools::install(\"$folder\", local=FALSE)"
-        },
-        "caption": "Clean and Build Package"
-      },
-      {
-        "command": "r_box_exec",
-        "args": {
-          "cmd": "devtools::test(\"$folder\")"
-        },
-        "caption": "Test Package"
-      },
-      {
-        "command": "r_box_exec",
-        "args": {
-          "cmd": "devtools::check(\"$folder\")"
-        },
-        "caption": "Check Package"
-      },
-      {
-        "command": "r_box_exec",
-        "args": {
-          "cmd": "Rcpp::compileAttributes(\"$folder\")"
-        },
-        "caption": "Compile C++ Attributes"
-      },
-      { "caption": "-"},
-      {
-        "command": "r_box_render_rmarkdown",
-        "caption": "Render Rmarkdown"
-      },
-      {
-        "command": "r_box_sweave_rnw",
-        "caption": "Sweave Rnw to PDF"
-      },
-      {
-        "command": "r_box_knit_rnw",
-        "caption": "Knit Rnw to PDF"
-      }
-    ]
-  }
+    {
+        "caption": "R-Box",
+        "id": "R-Box",
+        "children": [
+            {
+                "command": "r_box_format_code",
+                "caption": "Format Code"
+            },
+            {
+                "command": "r_box_extract_function",
+                "caption": "Extract Function"
+            },
+            {
+                "caption": "-"
+            },
+            {
+                "command": "send_code",
+                "caption": "Send Current Line/Selection"
+            },
+            {
+                "command": "send_code",
+                "args": {
+                    "cmd": "source(\"$file\")"
+                },
+                "caption": "Source Current File"
+            },
+            {
+                "command": "send_code",
+                "args": {
+                    "cmd": "setwd(\"$file_path\")"
+                },
+                "caption": "Set Working Directory"
+            },
+            {
+                "command": "send_code",
+                "args": {
+                    "cmd": "rm(list=ls())",
+                    "confirmation": "Clear R Workspace?"
+                },
+                "caption": "Clear Workspace"
+            },
+            {
+                "caption": "-"
+            },
+            {
+                "command": "send_code",
+                "args": {
+                    "cmd": "devtools::load_all(\"$project_path\")"
+                },
+                "caption": "Load All"
+            },
+            {
+                "command": "send_code",
+                "args": {
+                    "cmd": "devtools::install(\"$project_path\")"
+                },
+                "caption": "Build and Reload Package"
+            },
+            {
+                "caption": "-"
+            },
+            {
+                "command": "r_box_exec",
+                "args": {
+                    "cmd": "devtools::document(\"$folder\")"
+                },
+                "caption": "Document Package"
+            },
+            {
+                "command": "r_box_exec",
+                "args": {
+                    "cmd": "devtools::install(\"$folder\", local=FALSE)"
+                },
+                "caption": "Clean and Build Package"
+            },
+            {
+                "command": "r_box_exec",
+                "args": {
+                    "cmd": "devtools::test(\"$folder\")"
+                },
+                "caption": "Test Package"
+            },
+            {
+                "command": "r_box_exec",
+                "args": {
+                    "cmd": "devtools::check(\"$folder\")"
+                },
+                "caption": "Check Package"
+            },
+            {
+                "command": "r_box_exec",
+                "args": {
+                    "cmd": "Rcpp::compileAttributes(\"$folder\")"
+                },
+                "caption": "Compile C++ Attributes"
+            },
+            {
+                "caption": "-"
+            },
+            {
+                "command": "r_box_render_rmarkdown",
+                "caption": "Render Rmarkdown"
+            },
+            {
+                "command": "r_box_sweave_rnw",
+                "caption": "Sweave Rnw to PDF"
+            },
+            {
+                "command": "r_box_knit_rnw",
+                "caption": "Knit Rnw to PDF"
+            }
+        ]
+    }
 ]
