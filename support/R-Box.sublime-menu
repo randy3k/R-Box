@@ -86,24 +86,15 @@
       },
       { "caption": "-"},
       {
-        "command": "send_code",
-        "args": {
-          "cmd": "rmarkdown::render(\"$file\", encoding = \"UTF-8\")"
-        },
+        "command": "r_box_render_rmarkdown",
         "caption": "Render Rmarkdown"
       },
       {
-        "command": "send_code",
-        "args": {
-          "cmd": "setwd(\"$file_path\")\nSweave(\"$file\")\ntools::texi2dvi(\"$file_base_name.tex\", pdf = TRUE)"
-        },
+        "command": "r_box_sweave_rnw",
         "caption": "Sweave Rnw to PDF"
       },
       {
-        "command": "send_code",
-        "args": {
-          "cmd": "setwd(\"$file_path\")\nknitr::knit(\"$file\", output=\"$file_base_name.tex\")\ntools::texi2dvi(\"$file_base_name.tex\", pdf = TRUE)"
-        },
+        "command": "r_box_knit_rnw",
         "caption": "Knit Rnw to PDF"
       }
     ]

@@ -1,6 +1,6 @@
 {
     "selector": "text.tex.latex.rsweave",
-    "working_dir": "${project_path:${folder}}",
+    "working_dir": "$file_path",
     "cmd": [
         "Rscript", "-e",
         "Sweave('$file'); tools::texi2dvi('$file_base_name.tex', pdf = TRUE)"

@@ -1,6 +1,6 @@
 {
     "selector": "text.html.markdown.rmarkdown",
-    "working_dir": "${project_path:${folder}}",
+    "working_dir": "$file_path",
     "cmd": [
         "Rscript", "-e",
         "rmarkdown::render('$file', encoding = 'UTF-8')"

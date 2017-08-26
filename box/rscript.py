@@ -33,6 +33,8 @@ class ScriptMixin:
 
     def custom_env(self):
         paths = r_box_settings.additional_paths()
+        if sublime.platform() == "osx":
+            paths += ["/Library/TeX/texbin", "/usr/local/bin"]
         env = os.environ.copy()
         if paths:
             sep = ";" if sublime.platform() == "windows" else ":"

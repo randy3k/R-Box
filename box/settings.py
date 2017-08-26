@@ -1,6 +1,8 @@
 import sublime
 import os
-from .utils import execute_command, read_registry
+import subprocess
+
+from .utils import read_registry
 
 
 class RBoxSettings:
@@ -31,8 +33,9 @@ class RBoxSettings:
         additional_paths = self.get("additional_paths", self._additional_paths)
         if not additional_paths:
             if sublime.platform() == "osx":
-                additional_paths = execute_command(
-                    "/usr/bin/login -fpql $USER $SHELL -l -c 'echo -n $PATH'", shell=True)
+                additional_paths = subprocess.check_output(
+                    "/usr/bin/login -fpql $USER $SHELL -l -c 'echo -n $PATH'",
+                    shell=True).decode("utf-8")
                 additional_paths = additional_paths.strip().split(":")
         if not additional_paths:
             additional_paths = "Rscript"
