@@ -1,0 +1,38 @@
+{
+    "selector": "source.r, source.c++.rcpp",
+    "working_dir": "$folder",
+    "cmd": [
+        "Rscript", "-e",
+        "devtools::install(\".\")"
+    ],
+    "variants": [
+        {
+            "name": "Test",
+            "cmd": [
+                "Rscript", "-e",
+                "devtools::test(\".\")"
+            ]
+        },
+        {
+            "name": "Check",
+            "cmd": [
+                "Rscript", "-e",
+                "devtools::check(\".\")"
+            ]
+        },
+        {
+            "name": "Clean and Build",
+            "cmd": [
+                "Rscript", "-e",
+                "devtools::install(\".\", local=FALSE)"
+            ]
+        },
+        {
+            "name": "Compile C++ Attributes",
+            "cmd": [
+                "Rscript", "-e",
+                "Rcpp::compileAttributes(\".\")"
+            ]
+        }
+    ]
+}
