@@ -39,6 +39,8 @@
             { "key": "selector", "operator": "equal", "operand": "source.r" }
         ]
     },
+
+    // source prompt
     { "keys": ["\""], "command": "r_box_source_prompt", "context":
         [
             { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
@@ -78,69 +80,4 @@
             { "key": "auto_complete_visible", "operator": "equal", "operand": false }
         ]
     }
-
-    // // menu: source current file
-    // {
-    //     "keys": ["ctrl+shift+s"], "command": "send_code",
-    //     "args": {"cmd": "source(\"$file\")"},
-    //     "context": [
-    //         { "key": "selector", "operator": "equal", "operand": "source.r" }
-    //     ]
-    // },
-    // // menu: build and reload
-    // {
-    //     "keys": ["ctrl+shift+b"], "command": "send_code",
-    //     "args": {"cmd": "devtools::install(\"$project_path\")"},
-    //     "context": [
-    //         { "key": "selector", "operator": "equal", "operand": "source.r" }
-    //     ]
-    // },
-    // // menu: load all
-    // {
-    //     "keys": ["ctrl+shift+l"], "command": "send_code",
-    //     "args": {"cmd": "devtools::load_all(\"$project_path\")"},
-    //     "context": [
-    //         { "key": "selector", "operator": "equal", "operand": "source.r" }
-    //     ]
-    // },
-    // // menu: check
-    // {
-    //     "keys": ["ctrl+shift+e"], "command": "send_code",
-    //     "args": {"cmd": "devtools::check(\"$project_path\")"},
-    //     "context": [
-    //         { "key": "selector", "operator": "equal", "operand": "source.r" }
-    //     ]
-    // },
-    // // menu: test
-    // {
-    //     "keys": ["ctrl+shift+t"], "command": "send_code",
-    //     "args": {"cmd": "devtools::test(\"$project_path\")"},
-    //     "context": [
-    //         { "key": "selector", "operator": "equal", "operand": "source.r" }
-    //     ]
-    // },
-    // // menu: document
-    // {
-    //     "keys": ["ctrl+shift+d"], "command": "send_code",
-    //     "args": {"cmd": "devtools::document(\"$project_path\")"},
-    //     "context": [
-    //         { "key": "selector", "operator": "equal", "operand": "source.r" }
-    //     ]
-    // },
-    // // menu: render Rmd
-    // {
-    //     "keys": ["ctrl+shift+k"], "command": "send_code",
-    //     "args": {"cmd": "rmarkdown::render(\"$file\", encoding = \"UTF-8\")"},
-    //     "context": [
-    //         { "key": "selector", "operator": "equal", "operand": "text.html.markdown.rmarkdown source.r" }
-    //     ]
-    // },
-    // // menu: Sweave Rnw
-    // {
-    //     "keys": ["ctrl+shift+k"], "command": "send_code",
-    //     "args": {"cmd": "setwd(\"$file_path\")\nSweave(\"$file\")\ntools::texi2dvi(\"$file_base_name.tex\", pdf = TRUE)"},
-    //     "context": [
-    //         { "key": "selector", "operator": "equal", "operand": "text.tex.latex.rsweave source.r" }
-    //     ]
-    // }
 ]
