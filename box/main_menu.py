@@ -91,13 +91,3 @@ class RBoxMainMenuListener(sublime_plugin.EventListener):
         if key == "r_box.main_menu_is_visible":
             out = _main_menu_is_visible[0] == operand
             return out if operator == 0 else not out
-
-
-class RBoxMainMenuClearWorkspace(sublime_plugin.TextCommand):
-    def is_enabled(self):
-        return "SendCode" in sys.modules
-
-    def run(self, edit):
-        ok = sublime.ok_cancel_dialog("Clear R Workspace?")
-        if ok:
-            self.view.run_command("send_code", {"cmd": "rm(list=ls())"})

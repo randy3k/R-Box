@@ -31,7 +31,11 @@
         "caption": "Set Working Directory"
       },
       {
-        "command": "r_box_main_menu_clear_workspace",
+        "command": "send_code",
+        "args": {
+          "cmd": "rm(list=ls())",
+          "confirmation": "Clear R Workspace?"
+        },
         "caption": "Clear Workspace"
       },
       { "caption": "-"},
