@@ -48,7 +48,7 @@
                 "args": {
                     "cmd": "devtools::load_all(\"$project_path\")"
                 },
-                "caption": "Load All"
+                "caption": "Load Package"
             },
             {
                 "command": "send_code",
