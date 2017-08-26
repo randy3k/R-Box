@@ -38,14 +38,14 @@
       {
         "command": "send_code",
         "args": {
-          "cmd": "devtools::load_all(\"$folder\")"
+          "cmd": "devtools::load_all(\"$project_path\")"
         },
         "caption": "Load All"
       },
       {
         "command": "send_code",
         "args": {
-          "cmd": "devtools::install(\"$folder\")"
+          "cmd": "devtools::install(\"$project_path\")"
         },
         "caption": "Build and Reload Package"
       },
