@@ -48,7 +48,7 @@ Improve your R coding expriences with Sublime Text!
 Other features:
 
 - R Extended Syntax and Roxygen, Rcpp, R Sweave and R Markdown syntaxes.
-- Build commands for Rmarkdown and Rnw files.
+- Build commands for R Package, Rmarkdown and Rnw files.
 
 
 ### Installation
