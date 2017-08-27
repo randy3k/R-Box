@@ -58,38 +58,35 @@
                 "caption": "Build and Reload Package"
             },
             {
-                "caption": "-"
-            },
-            {
-                "command": "r_box_exec",
-                "args": {
-                    "cmd": "devtools::document(\"$folder\")"
-                },
-                "caption": "Document Package"
-            },
-            {
-                "command": "r_box_exec",
+                "command": "send_code",
                 "args": {
                     "cmd": "devtools::install(\"$folder\", local=FALSE)"
                 },
                 "caption": "Clean and Build Package"
             },
             {
-                "command": "r_box_exec",
+                "command": "send_code",
                 "args": {
                     "cmd": "devtools::test(\"$folder\")"
                 },
                 "caption": "Test Package"
             },
             {
-                "command": "r_box_exec",
+                "command": "send_code",
                 "args": {
                     "cmd": "devtools::check(\"$folder\")"
                 },
                 "caption": "Check Package"
             },
             {
-                "command": "r_box_exec",
+                "command": "send_code",
+                "args": {
+                    "cmd": "devtools::document(\"$folder\")"
+                },
+                "caption": "Document Package"
+            },
+            {
+                "command": "send_code",
                 "args": {
                     "cmd": "Rcpp::compileAttributes(\"$folder\")"
                 },
