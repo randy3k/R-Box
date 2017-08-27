@@ -46,14 +46,14 @@
             {
                 "command": "send_code",
                 "args": {
-                    "cmd": "devtools::load_all(\"$project_path\")"
+                    "cmd": "devtools::load_all(\"$folder\")"
                 },
                 "caption": "Load Package"
             },
             {
                 "command": "send_code",
                 "args": {
-                    "cmd": "devtools::install(\"$project_path\")"
+                    "cmd": "devtools::install(\"$folder\")"
                 },
                 "caption": "Build and Reload Package"
             },
