@@ -40,6 +40,20 @@
                 "Rscript", "-e",
                 "Rcpp::compileAttributes(\".\")"
             ]
+        },
+        {
+            "name": "Build Source",
+            "cmd": [
+                "Rscript", "-e",
+                "devtools::build(\".\")"
+            ]
+        },
+        {
+            "name": "Build Binary",
+            "cmd": [
+                "Rscript", "-e",
+                "devtools::build(\".\", binary=TRUE)"
+            ]
         }
     ]
 }

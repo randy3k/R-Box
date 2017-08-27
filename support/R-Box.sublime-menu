@@ -93,6 +93,20 @@
                 "caption": "Compile C++ Attributes"
             },
             {
+                "command": "send_code",
+                "args": {
+                    "cmd": "devtools::build(\"$folder\")"
+                },
+                "caption": "Build Source"
+            },
+            {
+                "command": "send_code",
+                "args": {
+                    "cmd": "devtools::build(\"$folder\", binary=TRUE)"
+                },
+                "caption": "Build Binary"
+            },
+            {
                 "caption": "-"
             },
             {
