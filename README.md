@@ -74,5 +74,5 @@ See `Perference: R-Box Settings`
 
 - [SendCode](https://github.com/randy3k/SendCode) for sending R code to Terminal / R GUI / RStudio.
 - [SublimeLinter-contrib-lintr](https://github.com/jimhester/SublimeLinter-contrib-lintr) for linting R code.
-- [Bracket​Highlighter](https://github.com/facelessuser/BracketHighlighter) for advnaced bracket highlighting.
-- [Whitespace](https://github.com/randy3k/Whitespace) for cleaning whitspaces.
+- [Bracket​Highlighter](https://github.com/facelessuser/BracketHighlighter) for advanced bracket highlighting.
+- [Whitespace](https://github.com/randy3k/Whitespace) for cleaning whitespaces.
