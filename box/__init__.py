@@ -1,6 +1,6 @@
 from .completion import RBoxCompletionListener, RBoxAutoComplete
 from .popup import RBoxPopupListener, RBoxShowPopup
-from .main_menu import RBoxMainMenuListener
+from .main_menu import RBoxMainMenuListener, RBoxPackageSendCodeCommand
 # from .rexec import RBoxExecCommand
 from .render import RBoxRenderRmarkdownCommand, RBoxSweaveRnwCommand, RBoxKnitRnwCommand
 from .source_prompt import RBoxSourcePromptCommand

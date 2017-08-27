@@ -44,63 +44,63 @@
                 "caption": "-"
             },
             {
-                "command": "send_code",
+                "command": "r_box_package_send_code",
                 "args": {
                     "cmd": "devtools::load_all(\"$folder\")"
                 },
                 "caption": "Load Package"
             },
             {
-                "command": "send_code",
+                "command": "r_box_package_send_code",
                 "args": {
                     "cmd": "devtools::install(\"$folder\")"
                 },
                 "caption": "Build and Reload Package"
             },
             {
-                "command": "send_code",
+                "command": "r_box_package_send_code",
                 "args": {
                     "cmd": "devtools::install(\"$folder\", local=FALSE)"
                 },
                 "caption": "Clean and Build Package"
             },
             {
-                "command": "send_code",
+                "command": "r_box_package_send_code",
                 "args": {
                     "cmd": "devtools::test(\"$folder\")"
                 },
                 "caption": "Test Package"
             },
             {
-                "command": "send_code",
+                "command": "r_box_package_send_code",
                 "args": {
                     "cmd": "devtools::check(\"$folder\")"
                 },
                 "caption": "Check Package"
             },
             {
-                "command": "send_code",
+                "command": "r_box_package_send_code",
                 "args": {
                     "cmd": "devtools::document(\"$folder\")"
                 },
                 "caption": "Document Package"
             },
             {
-                "command": "send_code",
+                "command": "r_box_package_send_code",
                 "args": {
                     "cmd": "Rcpp::compileAttributes(\"$folder\")"
                 },
                 "caption": "Compile C++ Attributes"
             },
             {
-                "command": "send_code",
+                "command": "r_box_package_send_code",
                 "args": {
                     "cmd": "devtools::build(\"$folder\")"
                 },
                 "caption": "Build Source"
             },
             {
-                "command": "send_code",
+                "command": "r_box_package_send_code",
                 "args": {
                     "cmd": "devtools::build(\"$folder\", binary=TRUE)"
                 },

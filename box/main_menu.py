@@ -5,6 +5,8 @@ import threading
 
 
 _main_menu_is_visible = [False]
+_window_is_rproject = []
+_window_is_not_rproject = []
 
 
 def main_menu_is_visible():
@@ -12,26 +14,30 @@ def main_menu_is_visible():
 
 
 class RBoxMainMenuListener(sublime_plugin.EventListener):
-    _window_is_rproject = []
-    _window_is_not_rproject = []
-
     def window_is_rproj(self, folder):
         for f in os.listdir(folder):
             if f.endswith(".Rproj"):
                 return True
 
+        description_file = os.path.join(folder, "DESCRIPTION")
+        namespace_file = os.path.join(folder, "NAMESPACE")
+        r_source_dir = os.path.join(folder, "R")
+        if os.path.isfile(description_file) and os.path.isfile(namespace_file) \
+                and os.path.isdir(r_source_dir):
+            return True
+
     def is_r_project(self, window):
         if not window:
             return False
         folders = window.folders()
-        if window.id() in self._window_is_rproject:
+        if window.id() in _window_is_rproject:
             return True
-        elif window.id() not in self._window_is_not_rproject and folders:
+        elif window.id() not in _window_is_not_rproject and folders:
             if self.window_is_rproj(folders[0]):
-                self._window_is_rproject.append(window.id())
+                _window_is_rproject.append(window.id())
                 return True
             else:
-                self._window_is_not_rproject.append(window.id())
+                _window_is_not_rproject.append(window.id())
                 return False
 
     def is_r_file(self, view):
@@ -82,3 +88,11 @@ class RBoxMainMenuListener(sublime_plugin.EventListener):
 
         self.timer = threading.Timer(0.1, set_main_menu)
         self.timer.start()
+
+
+class RBoxPackageSendCodeCommand(sublime_plugin.WindowCommand):
+    def is_visible(self):
+        return self.window.id() in _window_is_rproject
+
+    def run(self, **kwargs):
+        self.window.active_view().run_command("send_code", kwargs)
