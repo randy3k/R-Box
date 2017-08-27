@@ -28,7 +28,7 @@
             {
                 "command": "send_code",
                 "args": {
-                    "cmd": "setwd(\"$file_path\")"
+                    "cmd": "setwd(\"${file_path:$folder}\")"
                 },
                 "caption": "Set Working Directory"
             },
