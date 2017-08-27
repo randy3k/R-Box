@@ -3,14 +3,14 @@
     "working_dir": "$file_path",
     "cmd": [
         "Rscript", "-e",
-        "Sweave('$file'); tools::texi2dvi('$file_base_name.tex', pdf = TRUE)"
+        "Sweave('$file_name'); tools::texi2dvi('$file_base_name.tex', pdf = TRUE)"
     ],
     "variants": [
         {
             "name": "knitr",
             "cmd": [
                 "Rscript", "-e",
-                "knitr::knit('$file'); tools::texi2dvi('$file_base_name.tex', pdf = TRUE)"
+                "knitr::knit('$file_name'); tools::texi2dvi('$file_base_name.tex', pdf = TRUE)"
             ]
         }
     ],
