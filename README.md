@@ -6,7 +6,7 @@ R package for Sublime Text
 <a href="https://gratipay.com/~randy3k/" title="Donate to this project using Gratipay"><img src="https://img.shields.io/badge/gratipay-donate-yellow.svg" /></a>
 
 
-Improve your R coding expriences with Sublime Text!
+Improve your R coding experiences with Sublime Text!
 
 
 ## Features highlight!
