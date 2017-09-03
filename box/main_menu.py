@@ -7,6 +7,7 @@ import threading
 _main_menu_is_visible = [False]
 _window_is_rproject = []
 _window_is_not_rproject = []
+_window_folder = {}
 
 
 def main_menu_is_visible():
@@ -26,19 +27,32 @@ class RBoxMainMenuListener(sublime_plugin.EventListener):
                 and os.path.isdir(r_source_dir):
             return True
 
+        return False
+
     def is_r_project(self, window):
         if not window:
             return False
         folders = window.folders()
-        if window.id() in _window_is_rproject:
-            return True
-        elif window.id() not in _window_is_not_rproject and folders:
-            if self.window_is_rproj(folders[0]):
+
+        if folders:
+            first_folder = folders[0]
+
+            if window.id() in _window_folder and _window_folder[window.id()] == first_folder:
+                if window.id() in _window_is_rproject:
+                    return True
+                elif window.id() in _window_is_not_rproject:
+                    return False
+
+            _window_folder[window.id()] = first_folder
+
+            if self.window_is_rproj(first_folder):
                 _window_is_rproject.append(window.id())
                 return True
             else:
                 _window_is_not_rproject.append(window.id())
                 return False
+
+        return False
 
     def is_r_file(self, view):
         try:
