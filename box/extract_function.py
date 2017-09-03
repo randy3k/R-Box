@@ -24,30 +24,30 @@ class RBoxExtractFunctionCommand(ScriptMixin, sublime_plugin.TextCommand):
             return
 
         region = self.view.sel()[0]
-        indentation = re.match(r"^\s*", self.view.substr(self.view.line(region.begin()))).group(0)
+        indentation = re.match(
+            r"^\s*", self.view.substr(self.view.line(region.begin()))).group(0)
 
         if region.empty():
             code = self.view.substr(self.view.line(region.begin()))
         else:
-            code = self.view.substr(sublime.Region(
+            code = self.view.substr(
+                sublime.Region(
                     self.view.line(region.begin()).begin(),
-                    self.view.line(region.end()).end()
-                ))
+                    self.view.line(region.end()).end()))
         try:
             free_vars = self.detect_free_vars(code)
 
-            self.view.insert(
-                edit,
-                self.view.line(region.end()).end(),
-                "\n{}}}\n".format(indentation))
+            self.view.insert(edit,
+                             self.view.line(region.end()).end(),
+                             "\n{}}}\n".format(indentation))
 
-            self.view.insert(
-                edit,
-                self.view.line(region.begin()).begin(),
-                "{}{} <- function({}) {{\n".format(indentation, func_name, ", ".join(free_vars)))
+            self.view.insert(edit,
+                             self.view.line(region.begin()).begin(),
+                             "{}{} <- function({}) {{\n".format(
+                                 indentation, func_name, ", ".join(free_vars)))
 
             self.view.run_command("indent")
             sublime.status_message("Extract function successed.")
 
-        except:
+        except Exception:
             sublime.status_message("Extract function failed.")

@@ -22,7 +22,7 @@ class RBoxSettings:
                         read_registry("Software\\R-Core\\R", "InstallPath")[0],
                         "bin",
                         "Rscript.exe")
-                except:
+                except Exception:
                     pass
         if not rscript_binary:
             rscript_binary = "Rscript"

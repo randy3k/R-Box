@@ -11,13 +11,13 @@ def escape_dq(string):
 
 
 class RBoxSourcePromptCommand(sublime_plugin.TextCommand):
-
     def run(self, edit):
         view = self.view
         point = view.sel()[0].end() if len(view.sel()) > 0 else 0
 
         if view.settings().get("auto_match_enabled"):
-            view.run_command("insert_snippet", {"contents": "\"${1:$SELECTION}\""})
+            view.run_command("insert_snippet",
+                             {"contents": "\"${1:$SELECTION}\""})
         else:
             view.run_command("insert", {"characters": "\""})
 
@@ -42,7 +42,9 @@ class RBoxSourcePromptCommand(sublime_plugin.TextCommand):
 
         self.listdir(view, fdir, None, exts, self.ondone)
 
-    def ondone(self, s,):
+    def ondone(
+            self,
+            s, ):
         fdir = os.path.dirname(self.view.file_name())
         s = os.path.relpath(s, fdir)
         self.view.run_command("insert", {"characters": escape_dq(s)})
@@ -60,8 +62,8 @@ class RBoxSourcePromptCommand(sublime_plugin.TextCommand):
         if base:
             fnames = [f for f in fnames if base.lower() in f.lower()]
 
-        display = ["[ Create a new file ]", "> "+os.pardir] + \
-            ["> "+f for f in ls if os.path.isdir(os.path.join(dir, f))] + fnames
+        display = ["[ Create a new file ]", "> " + os.pardir] + \
+            ["> " + f for f in ls if os.path.isdir(os.path.join(dir, f))] + fnames
 
         def on_action(i):
             if i < 0:
@@ -69,9 +71,12 @@ class RBoxSourcePromptCommand(sublime_plugin.TextCommand):
             elif display[i][0] == '>':
                 target = display[i][2:] if display[i][0] == '>' else display[i]
                 target_dir = os.path.normpath(os.path.join(dir, target))
-                sublime.set_timeout_async(lambda: self.listdir(view, target_dir, base, ext, on_done), 10)
+                sublime.set_timeout_async(
+                    lambda: self.listdir(view, target_dir, base, ext, on_done),
+                    10)
             elif i == 0:
-                view.window().show_input_panel("File: ", "", on_file, None, None)
+                view.window().show_input_panel("File: ", "", on_file, None,
+                                               None)
             else:
                 target = os.path.normpath(os.path.join(dir, display[i]))
                 on_done(target)
@@ -88,4 +93,5 @@ class RBoxSourcePromptCommand(sublime_plugin.TextCommand):
                 view.window().open_file(target)
                 on_done(target)
 
-        sublime.set_timeout_async(lambda: view.window().show_quick_panel(display, on_action), 10)
+        sublime.set_timeout_async(
+            lambda: view.window().show_quick_panel(display, on_action), 10)

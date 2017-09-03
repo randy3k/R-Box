@@ -25,8 +25,9 @@ class NamespaceManager(ScriptMixin):
 
         if pkg in self.installed_packages():
             exported = self.list_package_objects(pkg, exported_only=True)
-            unexported = list(set(self.list_package_objects(pkg, exported_only=False)) -
-                              set(exported))
+            unexported = list(
+                set(self.list_package_objects(pkg, exported_only=False)) -
+                set(exported))
             ns = PackageNamespace(exported=exported, unexported=unexported)
             self.ns.update({pkg: ns})
         else:
@@ -71,5 +72,6 @@ class NamespaceManager(ScriptMixin):
             return pkgs
         else:
             return pkgs[0] if pkgs else None
+
 
 namespace_manager = NamespaceManager()

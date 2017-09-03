@@ -21,7 +21,8 @@ class RBoxFormatCodeCommand(ScriptMixin, sublime_plugin.TextCommand):
 
         for region in reversed(self.view.sel()):
             indentation = re.match(
-                r"^\s*", self.view.substr(self.view.line(region.begin()))).group(0)
+                r"^\s*",
+                self.view.substr(self.view.line(region.begin()))).group(0)
 
             if region.empty():
                 region = self.view.line(region.begin())
@@ -32,16 +33,19 @@ class RBoxFormatCodeCommand(ScriptMixin, sublime_plugin.TextCommand):
                     raw_formatted_code = self.format_code(
                         code,
                         indent=tab_size,
-                        width_cutoff=width-len(indentation)-20)
+                        width_cutoff=width - len(indentation) - 20)
 
-                    formatted_code = "\n".join(
-                        [indentation + l.rstrip() if len(l.strip()) > 0 else ""
-                         for l in raw_formatted_code.split("\n")])
+                    formatted_code = "\n".join([
+                        indentation + l.rstrip() if len(l.strip()) > 0 else ""
+                        for l in raw_formatted_code.split("\n")
+                    ])
 
-                    self.view.run_command(
-                        "r_box_replace_selection",
-                        {"region": (region.begin(), region.end()), "text": formatted_code})
-            except:
+                    self.view.run_command("r_box_replace_selection", {
+                        "region": (region.begin(), region.end()),
+                        "text":
+                        formatted_code
+                    })
+            except Exception:
                 sublime.status_message("Format code failed.")
                 return
 

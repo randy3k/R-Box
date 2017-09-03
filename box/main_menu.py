@@ -3,7 +3,6 @@ import sublime_plugin
 import os
 import threading
 
-
 _main_menu_is_visible = [False]
 _window_is_rproject = []
 _window_is_not_rproject = []
@@ -37,7 +36,8 @@ class RBoxMainMenuListener(sublime_plugin.EventListener):
         if folders:
             first_folder = folders[0]
 
-            if window.id() in _window_folder and _window_folder[window.id()] == first_folder:
+            if window.id() in _window_folder and _window_folder[window.id(
+            )] == first_folder:
                 if window.id() in _window_is_rproject:
                     return True
                 elif window.id() in _window_is_not_rproject:
@@ -57,15 +57,13 @@ class RBoxMainMenuListener(sublime_plugin.EventListener):
     def is_r_file(self, view):
         try:
             pt = view.sel()[0].end()
-        except:
+        except Exception:
             pt = 0
 
-        if view.match_selector(
-                pt,
-                "source.r, "
-                "text.tex.latex.rsweave, "
-                "text.html.markdown.rmarkdown, "
-                "source.c++.rcpp"):
+        if view.match_selector(pt, "source.r, "
+                               "text.tex.latex.rsweave, "
+                               "text.html.markdown.rmarkdown, "
+                               "source.c++.rcpp"):
             return True
 
         return False
@@ -78,9 +76,8 @@ class RBoxMainMenuListener(sublime_plugin.EventListener):
 
         def set_main_menu():
 
-            menu_path = os.path.join(
-                        sublime.packages_path(),
-                        'User', 'R-Box', 'Main.sublime-menu')
+            menu_path = os.path.join(sublime.packages_path(), 'User', 'R-Box',
+                                     'Main.sublime-menu')
             menu_dir = os.path.dirname(menu_path)
 
             if self.is_r_project(view.window()) or self.is_r_file(view):

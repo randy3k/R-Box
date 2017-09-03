@@ -5,7 +5,6 @@ from .view_mixin import RBoxViewMixin
 from .namespace import namespace_manager
 from .settings import r_box_settings
 
-
 VALIDCOMPLETION = re.compile(r"[.a-zA-Z0-9_-]+$")
 VALIDOBJECT = re.compile(r"([a-zA-Z][a-zA-Z0-9.]*)(:::?)([.a-zA-Z0-9_-]*)$")
 ARGVALUE = re.compile(r"=\s*[.a-zA-Z0-9_-]*$")
@@ -14,12 +13,7 @@ ARGVALUE = re.compile(r"=\s*[.a-zA-Z0-9_-]*$")
 class CompletionMixin:
 
     default_packages = [
-        "base",
-        "stats",
-        "methods",
-        "utils",
-        "graphics",
-        "grDevices"
+        "base", "stats", "methods", "utils", "graphics", "grDevices"
     ]
 
     def filter_completions(self, objects):
@@ -64,15 +58,15 @@ class CompletionMixin:
         namespace_manager.get_namespace(pkg)
 
 
-class RBoxCompletionListener(CompletionMixin, RBoxViewMixin, sublime_plugin.EventListener):
-
+class RBoxCompletionListener(CompletionMixin, RBoxViewMixin,
+                             sublime_plugin.EventListener):
     def should_complete(self, view):
         if view.settings().get('is_widget'):
             return False
 
         try:
             pt = view.sel()[0].end()
-        except:
+        except Exception:
             pt = 0
 
         if not view.match_selector(pt, "source.r, source.r-console"):
@@ -96,10 +90,10 @@ class RBoxCompletionListener(CompletionMixin, RBoxViewMixin, sublime_plugin.Even
         else:
             return []
 
-        completions = [(item, ) for item in completions if item.startswith(prefix)]
-        return (
-            completions,
-            sublime.INHIBIT_WORD_COMPLETIONS | sublime.INHIBIT_EXPLICIT_COMPLETIONS)
+        completions = [(item, ) for item in completions
+                       if item.startswith(prefix)]
+        return (completions, sublime.INHIBIT_WORD_COMPLETIONS
+                | sublime.INHIBIT_EXPLICIT_COMPLETIONS)
 
     def complete_function_args(self, view, pt):
         if ARGVALUE.search(self.extract_line(view, pt, truncated=True)):
@@ -108,7 +102,8 @@ class RBoxCompletionListener(CompletionMixin, RBoxViewMixin, sublime_plugin.Even
         if not funct:
             return []
         args = self.get_function_args(pkg, funct)
-        return [["{} = \tArguments".format(arg), "{} = ".format(arg)] for arg in args]
+        return [["{} = \tArguments".format(arg), "{} = ".format(arg)]
+                for arg in args]
 
     def on_query_completions(self, view, prefix, locations):
         if not self.should_complete(view):
@@ -121,7 +116,10 @@ class RBoxCompletionListener(CompletionMixin, RBoxViewMixin, sublime_plugin.Even
         completions = self.complete_function_args(view, locations[0])
 
         completions += self.get_completions_for_view(view)
-        completions = [item for item in completions if len(item) == 1 or item[1].startswith(prefix)]
+        completions = [
+            item for item in completions
+            if len(item) == 1 or item[1].startswith(prefix)
+        ]
         return completions
 
     def on_post_save_async(self, view):
@@ -137,8 +135,8 @@ class RBoxCompletionListener(CompletionMixin, RBoxViewMixin, sublime_plugin.Even
             self.refresh_completions_for_view(view)
 
 
-class RBoxAutoComplete(CompletionMixin, RBoxViewMixin, sublime_plugin.TextCommand):
-
+class RBoxAutoComplete(CompletionMixin, RBoxViewMixin,
+                       sublime_plugin.TextCommand):
     def run(self, edit, key=""):
         sublime.set_timeout_async(lambda: self.run_async(key))
 
@@ -148,7 +146,8 @@ class RBoxAutoComplete(CompletionMixin, RBoxViewMixin, sublime_plugin.TextComman
 
         if key == ":":
             self.view.run_command("hide_auto_complete")
-            current_line = self.extract_line(self.view, self.view.sel()[0].end(), truncated=True)
+            current_line = self.extract_line(
+                self.view, self.view.sel()[0].end(), truncated=True)
             m = VALIDOBJECT.search(current_line)
             if m:
                 pkg, _, _ = m.groups()
