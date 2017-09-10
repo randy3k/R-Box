@@ -16,6 +16,9 @@
             },
             {
                 "command": "send_code",
+                "args": {
+                    "cmd": ""
+                },
                 "caption": "Send Current Line/Selection"
             },
             {
