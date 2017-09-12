@@ -5,7 +5,7 @@ file_extensions: [R, r, S, s, Rprofile]
 scope: source.r
 
 variables:
-  var: '[a-zA-Z._][a-zA-Z0-9._]*'
+  var: '[a-zA-Z._][a-zA-Z0-9._]*|`[^`]+`'
 
 contexts:
   main:
