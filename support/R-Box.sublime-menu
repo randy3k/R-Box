@@ -58,14 +58,14 @@
                 "args": {
                     "cmd": "devtools::install(\"$folder\")"
                 },
-                "caption": "Build and Reload Package"
+                "caption": "Install Package"
             },
             {
                 "command": "r_box_package_send_code",
                 "args": {
                     "cmd": "devtools::install(\"$folder\", local=FALSE)"
                 },
-                "caption": "Clean and Build Package"
+                "caption": "Clean and Rebuild Package"
             },
             {
                 "command": "r_box_package_send_code",
