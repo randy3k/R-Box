@@ -7,6 +7,9 @@ file_extensions:
 scope: text.tex.latex.rsweave
 
 contexts:
+  prototype:
+    - include: scope:text.tex.latex#comments
+
   main:
     - match: ""
       with_prototype:
