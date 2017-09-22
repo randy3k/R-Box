@@ -121,7 +121,7 @@ class ScriptMixin:
         dfv_path = tempfile.mkstemp(suffix=".R")[1]
         data = sublime.load_resource("Packages/R-Box/box/detect_free_vars.R")
         with open(dfv_path, 'w') as f:
-            f.write(data)
+            f.write(data.replace("\r\n", "\n"))
             f.close()
 
         result = self.rscript(

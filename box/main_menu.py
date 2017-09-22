@@ -89,7 +89,7 @@ class RBoxMainMenuListener(sublime_plugin.EventListener):
                     data = sublime.load_resource(
                         "Packages/R-Box/support/R-Box.sublime-menu")
                     with open(menu_path, 'w') as f:
-                        f.write(data)
+                        f.write(data.replace("\r\n", "\n"))
                         f.close()
                 _main_menu_is_visible[0] = True
             else:
