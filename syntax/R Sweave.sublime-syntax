@@ -21,6 +21,7 @@ contexts:
   chunk:
     - match: ^\s*(?=<<.*>>=\s*$)
       push:
+        - meta_scope: markup.raw.code-fence.latex.rsweave
         - match: "<<"
           push:
             - meta_content_scope: source.r
@@ -29,6 +30,7 @@ contexts:
             - include: "R Extended.sublime-syntax"
         - match: ""
           set:
+            - meta_scope: markup.raw.code-fence.latex.rsweave
             - meta_content_scope: source.r
             - match: ^\s*@\s*$
               pop: true
