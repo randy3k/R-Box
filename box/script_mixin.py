@@ -1,4 +1,5 @@
 import sublime
+import tempfile
 import re
 import os
 import subprocess
@@ -41,7 +42,7 @@ class ScriptMixin:
             env["PATH"] = env["PATH"] + sep + sep.join(paths)
         return env
 
-    def rscript(self, script=None, file=None, args=None):
+    def rscript(self, script=None, file=None, args=None, stdin_text=None):
         cmd = [r_box_settings.rscript_binary()]
         if script:
             cmd = cmd + ["-e", script]
@@ -68,10 +69,10 @@ class ScriptMixin:
                 stderr=subprocess.PIPE,
                 cwd=working_dir,
                 env=custom_env,
-                startupinfo=startupinfo)
+                startupinfo=startupinfo,
+                universal_newlines=True)
 
-            stdout, stderr = p.communicate()
-            stdout, stderr = stdout.decode(), stderr.decode()
+            stdout, stderr = p.communicate(input=stdin_text)
 
             if p.returncode == 0:
                 return ANSI_ESCAPE.sub('', stdout)
@@ -110,15 +111,21 @@ class ScriptMixin:
 
     def format_code(self, code, indent=4, width_cutoff=100):
         formatted_code = self.rscript(
-            "formatR::tidy_source(text=commandArgs(TRUE)[1], "
-            "                     indent={:d}, width.cutoff={:d})".format(indent, width_cutoff),
-            args=[code])
+            "formatR::tidy_source(file('stdin'), indent={:d}, width.cutoff={:d})".format(
+                indent, width_cutoff),
+            stdin_text=code)
 
         return formatted_code[0:-1]
 
     def detect_free_vars(self, code):
+        dfv_path = tempfile.mkstemp(suffix=".R")[1]
+        data = sublime.load_resource("Packages/R-Box/box/detect_free_vars.R")
+        with open(dfv_path, 'w') as f:
+            f.write(data)
+            f.close()
+
         result = self.rscript(
-            "eval(parse(text=commandArgs(TRUE)[1]))",
-            args=[sublime.load_resource("Packages/R-Box/box/detect_free_vars.R"), code]
+            file=dfv_path,
+            stdin_text=code
         ).strip()
         return [s.strip() for s in result.split("\n")] if result else []

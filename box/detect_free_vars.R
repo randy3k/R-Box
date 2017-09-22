@@ -50,7 +50,7 @@ detectFreeVars_Leaf <- function(e, w) {
         return(as.character(e)) else return(character(0))
 }
 
-detect_free_vars <- function(code) {
+detect_free_vars <- function(file) {
     globals <- new.env(parent = emptyenv())
 
     # Ignore predefined symbols like T and F
@@ -60,11 +60,11 @@ detect_free_vars <- function(code) {
     w <- codetools:::makeCodeWalker(assigned = globals, assignedGlobals = globals,
         call = detectFreeVars_Call, leaf = detectFreeVars_Leaf)
     freeVars <- character(0)
-    for (e in parse(text = code)) freeVars <- c(freeVars, codetools:::walkCode(e,
+    for (e in parse(file)) freeVars <- c(freeVars, codetools:::walkCode(e,
         w))
     return(unique(freeVars))
 }
 
-for (var in detect_free_vars(commandArgs(TRUE)[2])) {
+for (var in detect_free_vars(file('stdin'))) {
     cat(var, "\n")
 }

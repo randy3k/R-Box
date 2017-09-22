@@ -40,12 +40,10 @@ class RBoxShowPopup(RBoxViewMixin, sublime_plugin.TextCommand):
                     self.view,
                     text,
                     css=POPUP_CSS,
-                    flags=sublime.COOPERATE_WITH_AUTO_COMPLETE
-                    | sublime.HIDE_ON_MOUSE_MOVE_AWAY,
+                    flags=sublime.COOPERATE_WITH_AUTO_COMPLETE | sublime.HIDE_ON_MOUSE_MOVE_AWAY,
                     location=point,
                     max_width=800,
-                    on_navigate=
-                    lambda x: self.on_navigate(x, pkg, funct, point))
+                    on_navigate=lambda x: self.on_navigate(x, pkg, funct, point))
 
     def on_navigate(self, link, pkg, funct, point):
         command, option = link.split(":", 1)
