@@ -66,6 +66,7 @@
             { "key": "setting.tab_completion", "operator": "equal", "operand": true },
             { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
             { "key": "selector", "operator": "equal", "operand": "source.r, source.r-console" },
+            { "key": "has_next_field", "operator": "equal", "operand": false },
             { "key": "auto_complete_visible", "operator": "equal", "operand": false }
         ]
     },
@@ -77,6 +78,7 @@
             { "key": "setting.tab_completion", "operator": "equal", "operand": true },
             { "key": "selection_empty", "operator": "equal", "operand": true, "match_all": true },
             { "key": "selector", "operator": "equal", "operand": "meta.function-call.r" },
+            { "key": "has_next_field", "operator": "equal", "operand": false },
             { "key": "auto_complete_visible", "operator": "equal", "operand": false }
         ]
     }
