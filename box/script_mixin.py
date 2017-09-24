@@ -128,4 +128,10 @@ class ScriptMixin:
             file=dfv_path,
             stdin_text=code
         ).strip()
+
+        try:
+            os.unlink(dfv_path)
+        except Exception:
+            pass
+
         return [s.strip() for s in result.split("\n")] if result else []
