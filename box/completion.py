@@ -68,7 +68,6 @@ class RBoxCompletionListener(RBoxViewMixin, sublime_plugin.EventListener):
     def get_completions_for_view(self, view):
         return view.settings().get("R-Box.completions", [])
 
-
     def on_query_completions(self, view, prefix, locations):
         if not self.should_complete(view):
             return

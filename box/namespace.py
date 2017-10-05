@@ -103,8 +103,7 @@ class RBoxNameSpaceListener(RBoxViewMixin, sublime_plugin.EventListener):
             return False
 
         return r_box_settings.get("auto_completions", True) or \
-                r_box_settings.get("show_popup_hints", True)
-
+            r_box_settings.get("show_popup_hints", True)
 
     def filter_completions(self, objects):
         return filter(lambda x: VALIDCOMPLETION.match(x), objects)
