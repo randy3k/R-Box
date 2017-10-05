@@ -5,61 +5,11 @@ from .view_mixin import RBoxViewMixin
 from .namespace import namespace_manager
 from .settings import r_box_settings
 
-VALIDCOMPLETION = re.compile(r"[.a-zA-Z0-9_-]+$")
 VALIDOBJECT = re.compile(r"([a-zA-Z][a-zA-Z0-9.]*)(:::?)([.a-zA-Z0-9_-]*)$")
 ARGVALUE = re.compile(r"=\s*[.a-zA-Z0-9_-]*$")
 
 
-class CompletionMixin:
-
-    default_packages = [
-        "base", "stats", "methods", "utils", "graphics", "grDevices"
-    ]
-
-    def filter_completions(self, objects):
-        return filter(lambda x: VALIDCOMPLETION.match(x), objects)
-
-    def perpare_pkg_objects(self, pkg):
-        ns = namespace_manager.get_namespace(pkg)
-        filtered_exported = self.filter_completions(ns.exported)
-        return [[obj + "\t{" + pkg + "}", obj] for obj in filtered_exported]
-
-    def get_completions_for_view(self, view):
-        return view.settings().get("R-Box.completions", [])
-
-    def set_completions_for_view(self, view, packages):
-        # TODO: ultilize loaded_packages to update completions
-        completions = []
-        packages = list(set(self.default_packages + packages))
-        for pkg in packages:
-            completions += self.perpare_pkg_objects(pkg)
-
-        completions += [["{}\tInstalled Package".format(pkg), pkg]
-                        for pkg in namespace_manager.installed_packages()]
-
-        view.settings().set("R-Box.completions", completions)
-        view.settings().set("R-Box.loaded_packages", packages)
-
-    def refresh_completions_for_view(self, view):
-        packages = self.inline_packages_for_view(view)
-        self.set_completions_for_view(view, packages)
-
-    def get_completions_for_package(self, pkg, exported_only=True):
-        ns = namespace_manager.get_namespace(pkg)
-        if exported_only:
-            return self.filter_completions(ns.exported)
-        else:
-            return self.filter_completions(ns.unexported)
-
-    def get_function_args(self, pkg, funct):
-        return namespace_manager.list_function_args(pkg, funct)
-
-    def preload_package(self, pkg):
-        namespace_manager.get_namespace(pkg)
-
-
-class RBoxCompletionListener(CompletionMixin, RBoxViewMixin,
-                             sublime_plugin.EventListener):
+class RBoxCompletionListener(RBoxViewMixin, sublime_plugin.EventListener):
     def should_complete(self, view):
         if view.settings().get('is_widget'):
             return False
@@ -73,6 +23,16 @@ class RBoxCompletionListener(CompletionMixin, RBoxViewMixin,
             return False
 
         return r_box_settings.get("auto_completions", True)
+
+    def get_function_args(self, pkg, funct):
+        return namespace_manager.list_function_args(pkg, funct)
+
+    def get_completions_for_package(self, pkg, exported_only=True):
+        ns = namespace_manager.get_namespace(pkg)
+        if exported_only:
+            return self.filter_completions(ns.exported)
+        else:
+            return self.filter_completions(ns.unexported)
 
     def complete_package_objects(self, view, pt):
         line = self.extract_line(view, pt, truncated=True)
@@ -105,6 +65,10 @@ class RBoxCompletionListener(CompletionMixin, RBoxViewMixin,
         return [["{} = \tArguments".format(arg), "{} = ".format(arg)]
                 for arg in args]
 
+    def get_completions_for_view(self, view):
+        return view.settings().get("R-Box.completions", [])
+
+
     def on_query_completions(self, view, prefix, locations):
         if not self.should_complete(view):
             return
@@ -122,21 +86,8 @@ class RBoxCompletionListener(CompletionMixin, RBoxViewMixin,
         ]
         return completions
 
-    def on_post_save_async(self, view):
-        if self.should_complete(view):
-            self.refresh_completions_for_view(view)
 
-    def on_load_async(self, view):
-        if self.should_complete(view):
-            self.refresh_completions_for_view(view)
-
-    def on_activated_async(self, view):
-        if self.should_complete(view):
-            self.refresh_completions_for_view(view)
-
-
-class RBoxAutoComplete(CompletionMixin, RBoxViewMixin,
-                       sublime_plugin.TextCommand):
+class RBoxAutoComplete(RBoxViewMixin, sublime_plugin.TextCommand):
     def run(self, edit, key=""):
         sublime.set_timeout_async(lambda: self.run_async(key))
 
@@ -154,3 +105,6 @@ class RBoxAutoComplete(CompletionMixin, RBoxViewMixin,
                 self.preload_package(pkg)
 
         self.view.run_command("auto_complete")
+
+    def preload_package(self, pkg):
+        namespace_manager.get_namespace(pkg)

@@ -1,3 +1,4 @@
+from .namespace import RBoxNameSpaceListener
 from .completion import RBoxCompletionListener, RBoxAutoComplete
 from .popup import RBoxPopupListener, RBoxShowPopup
 from .main_menu import RBoxMainMenuListener, RBoxPackageSendCodeCommand
