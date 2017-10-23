@@ -25,12 +25,14 @@ contexts:
         - match: "<<"
           push:
             - meta_content_scope: source.r
+            - meta_include_prototype: false
             - match: ">>="
               pop: true
             - include: "R Extended.sublime-syntax"
         - match: ""
           set:
             - meta_scope: markup.raw.code-fence.latex.rsweave
+            - meta_include_prototype: false
             - meta_content_scope: source.r
             - match: ^\s*@\s*$
               pop: true
@@ -41,6 +43,7 @@ contexts:
       captures:
         1: support.function.latex
       push:
+        - meta_include_prototype: false
         - include: "R Extended.sublime-syntax"
         - match: \}
           pop: true
