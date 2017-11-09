@@ -5,6 +5,7 @@ from .view_mixin import RBoxViewMixin
 from .namespace import namespace_manager
 from .settings import r_box_settings
 
+VALIDCOMPLETION = re.compile(r"[.a-zA-Z0-9_-]+$")
 VALIDOBJECT = re.compile(r"([a-zA-Z][a-zA-Z0-9.]*)(:::?)([.a-zA-Z0-9_-]*)$")
 ARGVALUE = re.compile(r"=\s*[.a-zA-Z0-9_-]*$")
 
@@ -23,6 +24,9 @@ class RBoxCompletionListener(RBoxViewMixin, sublime_plugin.EventListener):
             return False
 
         return r_box_settings.get("auto_completions", True)
+
+    def filter_completions(self, objects):
+        return filter(lambda x: VALIDCOMPLETION.match(x), objects)
 
     def get_function_args(self, pkg, funct):
         return namespace_manager.list_function_args(pkg, funct)
