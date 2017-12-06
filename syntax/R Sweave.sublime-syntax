@@ -11,13 +11,17 @@ contexts:
     - include: scope:text.tex.latex#comments
 
   main:
+    - include: chunk
+    - include: sexpr
+    - include: lists
     - include: scope:text.tex.latex#unique-latex
+    - include: beamer
     - include: scope:text.tex.latex#packages
+    - include: block-math
+    - include: inline-math
     - include: scope:text.tex.latex#plain-tex
     - include: scope:text.tex.latex#begin-end-commands
     - include: scope:text.tex.latex#general-commands
-    - include: chunk
-    - include: sexpr
     - include: global-braces
 
   global-braces:
@@ -28,6 +32,210 @@ contexts:
         - match: '\}'
           scope: punctuation.definition.group.brace.end.latex
           pop: true
+        - include: main
+
+  lists:
+    - match: '((\\)begin)(\{)\s*(itemize\*?)\s*(\})'
+      captures:
+        1: support.function.begin.latex keyword.control.flow.begin.latex
+        2: punctuation.definition.backslash.latex
+        3: punctuation.definition.group.brace.begin.latex
+        4: variable.parameter.function.latex
+        5: punctuation.definition.group.brace.end.latex
+      push:
+        - meta_scope: meta.environment.list.itemize.latex
+        - match: '((\\)end)(\{)\s*(\4)\s*(\})'
+          captures:
+            1: support.function.end.latex keyword.control.flow.begin.latex
+            2: punctuation.definition.backslash.latex
+            3: punctuation.definition.group.brace.begin.latex
+            4: variable.parameter.function.latex
+            5: punctuation.definition.group.brace.end.latex
+          pop: true
+        - include: main
+    - match: '((\\)begin)(\{)\s*(enumerate\*?)\s*(\})'
+      captures:
+        1: support.function.begin.latex keyword.control.flow.begin.latex
+        2: punctuation.definition.backslash.latex
+        3: punctuation.definition.group.brace.begin.latex
+        4: variable.parameter.function.latex
+        5: punctuation.definition.group.brace.end.latex
+      push:
+        - meta_scope: meta.environment.list.enumerate.latex
+        - match: '((\\)end)(\{)\s*(\4)\s*(\})'
+          captures:
+            1: support.function.end.latex keyword.control.flow.begin.latex
+            2: punctuation.definition.backslash.latex
+            3: punctuation.definition.group.brace.begin.latex
+            4: variable.parameter.function.latex
+            5: punctuation.definition.group.brace.end.latex
+          pop: true
+        - include: main
+    - match: '((\\)begin)(\{)\s*(list\*?)\s*(\})'
+      captures:
+        1: support.function.begin.latex keyword.control.flow.begin.latex
+        2: punctuation.definition.backslash.latex
+        3: punctuation.definition.group.brace.begin.latex
+        4: variable.parameter.function.latex
+        5: punctuation.definition.group.brace.end.latex
+      push:
+        - meta_scope: meta.environment.list.list.latex
+        - match: '((\\)end)(\{)\s*(\4)\s*(\})'
+          captures:
+            1: support.function.end.latex keyword.control.flow.begin.latex
+            2: punctuation.definition.backslash.latex
+            3: punctuation.definition.group.brace.begin.latex
+            4: variable.parameter.function.latex
+            5: punctuation.definition.group.brace.end.latex
+          pop: true
+        - include: main
+    - match: '((\\)begin)(\{)\s*(description\*?)\s*(\})'
+      captures:
+        1: support.function.begin.latex keyword.control.flow.begin.latex
+        2: punctuation.definition.backslash.latex
+        3: punctuation.definition.group.brace.begin.latex
+        4: variable.parameter.function.latex
+        5: punctuation.definition.group.brace.end.latex
+      push:
+        - meta_scope: meta.environment.list.description.latex
+        - match: '((\\)end)(\{)\s*(\4)\s*(\})'
+          captures:
+            1: support.function.end.latex keyword.control.flow.begin.latex
+            2: punctuation.definition.backslash.latex
+            3: punctuation.definition.group.brace.begin.latex
+            4: variable.parameter.function.latex
+            5: punctuation.definition.group.brace.end.latex
+          pop: true
+        - include: main
+
+  math-braces:
+    - match: '\{'
+      scope: punctuation.definition.group.brace.begin.latex
+      push:
+        - meta_scope: meta.group.brace.latex
+        - match: '\}'
+          scope: punctuation.definition.group.brace.end.latex
+          pop: true
+        - include: math-content
+
+  math-content:
+    # unique to latex
+    - include: chunk
+    - include: sexpr
+    - include: scope:text.tex.latex#verb
+    - include: scope:text.tex.latex#text-decorators
+    - include: scope:text.tex.latex#references
+    - include: scope:text.tex.latex#begin-end-commands
+    # extended from tex
+    - include: scope:text.tex#greeks
+    - include: scope:text.tex#math-brackets
+    - include: math-braces
+    - include: scope:text.tex.latex#boxes
+    - include: scope:text.tex#math-commands
+    - include: scope:text.tex#math-operators
+    - include: scope:text.tex#math-characters
+    - include: scope:text.tex#math-numerics
+    - include: scope:text.tex.latex#general-constants
+    - match: (?=\})
+      pop: true
+
+  inline-math:
+    - match: \$
+      scope: string.other.math.latex punctuation.definition.string.begin.latex
+      push:
+        - meta_scope: meta.environment.math.inline.dollar.latex
+        - match: \$
+          scope: string.other.math.latex punctuation.definition.string.end.latex
+          pop: true
+        - include: math-content
+    - match: '((\\)ensuremath)(\{)'
+      captures:
+        1: support.function.ensuremath.latex
+        2: punctuation.definition.backslash.latex
+        3: punctuation.definition.group.brace.begin.latex
+      push:
+        - meta_scope: meta.function.ensuremath.latex
+        - meta_content_scope: meta.environment.math.inline.ensuremath.latex
+        - match: '\}'
+          scope: punctuation.definition.group.brace.end.latex
+          pop: true
+        - include: math-content
+
+    - match: (\\\()
+      scope: string.other.math.latex
+      captures:
+        1: punctuation.definition.string.begin.latex
+      push:
+        - meta_scope: meta.environment.math.inline.paren.latex
+        - match: (\\\))
+          scope: string.other.math.latex punctuation.definition.string.end.latex
+          pop: true
+        - include: math-content
+
+  block-math:
+    - match: \$\$
+      scope: string.other.math.latex punctuation.definition.string.begin.latex
+      push:
+        - meta_scope: meta.environment.math.block.dollar.latex
+        - match: \$\$
+          scope: string.other.math.latex punctuation.definition.string.end.latex
+          pop: true
+        - include: math-content
+
+    - match: '(\\\[)'
+      scope: string.other.math.latex punctuation.definition.string.begin.latex
+      push:
+        - meta_scope: meta.environment.math.block.bracket.latex
+        - match: '(\\\])'
+          scope: string.other.math.latex punctuation.definition.string.end.latex
+          pop: true
+        - include: math-content
+
+    - match: |-
+        (?x)
+        ((\\)begin)(\{)\s*((?:
+          align|alignat|aligned|alignedat|displaymath
+          |eqnarray|equation|flalign|gather|gathered
+          |math|multline|x?xalignat|split
+          |dmath|dseries|dgroup|darray|dsuspend
+        )\*?)\s*(\})
+      captures:
+        1: support.function.begin.latex keyword.control.flow.begin.latex
+        2: punctuation.definition.backslash.latex
+        3: punctuation.definition.group.brace.begin.latex
+        4: variable.parameter.function.latex
+        5: punctuation.definition.group.brace.end.latex
+      push:
+        - meta_content_scope: meta.environment.math.block.be.latex
+        - match: '((\\)end)(\{)\s*(\4)\s*(\})'
+          captures:
+            1: support.function.end.latex keyword.control.flow.begin.latex
+            2: punctuation.definition.backslash.latex
+            3: punctuation.definition.group.brace.begin.latex
+            4: variable.parameter.function.latex
+            5: punctuation.definition.group.brace.end.latex
+          pop: true
+        - include: math-content
+
+  beamer:
+    - match: '((\\)begin)(\{)(frame)(\})'
+      captures:
+        1: support.function.begin.latex keyword.control.flow.begin.latex
+        2: punctuation.definition.backslash.latex
+        3: punctuation.definition.group.brace.begin.latex
+        4: variable.parameter.function.latex
+        5: punctuation.definition.group.brace.end.latex
+      push:
+        - meta_scope: meta.environment.frame.latex
+        - match: '((\\)end)(\{)(frame)(\})'
+          captures:
+            1: support.function.end.latex keyword.control.flow.end.latex
+            2: punctuation.definition.backslash.latex
+            3: punctuation.definition.group.brace.begin.latex
+            4: variable.parameter.function.latex
+            5: punctuation.definition.group.brace.end.latex
+          pop: true
+        - include: scope:text.tex.latex#frametitles
         - include: main
 
   chunk:
