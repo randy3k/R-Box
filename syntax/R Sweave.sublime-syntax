@@ -11,40 +11,43 @@ contexts:
     - include: scope:text.tex.latex#comments
 
   main:
-    - match: ""
-      with_prototype:
-        - include: sexpr
-        - include: chunk
-      set:
-        - include: scope:text.tex.latex
+    - include: scope:text.tex.latex#unique-latex
+    - include: scope:text.tex.latex#packages
+    - include: scope:text.tex.latex#plain-tex
+    - include: scope:text.tex.latex#begin-end-commands
+    - include: scope:text.tex.latex#general-commands
+    - include: chunk
+    - include: sexpr
+    - include: global-braces
+
+  global-braces:
+    - match: '\{'
+      scope: punctuation.definition.group.brace.begin.latex
+      push:
+        - meta_scope: meta.group.brace.latex
+        - match: '\}'
+          scope: punctuation.definition.group.brace.end.latex
+          pop: true
+        - include: main
 
   chunk:
     - match: ^\s*(?=<<.*>>=\s*$)
       push:
         - meta_scope: markup.raw.code-fence.latex.rsweave
         - match: "<<"
-          push:
-            - meta_content_scope: source.r
-            - meta_include_prototype: false
-            - match: ">>="
-              pop: true
-            - include: "R Extended.sublime-syntax"
-        - match: ""
+          embed: "R Extended.sublime-syntax"
+          escape: "(?=>>=)"
+        - match: "(?=>>=)"
           set:
-            - meta_scope: markup.raw.code-fence.latex.rsweave
-            - meta_include_prototype: false
-            - meta_content_scope: source.r
-            - match: ^\s*@\s*$
+            - match: ">>="
+              embed: "R Extended.sublime-syntax"
+              escape: ^\s*@\s*$
+            - match: ""
               pop: true
-            - include: "R Extended.sublime-syntax"
 
   sexpr:
     - match: (\\Sexpr)\{
       captures:
         1: support.function.latex
-      push:
-        - meta_include_prototype: false
-        - include: "R Extended.sublime-syntax"
-        - match: \}
-          pop: true
-        - include: braces
+      embed: "R Extended.sublime-syntax"
+      escape: \}
