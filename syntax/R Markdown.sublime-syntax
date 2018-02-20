@@ -971,10 +971,10 @@ contexts:
           set:
             - meta_scope: markup.raw.code-fence.markdown
             - meta_content_scope: source.r
-            - include: "R Extended.sublime-syntax"
             - match: '[ ]{,3}(```)\s*$'
               scope: punctuation.definition.raw.code-fence.end.markdown
               pop: true
+            - include: "R Extended.sublime-syntax"
 
   rcode-span:
     - match: (`+)(r) (?!`)
@@ -984,7 +984,6 @@ contexts:
       push:
         - meta_scope: markup.raw.inline.markdown
         - meta_content_scope: source.r
-        - include: "R Extended.sublime-syntax"
         - match: \1(?!`)
           scope: punctuation.definition.raw.end.markdown
           pop: true
@@ -992,6 +991,7 @@ contexts:
         - match: ^\s*$\n?
           scope: invalid.illegal.non-terminated.raw.markdown
           pop: true
+        - include: "R Extended.sublime-syntax"
 
   latex-math:
     - match: \\\$
