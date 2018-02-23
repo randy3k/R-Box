@@ -77,7 +77,7 @@ See `Perference: R-Box Settings`
 - [Bracket​Highlighter](https://github.com/facelessuser/BracketHighlighter) for advanced bracket highlighting.
 - [Whitespace](https://github.com/randy3k/Whitespace) for cleaning whitespaces.
 - [TerminalView](https://github.com/Wramberg/TerminalView) for running R Console in Sublime Text (macOS and Linux only).
-- [Rice](https://github.com/randy3k/Rice) is a better R console for Terminal.
+- [rtichoke](https://github.com/randy3k/rtichoke) is a better R console for Terminal.
 
 <img src="https://user-images.githubusercontent.com/1690993/29753906-c65dbad2-8b48-11e7-8e02-d6d66bd90e2f.gif" width="700px"></img>
 
