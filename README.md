@@ -81,4 +81,4 @@ See `Perference: R-Box Settings`
 
 <img src="https://user-images.githubusercontent.com/1690993/29753906-c65dbad2-8b48-11e7-8e02-d6d66bd90e2f.gif" width="700px"></img>
 
-Running Rice on TerminalView within Sublime Text.
+Running `rtichoke` on TerminalView within Sublime Text.
