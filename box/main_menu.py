@@ -16,6 +16,8 @@ def main_menu_is_visible():
 class RBoxMainMenuListener(sublime_plugin.EventListener):
     def window_is_rproj(self, folders):
         for folder in folders:
+            if not os.path.isdir(folder):
+                continue
             for f in os.listdir(folder):
                 if f.endswith(".Rproj"):
                     return True
