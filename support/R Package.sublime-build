@@ -1,5 +1,5 @@
 {
-    "selector": "source.r, source.c++.rcpp",
+    "keyfiles": ["DESCRIPTION"],
     "working_dir": "$folder",
     "cmd": [
         "Rscript", "-e",
