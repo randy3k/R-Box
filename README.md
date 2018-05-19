@@ -50,7 +50,7 @@ Improve your R coding experiences with Sublime Text!
 
 ### Syntaxes
 
-- R Extended Syntax
+- R Extended Syntax (merged into Sublime Text)
 - Rcpp Syntax
 - R Sweave and R Markdown syntaxes
 

@@ -243,12 +243,12 @@ contexts:
       push:
         - meta_scope: markup.raw.code-fence.latex.rsweave
         - match: "<<"
-          embed: "R Extended.sublime-syntax"
+          embed: scope:source.r
           escape: "(?=>>=)"
         - match: "(?=>>=)"
           set:
             - match: ">>="
-              embed: "R Extended.sublime-syntax"
+              embed: scope:source.r
               escape: ^\s*@\s*$
             - match: ""
               pop: true
@@ -257,5 +257,5 @@ contexts:
     - match: (\\Sexpr)\{
       captures:
         1: support.function.latex
-      embed: "R Extended.sublime-syntax"
+      embed: scope:source.r
       escape: \}
