@@ -34,7 +34,7 @@ class RBoxShowPopup(RBoxViewMixin, sublime_plugin.TextCommand):
                                            True):
             with preference_temporary_settings(
                     "mdpopups.sublime_user_lang_map",
-                    {"s": [["r"], ["R-Box/syntax/R Extended"]]}):
+                    {"s": [["r"], ["R/R.sublime-syntax"]]}):
                 text = POPUP_TEMPLATE.format(
                     mdpopups.syntax_highlight(
                         self.view, funct_call.strip(), language="r"), pkg,
