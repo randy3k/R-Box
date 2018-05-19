@@ -5,8 +5,13 @@ R package for Sublime Text
 <a href="https://www.paypal.me/randy3k/5usd" title="Donate to this project using Paypal"><img src="https://img.shields.io/badge/paypal-donate-blue.svg" /></a>
 
 
-
 Improve your R coding experiences with Sublime Text!
+
+**News**
+
+- The R Extended Syntax has been merged to Sublime Text. R-Box is no longer shipping a copy of it. Use the syntax `R` comes with Sublime Text.
+
+- I am working on the next iteration of R-Box - RIDE at https://github.com/REditorSupport/sublime-ide-r. RIDE depends on the [language server protocol](https://github.com/tomv564/LSP) and is now only recomended for advanced users.
 
 
 ## Features highlight!

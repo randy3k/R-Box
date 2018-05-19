@@ -1,0 +1,5 @@
+v4.0.0
+
+- The R Extended Syntax has been merged to Sublime Text. R-Box is no longer shipping a copy of it. Use the syntax `R` comes with Sublime Text.
+
+- I am working on the next iteration of it - `RIDE` at https://github.com/REditorSupport/sublime-ide-r. RIDE depends on the [language server protocol](https://github.com/tomv564/LSP) and is now only recomended for advanced users.
