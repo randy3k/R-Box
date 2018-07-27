@@ -80,9 +80,9 @@ See `Perference: R-Box Settings`
 - [SendCode](https://github.com/randy3k/SendCode) for sending R code to Terminal / R GUI / RStudio.
 - [Bracket​Highlighter](https://github.com/facelessuser/BracketHighlighter) for advanced bracket highlighting.
 - [Whitespace](https://github.com/randy3k/Whitespace) for cleaning whitespaces.
-- [TerminalView](https://github.com/Wramberg/TerminalView) for running R Console in Sublime Text (macOS and Linux only).
+- [Terminus](https://github.com/randy3k/Terminus) for running R Console in Sublime Text (macOS and Linux only).
 - [rtichoke](https://github.com/randy3k/rtichoke) is a better R console for Terminal.
 
 <img src="https://user-images.githubusercontent.com/1690993/29753906-c65dbad2-8b48-11e7-8e02-d6d66bd90e2f.gif" width="700px"></img>
 
-Running `rtichoke` on TerminalView within Sublime Text.
+Running `rtichoke` on Terminus within Sublime Text.
